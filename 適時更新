@@ -1,0 +1,23 @@
+# 每 10 分鐘從天文台下載最新的香港暑熱指數（HKHI），存成 data/hkhi-latest.csv
+name: Update HKHI data
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download latest HKHI
+        run: |
+          curl -fsSL --retry 3 https://data.weather.gov.hk/weatherAPI/hko_data/regional-weather/recent10_10min_hkhi.csv -o data/hkhi-latest.csv.new
+          [ -s data/hkhi-latest.csv.new ] && mv data/hkhi-latest.csv.new data/hkhi-latest.csv
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898729+github-actions[bot]@users.noreply.github.com"
+          git add data/hkhi-latest.csv
+          git diff --cached --quiet || (git commit -m "Update HKHI data" && git push)
