@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" stroke-linejoin="round" stroke-linecap="round">
+  <!-- 平塗版：內容和原插畫相同（天際線、太陽與熱浪、維港天星小輪、天台冷氣機、晾衣架），
+       配色只用規範色板：Ink #16293F、Mist #EEF2F6、Context grey #B5BAC1、Story rust #C4502A、
+       Harbour blue #2B6CB0（只用在國金和海）、Jade #0E9474、Ochre #B8860B -->
+
+  <!-- 太陽與熱浪 -->
+  <circle cx="400" cy="112" r="72" fill="#C4502A"/>
+  <g fill="none" stroke="#C4502A" stroke-width="11">
+    <path d="M205 40 q-26 22 2 44 q26 22 -4 46"/>
+    <path d="M262 22 q-24 22 2 42 q24 20 -2 42"/>
+  </g>
+
+  <!-- 遠山 -->
+  <path d="M0 262 Q60 214 120 238 Q170 206 230 240 L230 300 L0 300 Z" fill="#B5BAC1"/>
+  <path d="M470 150 Q520 110 560 132 Q590 140 600 150 L600 260 L470 260 Z" fill="#B5BAC1"/>
+
+  <!-- 天際線：Mist 樓身 + Ink 輪廓，點綴 Ochre / Jade -->
+  <g stroke="#16293F" stroke-width="3">
+    <rect x="70" y="150" width="34" height="140" fill="#EEF2F6"/>
+    <path d="M76 150 L87 104 L98 150 Z" fill="#EEF2F6"/>
+    <rect x="108" y="190" width="40" height="100" fill="#B8860B"/>
+    <rect x="152" y="120" width="44" height="170" fill="#EEF2F6"/>
+    <rect x="200" y="170" width="36" height="120" fill="#0E9474"/>
+    <rect x="240" y="138" width="48" height="152" fill="#EEF2F6"/>
+    <rect x="292" y="182" width="38" height="108" fill="#EEF2F6"/>
+    <rect x="334" y="150" width="42" height="140" fill="#B8860B"/>
+    <!-- 國際金融中心 -->
+    <path d="M420 290 L420 70 Q436 46 452 70 L452 290 Z" fill="#2B6CB0"/>
+    <rect x="380" y="196" width="36" height="94" fill="#EEF2F6"/>
+    <rect x="456" y="160" width="40" height="130" fill="#EEF2F6"/>
+    <rect x="500" y="200" width="36" height="90" fill="#0E9474"/>
+  </g>
+  <!-- 窗 -->
+  <g fill="#16293F" opacity=".55">
+    <rect x="160" y="132" width="8" height="10"/><rect x="178" y="132" width="8" height="10"/>
+    <rect x="160" y="154" width="8" height="10"/><rect x="178" y="154" width="8" height="10"/>
+    <rect x="160" y="176" width="8" height="10"/><rect x="178" y="176" width="8" height="10"/>
+    <rect x="250" y="150" width="8" height="10"/><rect x="268" y="150" width="8" height="10"/>
+    <rect x="250" y="172" width="8" height="10"/><rect x="268" y="172" width="8" height="10"/>
+    <rect x="78" y="166" width="7" height="9"/><rect x="90" y="166" width="7" height="9"/>
+    <rect x="78" y="186" width="7" height="9"/><rect x="90" y="186" width="7" height="9"/>
+    <rect x="464" y="172" width="8" height="10"/><rect x="480" y="172" width="8" height="10"/>
+    <rect x="464" y="194" width="8" height="10"/><rect x="480" y="194" width="8" height="10"/>
+  </g>
+  <g stroke="#EEF2F6" stroke-width="2" opacity=".7">
+    <path d="M428 90 V280 M436 80 V280 M444 90 V280"/>
+  </g>
+
+  <!-- 維港與天星小輪 -->
+  <rect x="0" y="290" width="330" height="40" fill="#8DB4DE"/>
+  <g stroke="#C4502A" stroke-width="4">
+    <path d="M150 304 h40 M168 314 h46 M140 322 h30"/>
+  </g>
+  <g stroke="#16293F" stroke-width="3">
+    <path d="M30 300 L104 300 L96 314 L38 314 Z" fill="#0E9474"/>
+    <rect x="42" y="286" width="50" height="14" fill="#FFFFFF"/>
+    <rect x="54" y="276" width="26" height="10" fill="#FFFFFF"/>
+  </g>
+
+  <!-- 樹 -->
+  <g fill="#0E9474" stroke="#16293F" stroke-width="3">
+    <path d="M300 300 q-14 -26 10 -34 q8 -18 26 -6 q22 -4 18 18 q14 14 -6 24 Z"/>
+  </g>
+
+  <!-- 天台 -->
+  <g stroke="#16293F" stroke-width="3">
+    <path d="M40 330 L240 330 L240 400 L40 400 Z" fill="#E4E7EB"/>
+    <path d="M200 312 L360 312 L360 400 L200 400 Z" fill="#B5BAC1"/>
+    <path d="M300 340 L600 340 L600 400 L300 400 Z" fill="#E4E7EB"/>
+  </g>
+
+  <!-- 冷氣機 -->
+  <g stroke="#16293F" stroke-width="3.5">
+    <rect x="380" y="250" width="150" height="100" rx="8" fill="#FFFFFF"/>
+    <circle cx="436" cy="300" r="38" fill="#EEF2F6"/>
+  </g>
+  <g fill="none" stroke="#16293F" stroke-width="2.5">
+    <circle cx="436" cy="300" r="26"/><circle cx="436" cy="300" r="13"/>
+    <path d="M398 300 H474 M436 262 V338 M409 273 L463 327 M463 273 L409 327"/>
+  </g>
+  <rect x="490" y="268" width="26" height="8" fill="#16293F"/>
+
+  <!-- 晾衣架、白 T 恤、衣夾 -->
+  <path d="M520 250 V120" stroke="#16293F" stroke-width="6"/>
+  <path d="M352 150 L590 112" stroke="#16293F" stroke-width="5"/>
+  <path d="M400 146 L438 140 L452 150 L470 136 L506 132 L522 156 L506 166 L500 158 L502 230 L430 238 L430 170 L418 176 L402 160 Z"
+        fill="#FFFFFF" stroke="#16293F" stroke-width="3.5"/>
+  <g fill="#C4502A" stroke="#16293F" stroke-width="2.5">
+    <rect x="432" y="130" width="8" height="20" rx="2"/>
+    <rect x="496" y="122" width="8" height="20" rx="2"/>
+  </g>
+</svg>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>三種溫度測量，有何不同？</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme: light; --ink:#16293F; --muted:#5B6573; --rust:#C4502A; --line:#E4E7EB; --paper:#FFFFFF; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--paper); color: var(--ink); }
+    body { padding: 14px 18px 4px; font-family: "Source Sans 3", "Noto Sans TC", sans-serif; -webkit-font-smoothing: antialiased; }
+    main { width: min(1040px, 100%); margin: 0 auto; }
+    .measure-header { padding: 16px 0 10px; border-top: 1px solid var(--line); }
+    h1, h2 { font-family: "Source Serif 4", "Noto Serif TC", serif; }
+    h1 { margin: 0; font-size: clamp(27px, 3vw, 36px); line-height: 1.3; font-weight: 700; letter-spacing: -.02em; }
+    .measure-hint { margin: 2px 0 12px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .measure-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; list-style: none; margin: 0; padding: 0; }
+    .measure-row { position: relative; display: flex; flex-direction: column; min-width: 0; padding: 0 0 22px; }
+    .measure-row::after { position: absolute; inset: auto 0 0; height: 8px; content: ""; background: url("assets/pencil-rule.svg") center bottom / 100% 100% no-repeat; pointer-events: none; }
+    .measure-index { color: var(--rust); font: 400 27px/1 "Source Serif 4", Georgia, serif; letter-spacing: -.07em; }
+    .measure-visual { position: relative; display: grid; place-items: center; width: 100%; height: 204px; margin: 5px 0 12px; padding: 0; overflow: hidden; border: 0; background: #f8f9f7; color: var(--ink); cursor: pointer; text-align: left; }
+    .measure-visual::before { position: absolute; inset: 6px; border: 1px solid #D9DEE1; content: ""; transform: rotate(-.4deg); pointer-events: none; z-index: 2; transition: opacity .18s ease; }
+    .measure-visual:focus-visible { outline: 2px solid var(--rust); outline-offset: 3px; }
+    .measure-sketch { display: block; width: 142px; height: 142px; object-fit: contain; transition: opacity .2s ease, transform .2s ease; }
+    .measure-photo { position: absolute; inset: 0; display: flex; flex-direction: column; background: #F4F3EE; opacity: 0; visibility: hidden; transform: translateY(7px); transition: opacity .22s ease, transform .22s ease, visibility .22s; }
+    .measure-photo img { display: block; width: 100%; height: 154px; object-fit: cover; }
+    .measure-photo--globe img { object-position: center top; }
+    .measure-photo--wet img { object-position: center 43%; }
+    .measure-photo-label { display: flex; align-items: center; min-height: 50px; padding: 5px 13px; font-size: 12px; line-height: 1.35; font-weight: 600; }
+    .measure-visual:hover .measure-photo, .measure-visual:focus-visible .measure-photo, .measure-visual.is-open .measure-photo { opacity: 1; visibility: visible; transform: translateY(0); }
+    .measure-visual:hover::before, .measure-visual:focus-visible::before, .measure-visual.is-open::before { opacity: 0; }
+    .measure-visual:hover .measure-sketch, .measure-visual:focus-visible .measure-sketch, .measure-visual.is-open .measure-sketch { opacity: 0; transform: scale(.96); }
+    .measure-source { display: block; margin: -5px 0 13px; color: var(--muted); font-size: 11px; line-height: 1.35; }
+    .measure-source a { color: inherit; text-underline-offset: 2px; }
+    .measure-copy { min-width: 0; }
+    .measure-kind { margin: 0 0 3px; color: var(--rust); font-size: 12px; line-height: 1.3; font-weight: 700; letter-spacing: .1em; }
+    .measure-copy h2 { margin: 0 0 7px; font-size: clamp(21px, 2.3vw, 27px); line-height: 1.3; font-weight: 700; }
+    .measure-copy p { margin: 0; font-size: 15px; line-height: 1.66; }
+    .measure-tags { display: flex; flex-wrap: wrap; gap: 0 10px; margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .measure-tags span + span::before { content: "·"; margin-right: 10px; color: var(--rust); }
+    @media (min-width: 561px) and (max-width: 760px) {
+      .measure-list { gap: 15px; }
+      .measure-visual { height: 188px; }
+      .measure-sketch { width: 116px; height: 116px; }
+      .measure-photo img { height: 128px; }
+      .measure-photo-label { min-height: 60px; padding: 5px 8px; font-size: 11px; }
+      .measure-copy h2 { font-size: 21px; }
+      .measure-copy p { font-size: 14px; }
+    }
+    @media (max-width: 560px) {
+      body { padding: 8px 14px 4px; }
+      .measure-header { padding: 12px 0 8px; }
+      h1 { font-size: 23px; }
+      .measure-list { grid-template-columns: 1fr; gap: 20px; }
+      .measure-row { padding-bottom: 19px; }
+      .measure-index { font-size: 22px; }
+      .measure-visual { height: 190px; margin: 7px 0 11px; }
+      .measure-sketch { width: 126px; height: 126px; }
+      .measure-photo img { height: 140px; }
+      .measure-kind { font-size: 11px; letter-spacing: .06em; }
+      .measure-copy h2 { margin-bottom: 6px; font-size: 20px; }
+      .measure-copy p { font-size: 14px; line-height: 1.6; }
+      .measure-tags { gap: 0 6px; font-size: 12px; }
+      .measure-tags span + span::before { margin-right: 6px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .measure-photo, .measure-sketch, .measure-visual::before { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="measurement" aria-labelledby="measurement-title">
+      <header class="measure-header"><h1 id="measurement-title">三種溫度測量，有何不同？</h1></header>
+      <p class="measure-hint">將滑鼠移到手繪圖上，或輕觸圖片，看看現場儀器的樣子。</p>
+      <ol class="measure-list">
+        <li class="measure-row">
+          <span class="measure-index" aria-hidden="true">01</span>
+          <button class="measure-visual" type="button" aria-label="查看乾球氣溫測量裝置實景圖" aria-expanded="false">
+            <img class="measure-sketch" src="assets/dry-bulb-sketch.svg" alt="" width="160" height="160">
+            <span class="measure-photo"><img src="assets/real-dry-bulb-noaa.png" alt="氣象站的白色通風輻射罩" width="620" height="465"><span class="measure-photo-label">通風輻射罩保護感測器，測量周圍空氣溫度。</span></span>
+          </button>
+          <span class="measure-source">實景照片：<a href="https://www.climate.gov/maps-data/climate-data-primer/how-do-we-observe-todays-climate/air-atmospheric-climate-variables" target="_blank" rel="noopener noreferrer">NOAA Climate.gov</a></span>
+          <div class="measure-copy">
+            <div class="measure-kind">空氣溫度測量</div>
+            <h2>乾球氣溫</h2>
+            <p>常規氣象站測得的環境空氣溫度。</p>
+            <div class="measure-tags" aria-label="分類"><span>基準溫度</span><span>氣象觀測</span></div>
+          </div>
+        </li>
+        <li class="measure-row">
+          <span class="measure-index" aria-hidden="true">02</span>
+          <button class="measure-visual" type="button" aria-label="查看黑球溫度測量裝置實景圖" aria-expanded="false">
+            <img class="measure-sketch" src="assets/globe-sketch.svg" alt="" width="160" height="160">
+            <span class="measure-photo measure-photo--globe"><img src="assets/real-wbgt-meter.jpg" alt="濕球黑球溫度計上方的黑色球體" width="960" height="1280"><span class="measure-photo-label">黑色球體吸收輻射熱，球內感測器讀取溫度。</span></span>
+          </button>
+          <span class="measure-source">實景照片：<a href="https://commons.wikimedia.org/wiki/File:Heat_Index_WBGT_Meter.jpg" target="_blank" rel="noopener noreferrer">Maleahlbr／Wikimedia Commons（CC0）</a></span>
+          <div class="measure-copy">
+            <div class="measure-kind">輻射熱測量</div>
+            <h2>黑球溫度</h2>
+            <p>透過放在表面塗黑的中空銅球內的感應器，模擬人體吸收太陽直射以及高樓、地面反射的輻射熱，量化環境對人體的熱積累負荷。</p>
+            <div class="measure-tags" aria-label="分類"><span>太陽輻射</span><span>熱負荷</span></div>
+          </div>
+        </li>
+        <li class="measure-row">
+          <span class="measure-index" aria-hidden="true">03</span>
+          <button class="measure-visual" type="button" aria-label="查看自然濕球溫度測量裝置實景圖" aria-expanded="false">
+            <img class="measure-sketch" src="assets/wet-bulb-sketch.svg" alt="" width="160" height="160">
+            <span class="measure-photo measure-photo--wet"><img src="assets/analog-wbgt-meter.jpg" alt="打開的濕球黑球溫度計組，右上方濕布包裹濕球探頭" width="1611" height="880"><span class="measure-photo-label">右上方裹濕布的探頭，暴露在自然氣流中測量蒸發冷卻。</span></span>
+          </button>
+          <span class="measure-source">實景照片：<a href="https://commons.wikimedia.org/wiki/File:Analog_WBGT_meter.jpg" target="_blank" rel="noopener noreferrer">Morn／Wikimedia Commons（CC0）</a></span>
+          <div class="measure-copy">
+            <div class="measure-kind">蒸發散熱測量</div>
+            <h2>自然濕球溫度</h2>
+            <p>透過包裹濕布的感應器，模擬在當前空氣濕度與風速下，人體皮膚表面汗液蒸發的冷卻極限。由於高濕度會顯著降低蒸發效率，濕球溫度直接反映了人體能否透過排汗實現有效散熱。</p>
+            <div class="measure-tags" aria-label="分類"><span>空氣濕度</span><span>排汗散熱</span></div>
+          </div>
+        </li>
+      </ol>
+    </section>
+  </main>
+  <script>
+    const visuals = [...document.querySelectorAll('.measure-visual')];
+    const setOpen = (button, open) => {
+      visuals.forEach((item) => {
+        const active = item === button && open;
+        item.classList.toggle('is-open', active);
+        item.setAttribute('aria-expanded', String(active));
+      });
+    };
+    visuals.forEach((button) => {
+      button.addEventListener('pointerenter', (event) => {
+        if (event.pointerType !== 'touch') setOpen(button, true);
+      });
+      button.addEventListener('pointerleave', (event) => {
+        if (event.pointerType !== 'touch' && !button.matches(':focus-visible')) setOpen(button, false);
+      });
+      button.addEventListener('focus', () => {
+        if (button.matches(':focus-visible')) setOpen(button, true);
+      });
+      button.addEventListener('blur', () => setOpen(button, false));
+      button.addEventListener('click', () => {
+        if (matchMedia('(hover: none)').matches) setOpen(button, !button.classList.contains('is-open'));
+      });
+    });
+  </script>
+</body>
+</html>

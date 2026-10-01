@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" fill="none" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- 薄雲：仿參考插畫的手繪風格，又薄又長的淡雲，後面隱約有陽光 -->
+  <circle cx="88" cy="24" r="13" fill="#F7E3A6" stroke-width="3.5" opacity=".75"/>
+  <path d="M30 22 Q42 16 54 22" stroke-width="3" opacity=".55"/>
+  <path d="M16 56 C8 56 6 46 14 43 C14 34 26 31 32 37 C36 27 52 26 58 35 C64 30 76 31 78 39 C88 38 96 44 94 51 C93 56 88 57 84 57 Z" fill="#EAF1F8"/>
+  <path d="M24 66 Q48 62 74 66" stroke-width="3" opacity=".55"/>
+  <!-- 小表情 -->
+  <path d="M42 46 q3 -3 6 0" stroke-width="3"/>
+  <path d="M58 46 q3 -3 6 0" stroke-width="3"/>
+  <path d="M49 51 q4 3 8 0" stroke-width="3"/>
+</svg>

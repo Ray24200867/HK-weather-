@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>香港究竟有幾熱？氣溫之外，還有另一套衡量標準</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap">
+<link rel="stylesheet" href="design-v1/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <span class="brand">香港有幾熱</span>
+  <div class="live-wrap">
+    <a class="live" id="live" href="#">
+      <span class="dot"></span><span class="label">此刻全港最高暑熱指數</span>
+      <b>--</b><span class="where"></span>
+    </a>
+    <span class="live-hint">（點擊查看香港實時暑熱指標）</span>
+    <!-- 滑鼠移到上面的讀數時，彈出實時暑熱指數地圖 -->
+    <div class="live-pop" aria-hidden="true">
+      <iframe src="香港暑熱指數/dist/index.html" title="實時香港暑熱指數（預覽）" data-theme="mappop" data-autosize height="420" tabindex="-1"></iframe>
+    </div>
+  </div>
+</header>
+
+<article>
+
+<section class="hero">
+  <h1>香港究竟有幾熱？氣溫之外，還有另一套衡量標準</h1>
+  <p class="byline">文：＿＿＿ · 數據：香港天文台</p>
+</section>
+
+<!-- ============ 導語（置中）+ 天文台地圖 ============ -->
+<section class="lead-center">
+  <div class="lead-art" aria-hidden="true">
+    <div class="fan">
+      <img class="fan-blades" src="images/fan-blades.png" width="477" height="540" alt="">
+      <img class="fan-front" src="images/fan-front.png" width="477" height="540" alt="">
+    </div>
+  </div>
+  <div class="winds" aria-hidden="true"></div>
+  <p class="lead-text">2026年8月，香港經歷了一場破紀錄的極端熱浪。8月9日，香港天文台總部錄得 <span class="record">36.9°C</span> ，打破了 2017 年颱風「天鴿」前夕創下的 36.6°C 紀錄，成為香港自 1884 年有官方氣象記錄以來最熱的一天。</p>
+</section>
+
+<figure class="lead-photo">
+  <p class="figure-title">8月9日17:00 各區最高氣溫（°C）</p>
+  <img src="images/hko-2026-08-09-max-temp.jpg" width="1280" height="956" alt="香港天文台分區天氣地圖：8月9日17:00各區最高氣溫，多區錄得36至39°C">
+  <figcaption>來源：香港天文台</figcaption>
+</figure>
+
+<!-- ============ 開場：條碼圖逐步推進 ============ -->
+<section class="scrolly">
+  <div class="scrolly-graphic">
+    <!-- 第 0 步：天文台地圖在左，條碼圖在右（只在桌面顯示） -->
+    <figure class="pair-photo">
+      <p class="figure-title">8月9日17:00 各區最高氣溫（°C）</p>
+      <img src="images/hko-2026-08-09-max-temp.jpg" width="1280" height="956" alt="香港天文台分區天氣地圖：8月9日17:00各區最高氣溫，多區錄得36至39°C">
+      <figcaption>來源：香港天文台</figcaption>
+    </figure>
+    <p class="chart-head" id="chart-head"></p>
+    <div class="bar-tip" id="bar-tip" role="status" hidden></div>
+    <p class="chart-note" id="chart-note"></p>
+    <p class="chart-callout" id="chart-callout"></p>
+    <canvas id="barcode" aria-label="香港夏季每日最高氣溫條碼圖"></canvas>
+    <!-- 百年來香港最高氣溫折線圖（第 3 步） -->
+    <figure class="yearly-wrap">
+      <iframe src="最高溫折線圖/index.html" title="香港年度最高氣溫" data-theme="maxline" id="yearly-frame"></iframe>
+      <figcaption>1940 至 1946 年缺乏數據。滑動或點擊資料點可查看各年紀錄。資料：香港天文台</figcaption>
+    </figure>
+    <!-- 全球每月平均氣溫（對應 WMO／哥白尼那一句） -->
+    <div class="global-wrap">
+      <p class="chart-title">2026年8月與2023年7月並列全球最熱月份</p>
+      <p class="chart-chatter">全球每月平均近地面氣溫，°C，1940–2026</p>
+      <canvas id="global" role="img" aria-label="折線圖：1940至2026年每年一條全球月均氣溫線，近年的線明顯較高；2026年8月（16.96°C）與2023年7月（16.95°C）並列有記錄以來最熱的月份。"></canvas>
+      <p class="chart-source">來源：哥白尼氣候變化服務局（C3S），ERA5 · 製圖：＿＿＿</p>
+    </div>
+    <p class="legend">
+      <span style="--c:var(--context)">某一年的同一天</span>
+      <span style="--c:var(--series-2)">該日歷史最高</span>
+      <span style="--c:var(--now)">2026 年</span>
+    </p>
+  </div>
+  <div class="steps">
+    <div class="step step-long" data-step="6"></div>
+    <div class="step" data-step="0"></div>
+    <div class="step step-intro" data-step="1">
+      <p>而這只是全球極端天氣頻發的其中一個縮影，世界氣象組織（WMO）及歐盟哥白尼氣候變化服務局證實，2026年8月與2023年7月並列成為全球有記錄以來最熱的一個月。</p>
+    </div>
+    <div class="step step-yearly" data-step="3"></div>
+    <div class="step step-prose" data-step="8">
+      <div class="prose">
+        <h2 class="section-head"><span class="section-num">01</span>氣溫紀錄能否完全回答：香港究竟有多熱？</h2>
+        <p><span class="placeholder">（專家表示，待替換）</span>天氣預報中的氣溫，測量的是空氣本身的溫度。它不會單獨告訴我們汗水能不能順利蒸發、身體吸收了多少太陽輻射，或者周圍的風能不能幫助散熱。</p>
+        <p>而這些，恰恰是人體面對炎熱環境時的重要變量。</p>
+        <p>天氣炎熱時，人體透過出汗散熱，但汗水流出來，並不代表降溫已經完成，汗水從皮膚表面蒸發，才能透過這一過程帶走熱量。同時濕度影響著這個過程。在其他條件相近時，空氣較乾燥，汗水更容易蒸發；空氣越潮濕，蒸發就越慢，身體也越難借此散熱。</p>
+        <!-- 解釋動畫：人體的熱量收支 -->
+        <figure class="heat-explainer" id="heat-explainer">
+          <p class="chart-title">熱量進得多、散得少，身體就會積熱</p>
+          <p class="chart-chatter">人體熱量收支示意：<b class="hx-k-in">紅色＝熱量流進身體</b>，<b class="hx-k-out">藍色＝熱量流出身體</b></p>
+          <svg viewBox="0 0 940 670" role="img" aria-label="示意圖：一個跑步的人連到五個因素。太陽輻射、氣溫和運動令身體變熱，熱量流進身體；汗水蒸發和風幫身體散熱，熱量流出身體，但濕度愈高，汗水愈難蒸發。進的熱多過散走的熱，熱量在體內積聚，形成熱壓力。">
+          <g transform="translate(40 0)">
+            <image class="hx-person" href="images/body-silhouette.png" x="300" y="40" width="260" height="520"/>
+            <g class="hx-item" data-order="0" id="hx-solar">
+              <path class="hx-line" d="M622 80 L429 46" stroke="#C4502A" stroke-width="2" stroke-opacity=".45" fill="none"/>
+              <g class="hx-dots"><path d="M-7 -6 L7 0 L-7 6 Z" fill="#C4502A"><animateMotion dur="1.6s" begin="0.00s" repeatCount="indefinite" path="M622 80 L429 46" rotate="auto"/></path><path d="M-7 -6 L7 0 L-7 6 Z" fill="#C4502A"><animateMotion dur="1.6s" begin="-0.53s" repeatCount="indefinite" path="M622 80 L429 46" rotate="auto"/></path><path d="M-7 -6 L7 0 L-7 6 Z" fill="#C4502A"><animateMotion dur="1.6s" begin="-1.06s" repeatCount="indefinite" path="M622 80 L429 46" rotate="auto"/></path></g>
+              <circle cx="429" cy="46" r="5" fill="#fff" stroke="#C4502A" stroke-width="3"/>
+              <circle class="hx-dot" cx="650" cy="80" r="28" fill="#C4502A"/>
+              <g transform="translate(650 80)"><circle r="8" fill="#fff"/><g stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M0 -16 V-12 M0 12 V16 M-16 0 H-12 M12 0 H16 M-11 -11 L-8 -8 M11 11 L8 8 M11 -11 L8 -8 M-11 11 L-8 8"/></g></g>
+              <text x="692" y="68" text-anchor="start" class="hx-label">太陽輻射</text>
+              <text x="692" y="90" text-anchor="start" class="hx-en2">Solar radiation</text>
+              <text x="692" y="114" text-anchor="start" class="hx-sub">陽光額外把熱送進身體</text>
+            </g>
+            <g class="hx-item" data-order="1" id="hx-air">
+              <path class="hx-line" d="M622 240 L451 170" stroke="#C4502A" stroke-width="2" stroke-opacity=".45" fill="none"/>
+              <g class="hx-dots"><path d="M-7 -6 L7 0 L-7 6 Z" fill="#C4502A"><animateMotion dur="1.6s" begin="0.00s" repeatCount="indefinite" path="M622 240 L451 170" rotate="auto"/></path><path d="M-7 -6 L7 0 L-7 6 Z" fill="#C4502A"><animateMotion dur="1.6s" begin="-0.53s" repeatCount="indefinite" path="M622 240 L451 170" rotate="auto"/></path><path d="M-7 -6 L7 0 L-7 6 Z" fill="#C4502A"><animateMotion dur="1.6s" begin="-1.06s" repeatCount="indefinite" path="M622 240 L451 170" rotate="auto"/></path></g>
+              <circle cx="451" cy="170" r="5" fill="#fff" stroke="#C4502A" stroke-width="3"/>
+              <circle class="hx-dot" cx="650" cy="240" r="28" fill="#C4502A"/>
+              <g transform="translate(650 240)"><rect x="-4" y="-15" width="8" height="21" rx="4" fill="none" stroke="#fff" stroke-width="3"/><circle cy="9" r="7" fill="#fff"/><rect x="-1.5" y="-6" width="3" height="13" fill="#fff"/></g>
+              <text x="692" y="228" text-anchor="start" class="hx-label">氣溫</text>
+              <text x="692" y="250" text-anchor="start" class="hx-en2">Air temperature</text>
+              <text x="692" y="274" text-anchor="start" class="hx-sub">空氣本身有多熱</text>
+            </g>
+            <g class="hx-item" data-order="2" id="hx-hum">
+              <path class="hx-line" d="M347 258 L238 230" stroke="#2B6CB0" stroke-width="2" stroke-opacity=".45" fill="none"/>
+              <g class="hx-dots"><path d="M-7 -6 L7 0 L-7 6 Z" fill="#2B6CB0"><animateMotion dur="1.6s" begin="0.00s" repeatCount="indefinite" path="M347 258 L238 230" rotate="auto"/></path><path d="M-7 -6 L7 0 L-7 6 Z" fill="#2B6CB0"><animateMotion dur="1.6s" begin="-0.53s" repeatCount="indefinite" path="M347 258 L238 230" rotate="auto"/></path><path d="M-7 -6 L7 0 L-7 6 Z" fill="#2B6CB0"><animateMotion dur="1.6s" begin="-1.06s" repeatCount="indefinite" path="M347 258 L238 230" rotate="auto"/></path></g>
+              <circle cx="347" cy="258" r="5" fill="#fff" stroke="#2B6CB0" stroke-width="3"/>
+              <circle class="hx-dot" cx="210" cy="230" r="28" fill="#2B6CB0"/>
+              <g transform="translate(210 230)"><path d="M0 -15 C8 -4 11 2 11 6 a11 11 0 0 1 -22 0 C-11 2 -8 -4 0 -15 Z" fill="#fff"/></g>
+              <text x="168" y="218" text-anchor="end" class="hx-label">濕度</text>
+              <text x="168" y="240" text-anchor="end" class="hx-en2">Humidity</text>
+              <text x="168" y="264" text-anchor="end" class="hx-sub">汗水有多容易蒸發</text>
+            </g>
+            <g class="hx-item" data-order="3" id="hx-wind">
+              <path class="hx-line" d="M388 274 L238 390" stroke="#2B6CB0" stroke-width="2" stroke-opacity=".45" fill="none"/>
+              <g class="hx-dots"><path d="M-7 -6 L7 0 L-7 6 Z" fill="#2B6CB0"><animateMotion dur="1.6s" begin="0.00s" repeatCount="indefinite" path="M388 274 L238 390" rotate="auto"/></path><path d="M-7 -6 L7 0 L-7 6 Z" fill="#2B6CB0"><animateMotion dur="1.6s" begin="-0.53s" repeatCount="indefinite" path="M388 274 L238 390" rotate="auto"/></path><path d="M-7 -6 L7 0 L-7 6 Z" fill="#2B6CB0"><animateMotion dur="1.6s" begin="-1.06s" repeatCount="indefinite" path="M388 274 L238 390" rotate="auto"/></path></g>
+              <circle cx="388" cy="274" r="5" fill="#fff" stroke="#2B6CB0" stroke-width="3"/>
+              <circle class="hx-dot" cx="210" cy="390" r="28" fill="#2B6CB0"/>
+              <g transform="translate(210 390)"><g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M-14 -6 H5 q8 0 6 -7 q-2 -5 -7 -2"/><path d="M-14 1 H13"/><path d="M-14 8 H4 q7 0 5 6 q-2 4 -6 2"/></g></g>
+              <text x="168" y="378" text-anchor="end" class="hx-label">風</text>
+              <text x="168" y="400" text-anchor="end" class="hx-en2">Wind</text>
+              <text x="168" y="424" text-anchor="end" class="hx-sub">流動空氣帶走熱量</text>
+            </g>
+            <g class="hx-item" data-order="4" id="hx-act">
+              <path class="hx-line" d="M622 400 L456 362" stroke="#C4502A" stroke-width="2" stroke-opacity=".45" fill="none"/>
+              <g class="hx-dots"><path d="M-7 -6 L7 0 L-7 6 Z" fill="#C4502A"><animateMotion dur="1.6s" begin="0.00s" repeatCount="indefinite" path="M622 400 L456 362" rotate="auto"/></path><path d="M-7 -6 L7 0 L-7 6 Z" fill="#C4502A"><animateMotion dur="1.6s" begin="-0.53s" repeatCount="indefinite" path="M622 400 L456 362" rotate="auto"/></path><path d="M-7 -6 L7 0 L-7 6 Z" fill="#C4502A"><animateMotion dur="1.6s" begin="-1.06s" repeatCount="indefinite" path="M622 400 L456 362" rotate="auto"/></path></g>
+              <circle cx="456" cy="362" r="5" fill="#fff" stroke="#C4502A" stroke-width="3"/>
+              <circle class="hx-dot" cx="650" cy="400" r="28" fill="#C4502A"/>
+              <g transform="translate(650 400)"><path d="M0 -16 C9 -6 11 0 9 7 a9 9 0 0 1 -18 0 C-10 1 -6 -3 -3 -9 C-1 -4 2 -3 3 -1 C4 -7 2 -11 0 -16 Z" fill="#fff"/></g>
+              <text x="692" y="388" text-anchor="start" class="hx-label">運動</text>
+              <text x="692" y="410" text-anchor="start" class="hx-en2">Physical activity</text>
+              <text x="692" y="434" text-anchor="start" class="hx-sub">走路、跑步、遠足會產熱</text>
+            </g>
+            <g class="hx-item" data-order="5">
+              <text x="210" y="618" text-anchor="end" class="hx-label">熱壓力</text>
+              <text x="210" y="640" text-anchor="end" class="hx-en2">Heat stress</text>
+              <rect x="230" y="600" width="400" height="24" fill="#E4E7EB"/>
+              <rect id="hx-meter" x="230" y="600" width="0" height="24" fill="#C4502A"/>
+              <text id="hx-meter-text" x="230" y="660" class="hx-sub"></text>
+            </g>
+          </g>
+          </svg>
+          <label class="hx-slider">濕度 <input type="range" id="hx-rh" min="40" max="95" step="5" value="85"> <b id="hx-rh-val">85%</b></label>
+          <figcaption class="chart-source">示意圖，圖示深淺與熱壓力長度為示意，非實際數值。資料參考：香港天文台、美國疾病控制與預防中心 · 製圖：＿＿＿</figcaption>
+        </figure>
+        <p>遠足時，身體還會隨著運動不斷產生熱量。如果散熱趕不上身體產熱和從周圍環境吸收熱量的速度，熱量便會在體內積聚，增加發生熱相關疾病的風險。<span class="source">(cdc.gov)</span></p>
+        <p>8月8日下午約3時30分，一名7歲女童在南大嶼郊遊徑遠足時出現嘔吐，隨後由直升機送往律敦治醫院救治。同一時刻，昂坪氣象站錄得氣溫31.6℃。</p>
+        <p>31.6℃ 之所以能引發嚴重中暑，核心在於氣溫計忽視了另一個致命的气象變量——相對濕度，以及由此導致的體溫調節機制衰竭。</p>
+        <p class="review">對於戶外活動者而言，氣象站測得的「乾球溫度」（Dry-bulb Temperature），僅僅代表遮陽百葉箱內純粹的空氣溫度，無法真實反映人體在暴露環境下的生理熱應力（Thermal Stress）。<span class="review-note">（考慮一下是否保留）</span></p>
+        <p>醫學與生理學研究指出，人體在進行遠足等戶外運動時，約 70% 的散熱需依賴汗液蒸發帶走潛熱。然而，汗液的蒸發速率並不取決於體溫，而是嚴格受制於周圍空氣的水蒸氣壓差。當相對濕度上升時，空氣吸收水分的飽和度降低，蒸發散熱效率呈指數級下降。</p>
+        <!-- 日曆熱圖：天文台總部每日平均相對濕度 -->
+        <figure class="rh-calendar" id="rh-calendar">
+          <p class="chart-title">香港一年約有一半日子，日均相對濕度達 80% 或以上</p>
+          <p class="chart-chatter">天文台總部每日平均相對濕度，%。<span id="rh-year">2024</span> 年有 <b id="rh-count">0</b> 天達 80% 或以上（1996–2025 年平均每年約 169 天）</p>
+          <div class="rh-years" role="group" aria-label="選擇年份"></div>
+          <div class="rh-wrap">
+            <svg role="img" aria-label="日曆熱圖：一年每天一格，顏色愈深代表當天平均相對濕度愈高。2024 年有 155 天日均濕度達 80% 或以上，主要集中在 2 月至 9 月。"></svg>
+            <div class="rh-tip" hidden></div>
+          </div>
+          <p class="rh-legend"><span style="--c:#DCE8F5">低於 70%</span><span style="--c:#8DB4DE">70–79%</span><span style="--c:#2B6CB0">80–89%</span><span style="--c:#173C66">90% 或以上</span></p>
+          <figcaption class="chart-source">來源：香港天文台（天文台總部每日平均相對濕度）· 製圖：＿＿＿</figcaption>
+        </figure>
+        <p>在香港典型的夏季高濕環境下，平均相對濕度約為 80%，約一半夏日的日均濕度達 80% 或以上。當空氣接近飽和，皮膚表面的汗液便無法揮發，形成「只流不乾」的物理屏障。此時，人體最核心的冷卻機制宣告癱瘓，內源性熱量開始在體內迅速積聚（Heat Accumulation）。</p>
+        <p>事發當日，昂坪氣象站雖錄得 31.6℃ 的氣溫，但配合高濕度、強太陽輻射（黑球溫度）與山谷低風速，綜合環境熱負荷早已跨過人體生理承受的危急紅線。</p>
+        <p>這也解釋了為何單純依靠「氣溫」無法評估真實的酷熱風險。要量化這種濕熱環境對人體的真實衝擊，必須引入更綜合的監測指標。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="body">
+
+
+
+  <!-- ============ 02 指標 ============ -->
+  <h2 class="section-head"><span class="section-num">02</span>香港暑熱指數（HKHI）</h2>
+
+  <p class="centered-para">為綜合反映高濕與高溫對人體的綜合熱應力，香港天文台參考濕球黑球溫度 (Wet Bulb Globe Temperature, WBGT)，結合本地氣象觀測與入院數據，開發出專門的香港暑熱指數（HKHI）。</p>
+
+  <h3>什麼是香港暑熱指數（HKHI）？</h3>
+  <p>與僅測量空氣溫度的乾球氣溫不同，香港暑熱指數（HKHI）將測量焦點轉向了決定人體生理散熱極限的物理因子</p>
+
+
+
+  <!-- HKHI 的構成：照片圓形 + 權重扇形（參考攝影圓餅圖的表達方式） -->
+  <figure class="pie-figure">
+    <p class="chart-title">香港暑熱指數（HKHI）是怎麼計算的</p>
+    <p class="chart-chatter">香港暑熱指數（HKHI）三項讀數的權重，%</p>
+    <div class="pie-rows" role="img" aria-label="三個圓形照片，深色扇形表示各讀數在香港暑熱指數中的權重：自然濕球溫度 80%、黑球溫度 5%、乾球氣溫 15%。">
+      <div class="pie-row" data-value="80" data-start="171">
+        <div class="pie-text">
+          <h4>自然濕球溫度<span class="pie-short">反映濕度和空氣流動等因素對蒸發條件的影響。</span></h4>
+          <p class="pie-formula">T<sub>nw</sub> × 0.80</p>
+          <p class="pie-def">透過包裹濕布的感應器，模擬在當前空氣濕度與風速下，人體皮膚表面汗液蒸發的冷卻極限。由於高濕度會顯著降低蒸發效率，濕球溫度直接反映了人體能否透過排汗實現有效散熱。</p>
+          <p class="pie-note">相片：Morn／Wikimedia Commons（CC0）</p>
+        </div>
+        <div class="pie-visual">
+          <div class="pie-photo" style="background-image:url(images/hkhi-wet.jpg)"></div>
+          <svg class="pie-wedge" aria-hidden="true"></svg>
+        </div>
+      </div>
+      <div class="pie-row" data-value="5">
+        <div class="pie-text">
+          <h4>黑球溫度<span class="pie-short">反映太陽及周圍環境帶來的輻射熱。</span></h4>
+          <p class="pie-formula">T<sub>g</sub> × 0.05</p>
+          <p class="pie-def">透過放在表面塗黑的中空銅球內的感應器，模擬人體吸收太陽直射以及高樓、地面反射的輻射熱，量化環境對人體的熱積累負荷。</p>
+          <p class="pie-note">相片：Maleahlbr／Wikimedia Commons（CC0）</p>
+        </div>
+        <div class="pie-visual">
+          <div class="pie-photo" style="background-image:url(images/hkhi-globe.jpg)"></div>
+          <svg class="pie-wedge" aria-hidden="true"></svg>
+        </div>
+      </div>
+      <div class="pie-row" data-value="15">
+        <div class="pie-text">
+          <h4>乾球氣溫<span class="pie-short">一般所說的空氣溫度。</span></h4>
+          <p class="pie-formula">T<sub>a</sub> × 0.15</p>
+          <p class="pie-def">常規氣象站測得的環境空氣溫度。</p>
+          <p class="pie-note">相片：NOAA Climate.gov</p>
+        </div>
+        <div class="pie-visual">
+          <div class="pie-photo" style="background-image:url(images/hkhi-dry.jpg)"></div>
+          <svg class="pie-wedge" aria-hidden="true"></svg>
+        </div>
+      </div>
+    </div>
+    <figcaption class="chart-source">來源：香港天文台（HKHI = 0.80 T<sub>nw</sub> + 0.05 T<sub>g</sub> + 0.15 T<sub>a</sub>）· 製圖：＿＿＿</figcaption>
+  </figure>
+
+  <h3 class="table-head">不同測算方式指標構成對比</h3>
+
+  <p class="sq-legend"><span class="sq wet"></span>濕球溫度 <span class="sq globe"></span>黑球溫度 <span class="sq dry"></span>乾球溫度 · 每格 = 10%</p>
+  <table class="index-table">
+    <thead>
+      <tr><th>指標類型</th><th>測量與計算因子</th><th>局限性與適用場景</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>傳統氣溫（Dry-Bulb Temp）</td>
+        <td><div class="squares" role="img" aria-label="乾球氣溫 100%"><span class="sq dry"></span><span class="sq dry"></span><span class="sq dry"></span><span class="sq dry"></span><span class="sq dry"></span><span class="sq dry"></span><span class="sq dry"></span><span class="sq dry"></span><span class="sq dry"></span><span class="sq dry"></span></div>僅測量百葉箱內的空氣濕度</td>
+        <td>忽略濕度、風速和太陽輻射，無法反映真實人體熱應力</td>
+      </tr>
+      <tr>
+        <td>濕球黑球溫度（WBGT）</td>
+        <td><div class="squares" role="img" aria-label="濕球 70%、黑球 20%、乾球 10%"><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq globe"></span><span class="sq globe"></span><span class="sq dry"></span></div>70% 濕球溫度+ 20% 黑球溫度+ 10% 乾球溫度<span class="formula">WBGT = 0.7 T<sub>nw</sub> + 0.2 T<sub>g</sub> + 0.1 T<sub>a</sub></span></td>
+        <td>被廣泛採用為國際勞工與運動領域的熱壓力評估標準，並具有明確的臨床防護意義，</td>
+      </tr>
+      <tr class="hkhi">
+        <td>香港暑熱指數（HKHI）</td>
+        <td><div class="squares" role="img" aria-label="濕球 80%、黑球 5%、乾球 15%"><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq wet"></span><span class="sq split"><i class="globe"></i><i class="dry"></i></span><span class="sq dry"></span></div>80% 濕球溫度+ 5% 黑球溫度+ 15% 乾球温度<span class="formula">HKHI = 0.80 T<sub>nw</sub> + 0.05 T<sub>g</sub> + 0.15 T<sub>a</sub></span></td>
+        <td>專門針對高濕度、高密度的都市與野外環境</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><span class="placeholder">XXX專家表示（待替換）</span>三個讀數在公式中的分量並不相同。 HKHI的自然濕球溫度係數為0.80，高於戶外有日照條件下WBGT公式中的0.70。這組權重來自對本地氣象觀測與入院數據的分析，而不是對人體散熱方式所佔比例的劃分。</p>
+  <p>HKHI 之所以比普通氣溫更準，是因為它直接抓住了人體中暑的兩大主因：空氣太濕導致汗水蒸發不了，以及日光直射帶來的輻射熱積累。</p>
+
+  <p>因此，當香港暑熱指數達到 30 或以上時，天文台就會發出工作暑熱警告。此時，即使實際氣溫只有 31°C 或 32°C，人體的熱應力風險也已經達到了危險級別。</p>
+
+
+  <p><span class="placeholder">（衛生專家XXX，待替換）</span>特別提醒，兒童、長者以及未經過熱適應訓練的戶外活動者，體溫調節能力顯著弱於常人。在「高濕低風」的山野環境中，即便體溫計顯示的氣溫僅有 31°C 左右，只要感覺皮膚持續濕熱且伴有頭暈或嘔吐感，即表明身體已跨過安全紅線，必須立即停止前進，尋找陰涼通風處補充電解質並尋求救援。</p>
+
+  <!-- ============ 03 風險 ============ -->
+  <h2 class="section-head"><span class="section-num">03</span>測測你在不同情況下會面臨怎樣的熱風險？</h2>
+
+  <figure class="people-strip">
+    <div class="sweat" aria-hidden="true"></div>
+    <img src="images/heat-people.png" width="1457" height="351" alt="插圖：一排在炎熱天氣下的人，有人在傘下乘涼、有人扶額頭暈、有人搧扇、有人喝水吹冷氣。">
+    <figcaption>插圖：＿＿＿（來源待補）</figcaption>
+  </figure>
+  <p>在下方輸入環境氣象條件與活動強度，即可實時估算香港暑熱指數（HKHI），並獲得對應的熱應力安全等級</p>
+
+  <figure class="figure estimator-figure">
+    <div class="frame">
+      <iframe src="香港暑熱指數快速估算/index.html" title="香港暑熱指數快速估算" data-theme="estimator" data-autosize height="900"></iframe>
+    </div>
+    <figcaption><b>重要聲明：</b>本工具僅作教育及參考用途，並非專業熱壓力評估工具，亦不取代任何官方指引。實際工作安排請務必以勞工處工作熱壓力警告及天文台暑熱壓力指數為準。</figcaption>
+  </figure>
+
+  <!-- ============ 結語 ============ -->
+  <h2 class="section-head"><span class="section-num">04</span>香港究竟有多熱？</h2>
+  <p>回到文章開頭那個問題：同樣是30多度，為什麼有些地方讓人更難受？</p>
+  <p>原因在於香港的高溫經常伴隨高濕。濕度越高，汗液越難蒸發，人體最主要的散熱機制因此受限；再加上日照、風速和活動強度的共同作用，實際熱負荷遠比一個氣溫數字複雜。</p>
+  <p>溫度計量的是空氣，而我們真正感受到的，是身體能不能把熱散出去。這正是WBGT、HKHI這類綜合指數存在的原因——它們試圖回答氣溫本身回答不了的問題。</p>
+
+  <footer class="sources">
+    <h2>資料來源與方法</h2>
+    <ul>
+      <li>每日最高氣溫：香港天文台開放數據（CLMMAXT），天文台總部 1884–2026 年、昂坪 2003–2026 年。1940–1946 年缺數據；昂坪 2026 年 8 月 8 日數值標示為「數據不完整」。</li>
+      <li>香港天文台：<a href="https://www.hko.gov.hk/sc/wxinfo/pastwx/mws2026/mws202608.htm">二零二六年八月天氣回顧</a></li>
+      <li>世界氣象組織：<a href="https://wmo.int/media/news/earth-has-hottest-august-record">Earth has hottest August on record</a></li>
+      <li>DATA.GOV.HK：<a href="https://data.gov.hk/en-data/dataset/hk-hko-rss-hong-kong-heat-index">Hong Kong Heat Index</a>、<a href="https://data.gov.hk/en-data/dataset/hk-hko-rss-wet-bulb-globe-temperature">Wet Bulb Globe Temperature</a></li>
+      <li>開場條碼圖的形式參考 The Pudding〈<a href="https://pudding.cool/projects/heat-records/">Tracking Heat Records in 400 U.S. Cities</a>〉。</li>
+    </ul>
+  </footer>
+
+</div>
+</article>
+
+<script src="design-v1/heat-flags.js"></script>
+<script src="design-v1/global-monthly.js"></script>
+<script src="design-v1/global-chart.js"></script>
+<script src="design-v1/story.js"></script>
+<script src="design-v1/pies.js"></script>
+<script src="design-v1/heat-explainer.js"></script>
+<script src="design-v1/rh-daily.js"></script>
+<script src="design-v1/rh-calendar.js"></script>
+<script src="design-v1/sweat.js"></script>
+<script src="design-v1/lead-fan.js"></script>
+</body>
+</html>

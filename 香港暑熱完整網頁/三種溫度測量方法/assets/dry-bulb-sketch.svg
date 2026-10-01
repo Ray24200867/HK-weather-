@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="乾球氣溫測量裝置線稿">
+  <defs><filter id="pencil" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="5" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5"/></filter></defs>
+  <g filter="url(#pencil)" stroke="#16293F" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m77 127 1 26m5-26-1 26" fill="none" stroke-width="2.2"/>
+    <path d="M55 36c10-5 37-5 49-1l6 8c-18-3-42-3-62 1Z" fill="#F8F7F1" stroke-width="2.4"/>
+    <path d="m54 47 53-1 6 8c-21 2-48 2-66 0Zm-2 14c18 2 42 1 58-1l5 8c-22 2-47 3-66 1Zm-1 15c17 1 43 2 61-1l5 9c-20 2-50 3-68 0Zm-2 17c20 2 46 1 66-1l5 9c-22 2-50 2-72 0Zm-3 18c21 1 49 1 72-2l4 9c-25 3-52 3-77 0Z" fill="#F8F7F1" stroke-width="2"/>
+    <path d="M67 126c9 2 23 2 31-1m-18-93 1-9m17 11 2-8" fill="none" stroke-width="2"/>
+    <path d="m40 59-6 5m3 29-8 2m103-29 7-4" fill="none" stroke="#C4502A" stroke-width="2"/>
+  </g>
+  <path d="M20 126c12 9 27 12 42 10m49-4c13-6 20-15 26-26" fill="none" stroke="#B5BAC1" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+</svg>

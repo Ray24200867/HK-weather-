@@ -1,0 +1,374 @@
+/* Editorial illustration treatment for the estimator only. */
+:root {
+  --ink: #16293F;
+  --muted: #5B6573;
+  --paper: #FFFFFF;
+  --surface: #FFFFFF;
+  --card: #FFFFFF;
+  --surface-soft: #EEF2F6;
+  --peach: #EEF2F6;
+  --apricot: #C4502A;
+  --sage: #B5BAC1;
+  --forest: #1F3A5F;
+  --sky: #2B6CB0;
+  --line: #E4E7EB;
+  --navy: #1F3A5F;
+  --navy-deep: #16293F;
+  --orange: #C4502A;
+  --orange-hover: #A53F23;
+  --safe: #0E9474;
+  --amber: #B8860B;
+  --red: #C4502A;
+  --black: #16293F;
+  --focus: #2B6CB0;
+  --shadow-soft: none;
+  --shadow-float: none;
+  font-family: "Source Sans 3", "Noto Sans TC", Arial, sans-serif;
+  color-scheme: light;
+}
+
+body {
+  min-height: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Source Sans 3", "Noto Sans TC", Arial, sans-serif;
+}
+
+.shell {
+  width: min(1040px, 100%);
+  padding: 0;
+}
+
+.widget {
+  --side-fade: 32px;
+  border: 0;
+  border-radius: 0;
+  background: var(--paper);
+  box-shadow: none;
+}
+
+.widget-head {
+  position: relative;
+  isolation: isolate;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 1.05fr);
+  grid-template-areas: "copy art";
+  gap: 0;
+  min-height: 365px;
+  overflow: hidden;
+  padding: 44px 44px 32px;
+  color: var(--paper);
+  background: transparent;
+}
+
+.widget-head::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, .72) 22px, #000 42px);
+  mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, .72) 22px, #000 42px);
+  background:
+    linear-gradient(to right, #fff 0, rgba(255, 255, 255, .7) 12px, transparent var(--side-fade), transparent calc(100% - var(--side-fade)), rgba(255, 255, 255, .7) calc(100% - 12px), #fff 100%),
+    linear-gradient(to bottom, transparent 72%, rgba(238, 242, 246, .22) 87%, rgba(238, 242, 246, .65) 100%),
+    radial-gradient(ellipse 66% 92% at 16% 46%,
+      rgba(22, 41, 63, .94) 0%,
+      rgba(31, 58, 95, .82) 45%,
+      rgba(43, 108, 176, .36) 74%,
+      transparent 100%),
+    linear-gradient(115deg, rgba(238, 242, 246, .55), transparent 64%);
+}
+
+.widget-head::after {
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 64px;
+  content: "";
+  z-index: 3;
+  pointer-events: none;
+  background: url("painted-edge.svg") center bottom / 100% 100% no-repeat;
+}
+
+.head-copy {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  padding-bottom: 20px;
+}
+
+.head-copy::after {
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 88px;
+  height: 5px;
+  content: "";
+  background: var(--orange);
+  clip-path: polygon(0 28%, 18% 0, 47% 22%, 71% 4%, 100% 35%, 99% 78%, 68% 100%, 38% 82%, 0 91%);
+  transform: rotate(-1deg);
+}
+
+.widget-head h1 {
+  max-width: 13ch;
+  color: var(--paper);
+  font-family: "Source Serif 4", "Noto Serif TC", Georgia, serif;
+  font-size: clamp(31px, 4vw, 43px);
+  font-weight: 700;
+  line-height: 1.13;
+  letter-spacing: -.02em;
+}
+
+.widget-head .intro {
+  max-width: 34ch;
+  margin-top: 20px;
+  color: var(--surface-soft);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.estimate-chip {
+  min-height: 0;
+  margin-top: 24px;
+  padding: 8px 10px;
+  border: 1px solid rgba(238, 242, 246, .48);
+  border-radius: 0;
+  color: var(--surface-soft);
+  background: transparent;
+  font-size: 12px;
+  letter-spacing: .04em;
+}
+
+.weather-art {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  justify-self: end;
+  width: min(112%, 545px);
+  aspect-ratio: 1.5;
+  margin: -30px -38px -30px -35px;
+  pointer-events: none;
+}
+
+.weather-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.widget-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "controls" "result";   /* 先輸入條件，估算結果在下面 */
+  gap: 0;
+  padding: 0;
+}
+
+.result-panel {
+  position: relative;
+  grid-area: result;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(210px, .46fr);
+  grid-template-rows: auto;
+  align-items: end;
+  gap: 36px;
+  min-height: 0;
+  padding: 30px 40px 32px;
+  border: 0;
+  border-bottom: 0;
+  border-radius: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(to right, #fff 0, rgba(255, 255, 255, .7) 12px, transparent var(--side-fade), transparent calc(100% - var(--side-fade)), rgba(255, 255, 255, .7) calc(100% - 12px), #fff 100%),
+    radial-gradient(ellipse at 80% 100%, rgba(255, 255, 255, .58), transparent 56%),
+    linear-gradient(to bottom, #EEF2F6, #F5F7F9);
+  box-shadow: none;
+}
+
+.result-panel::before { display: none; }
+.result-label { margin-bottom: 11px; color: var(--muted); font-size: 13px; }
+.result-number {
+  color: var(--ink);
+  font-size: clamp(78px, 10vw, 112px);
+  font-weight: 700;
+  line-height: .86;
+}
+.result-number small { color: var(--muted); }
+.status { margin-top: 21px; border-radius: 0; box-shadow: none; }
+.status-note { max-width: 56ch; margin-top: 12px; color: var(--muted); }
+.meter { max-width: 450px; margin-top: 22px; }
+.meter span { border-radius: 0; }
+.meter-labels { max-width: 450px; color: var(--muted); }
+.formula {
+  align-self: stretch;
+  display: flex;
+  align-items: end;
+  padding: 0 0 4px 24px;
+  border-top: 0;
+  border-left: 1px solid var(--line);
+}
+.formula-grid { width: 100%; gap: 8px; }
+.formula-grid dt { color: var(--muted); }
+.formula-grid dd { color: var(--ink); }
+
+.controls {
+  gap: 0;
+  padding: 10px 40px 32px;
+  color: var(--paper);
+  background-color: transparent;
+  background-image:
+    linear-gradient(to bottom, #F5F7F9 0, rgba(245, 247, 249, .76) 9px, transparent 30px, transparent calc(100% - 30px), rgba(255, 255, 255, .72) calc(100% - 9px), #fff 100%),
+    linear-gradient(to right, #fff 0, rgba(255, 255, 255, .7) 12px, transparent var(--side-fade), transparent calc(100% - var(--side-fade)), rgba(255, 255, 255, .7) calc(100% - 12px), #fff 100%),
+    linear-gradient(120deg, rgba(22, 41, 63, .94), rgba(31, 58, 95, .82)),
+    radial-gradient(circle at 88% 10%, rgba(196, 80, 42, .16), transparent 33%),
+    radial-gradient(circle at 1px 1px, rgba(238, 242, 246, .08) .6px, transparent .9px);
+  background-size: auto, auto, auto, auto, 5px 5px;
+}
+.section,
+.section:first-child {
+  padding: 22px 0 24px;
+  border: 0;
+  border-bottom: 1px solid rgba(238, 242, 246, .25);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.section-title { color: var(--paper); font-size: 17px; font-weight: 700; }
+.section-title small { color: var(--surface-soft); font-size: 12px; }
+.section-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 0;
+  border: 1px solid rgba(238, 242, 246, .35);
+  color: var(--surface-soft);
+  background: rgba(238, 242, 246, .06);
+}
+.number-field span:first-child { color: var(--surface-soft); }
+.controls .source,
+.controls .microcopy { color: var(--surface-soft); }
+.number-field input {
+  min-height: 52px;
+  border: 1px solid var(--context, #B5BAC1);
+  border-left: 3px solid var(--orange);
+  border-radius: 0;
+  color: var(--ink);
+  background: var(--paper);
+  box-shadow: 3px 3px 0 rgba(181, 186, 193, .38);
+}
+.number-field input:hover { border-color: var(--orange); }
+.controls .source[data-state="error"],
+.controls .error { color: var(--paper); }
+.segment {
+  min-height: 49px;
+  border: 1px solid var(--context, #B5BAC1);
+  border-radius: 2px 0 2px 0;
+  color: var(--ink);
+  background-color: var(--surface-soft);
+  background-image: radial-gradient(circle at 1px 1px, rgba(22, 41, 63, .075) .6px, transparent .9px);
+  background-size: 5px 5px;
+  box-shadow: 3px 3px 0 rgba(181, 186, 193, .4);
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.segment:hover { border-color: var(--orange); background: var(--paper); transform: translate(-1px, -1px); }
+.segment[aria-pressed="true"] {
+  border-color: var(--orange);
+  color: var(--paper);
+  background-color: var(--orange);
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, .09) .6px, transparent .9px);
+  box-shadow: 3px 3px 0 rgba(238, 242, 246, .22);
+}
+.segment[aria-pressed="true"] span { color: var(--paper); }
+.segment:disabled { opacity: .45; }
+
+.afterword { padding: 0 40px 30px; }
+details {
+  padding: 18px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--paper);
+}
+summary { color: var(--navy); }
+summary::after { border-radius: 0; color: var(--navy); background: var(--surface-soft); }
+.details-copy { color: var(--muted); }
+.disclaimer { color: var(--muted); }
+
+@media (max-width: 800px) {
+  .shell { width: 100%; padding: 0; }
+  .widget { --side-fade: 20px; }
+  .widget-head { min-height: 0; padding: 32px 26px 28px; }
+  .widget-head::after { height: 52px; }
+  .widget-body { padding: 0; }
+  .result-panel { grid-template-columns: 1fr; gap: 18px; padding: 25px 26px; min-height: 0; }
+  .formula { padding: 18px 0 0; border-top: 1px solid var(--line); border-left: 0; }
+  .controls { padding: 4px 26px 22px; }
+  .afterword { padding: 0 26px 24px; }
+}
+
+@media (max-width: 520px) {
+  .widget-head { grid-template-columns: 1fr; grid-template-areas: "copy" "art"; gap: 0; padding: 30px 20px 22px; }
+  .widget-head::after { height: 39px; }
+  .head-copy::after { bottom: -6px; }
+  .head-copy { padding-bottom: 0; }
+  .widget-head h1 { font-size: 29px; line-height: 1.15; }
+  .widget-head .intro { font-size: 14px; }
+  .weather-art { width: min(100%, 340px); margin: 7px auto -8px; justify-self: center; }
+  .result-panel { padding: 22px 20px; }
+  .result-number { font-size: clamp(76px, 22vw, 100px); }
+  .controls { padding: 0 20px 20px; }
+  .afterword { padding: 0 20px 22px; }
+  .number-grid { grid-template-columns: 1fr; }
+  .segmented[style*="--columns: 5"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .segmented[style*="--columns: 5"] .segment:last-child { grid-column: 1 / -1; }
+}
+
+/* 日照選項前的手繪小插圖 */
+.segment .wx-icon { display: inline-block; height: 26px; width: auto; margin-right: 6px; vertical-align: -7px; }
+
+/* 標題橫幅壓矮：標題、說明各一行，插畫按高度縮小貼在右下 */
+@media (min-width: 801px) {
+  .widget-head { min-height: 0; height: 230px; padding: 28px 40px 22px; grid-template-columns: minmax(0, 1fr) minmax(240px, .8fr); }
+  .widget-head h1 { max-width: none; font-size: clamp(28px, 3vw, 36px); }
+  .widget-head .intro { max-width: none; margin-top: 10px; }
+  .estimate-chip { margin-top: 14px; }
+  .head-copy { padding-bottom: 12px; }
+  .weather-art { width: auto; height: 250px; aspect-ratio: 1.5; margin: -24px -30px -26px 0; }
+  .widget-head::after { height: 44px; }
+}
+
+/* 橫幅改淺色（Mist），配合平塗插畫，減少整段的藍色 */
+.widget-head::before {
+  background:
+    linear-gradient(to right, #fff 0, rgba(255,255,255,.7) 12px, transparent var(--side-fade), transparent calc(100% - var(--side-fade)), rgba(255,255,255,.7) calc(100% - 12px), #fff 100%),
+    linear-gradient(to bottom, #EEF2F6, #EEF2F6) !important;
+}
+.widget-head, .widget-head h1 { color: #16293F !important; }
+.widget-head .intro { color: #5B6573 !important; }
+.estimate-chip { color: #16293F !important; border-color: rgba(22,41,63,.35) !important; }
+
+/* 輸入區也改淺色：白底 + Ink 文字，藍色只留在重點 */
+.controls {
+  color: #16293F !important;
+  background: #FFFFFF !important;
+}
+.section, .section:first-child { border-bottom-color: #E4E7EB !important; }
+.section-title { color: #16293F !important; }
+.section-title small, .number-field span:first-child,
+.controls .source, .controls .microcopy { color: #5B6573 !important; }
+.section-icon { color: #16293F !important; border-color: #B5BAC1 !important; background: #EEF2F6 !important; }
+.controls .source[data-state="error"], .controls .error { color: #C4502A !important; }
+.segment { background: #FFFFFF !important; color: #16293F !important; box-shadow: 2px 2px 0 #E4E7EB !important; }
+/* 選中的選項：Story rust 底、白字 */
+.segment[aria-pressed="true"] { background: #C4502A !important; color: #FFFFFF !important; border-color: #C4502A !important; box-shadow: none !important; }
+.segment[aria-pressed="true"] span { color: rgba(255,255,255,.85) !important; }
+
+/* 標題排成一行 */
+.widget-head h1 { white-space: nowrap; }
+
+/* 估算結果區壓矮：數字、標籤、刻度之間收緊 */
+@media (min-width: 801px) {
+  .result-panel { padding: 18px 40px 18px !important; gap: 24px !important; min-height: 0 !important; }
+  .result-label { margin-bottom: 4px !important; }
+  .result-number { font-size: 76px !important; }
+  .status { margin-top: 10px !important; }
+  .status-note { margin-top: 8px !important; }
+}

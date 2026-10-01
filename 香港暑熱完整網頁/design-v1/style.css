@@ -1,0 +1,652 @@
+/* ============ Tokens ============ */
+:root {
+  --bg: #FFFFFF;
+  --surface: #EEF2F6;
+  --text: #16293F;
+  --muted: #5B6573;
+  --faint: #5B6573;
+  --rule: #E4E7EB;
+  --context: #B5BAC1;
+  --record: #1F3A5F;
+  --series-2: #2B6CB0;   /* 圖表顏色 2：Harbour blue（規範第 6 節） */
+  --now: #C4502A;
+  --heat: #C4502A;
+  --serif: "Source Serif 4", "Noto Serif TC", Georgia, serif;
+  --sans: "Source Sans 3", "Noto Sans TC", Arial, sans-serif;
+  --measure: 680px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 20px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: #1F3A5F; text-underline-offset: 3px; text-decoration-color: var(--context); }
+a:hover { text-decoration-color: #1F3A5F; }
+
+/* ============ Top bar ============ */
+.topbar {
+  position: fixed; inset: 0 0 auto 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  height: 52px; padding: 0 20px;
+  font: 500 13px/1 var(--sans); letter-spacing: .04em;
+  background: var(--bg); border-bottom: 1px solid var(--rule);
+}
+.brand { font-weight: 700; letter-spacing: .12em; }
+.live { display: none; align-items: center; gap: 8px; color: var(--muted); text-decoration: none; }
+.live.ready { display: inline-flex; }
+.live b { color: var(--heat); font-weight: 700; font-variant-numeric: tabular-nums; }
+.live .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--heat); animation: pulse 2s infinite; }
+@keyframes pulse { 50% { opacity: .25; } }
+
+/* ============ Hero ============ */
+.hero {
+  min-height: 58vh;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  max-width: 1100px; margin: 0 auto; padding: 100px 20px 48px;
+}
+.kicker { font: 700 12px/1 var(--sans); letter-spacing: .2em; color: var(--muted); margin: 0 0 28px; }
+.hero h1 {
+  margin: 0; font-weight: 700;
+  font-size: 44px; line-height: 1.1; letter-spacing: -.02em;
+}
+.hero h1 .temp { color: var(--record); font-variant-numeric: tabular-nums; }
+.dek { max-width: 30em; margin: 28px 0 0; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.55; color: var(--muted); }
+.byline { margin-top: 40px; font: 400 13px/1.6 var(--sans); color: var(--faint); }
+.scroll-cue { margin-top: 56px; font: 500 12px/1 var(--sans); letter-spacing: .16em; color: var(--faint); }
+.scroll-cue::after { content: " ↓"; }
+
+/* ============ Scrollytelling ============ */
+.scrolly { position: relative; }
+.scrolly-graphic {
+  position: sticky; top: 0; height: 100vh; height: 100svh;
+  padding: 64px 0 0;
+}
+.scrolly-graphic .chart-head {
+  position: absolute; top: 64px; left: 20px;
+  font: 500 12px/1.5 var(--sans); letter-spacing: .08em; color: var(--muted);
+  transition: opacity .4s;
+}
+/* 條碼圖標題：和左邊地圖標題同字級，按規範「圖表標題」 */
+.scrolly-graphic .chart-head { margin: 0; }
+.chart-head .bar-title.lg { font-size: 26px; }   /* 整個夏天那張圖的標題大一點 */
+.chart-head .bar-title { display: block; margin-bottom: 8px; font: 700 18px/1.3 var(--sans); letter-spacing: 0; color: var(--text); }
+.scrolly-graphic.is-pair #barcode { margin-top: 96px; }
+.scrolly-graphic.has-title #barcode { margin-top: 96px; }   /* 大標題下面留出空間 */
+/* 點擊某一條線時的原始數據框 */
+.bar-tip {
+  position: absolute; z-index: 5; width: 240px; padding: 12px 14px;
+  background: #FFFFFF; border: 1px solid var(--rule); box-shadow: 0 6px 18px rgba(22, 41, 63, .12);
+  font: 400 13px/1.5 var(--sans); color: var(--muted); pointer-events: none;
+}
+.bar-tip[hidden] { display: none; }
+.bar-tip b { display: block; font-size: 15px; color: var(--text); }
+.bar-tip strong { display: block; margin: 2px 0 4px; font: 700 26px/1.1 var(--sans); color: var(--text); }
+.bar-tip span { display: block; }
+.bar-tip small { display: block; margin-top: 6px; font-size: 12px; }
+.scrolly-graphic .chart-head b { display: block; color: var(--text); font-weight: 700; letter-spacing: .12em; }
+.chart-note {
+  position: absolute; top: 64px; right: 20px; max-width: min(360px, 40vw); margin: 0;
+  font: 500 13px/1.6 var(--sans); color: var(--text); text-align: right;
+}
+.chart-note:empty { display: none; }
+.scrolly-graphic canvas { display: block; width: 100%; height: calc(100vh - 330px); height: calc(100svh - 330px); min-height: 260px; margin-top: 60px; }
+.legend {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px;
+  font: 400 12px/1 var(--sans); color: var(--muted);
+}
+.legend span::before {
+  content: ""; display: inline-block; width: 14px; height: 3px; margin-right: 6px; vertical-align: middle;
+  background: var(--c);
+}
+/* 全球每月平均氣溫圖：和條碼圖疊在同一個固定畫面，按步驟切換 */
+.scrolly-graphic #barcode, .scrolly-graphic .legend, .scrolly-graphic .chart-head, .scrolly-graphic .chart-note { transition: opacity .5s; }
+.scrolly-graphic.is-global #barcode, .scrolly-graphic.is-global .legend,
+.scrolly-graphic.is-global .chart-head, .scrolly-graphic.is-global .chart-note { opacity: 0; }
+/* 第 0 步並排：天文台地圖在左半邊，條碼圖（右半邊）由 story.js 畫 */
+.pair-photo {
+  display: none; position: absolute; z-index: 1; margin: 0;
+  left: max(20px, calc(50% - 520px)); top: 64px;   /* 和右邊條碼圖標題同一高度 */
+  width: min(46%, 520px);
+  opacity: 0; transition: opacity .5s; pointer-events: none;
+}
+.pair-photo img { display: block; width: 100%; height: auto; max-height: calc(100svh - 240px); object-fit: contain; object-position: left top; }
+.pair-photo figcaption { margin-top: 8px; font: 400 13px/1.4 var(--sans); color: var(--muted); }
+@media (min-width: 900px) {
+  .pair-photo { display: block; }
+  .scrolly-graphic.is-pair .pair-photo { opacity: 1; }
+  .lead-photo { display: none; }   /* 桌面：地圖已放進並排畫面，不再單獨顯示 */
+  /* 條碼圖的標題和圖例跟着條碼移到右半邊 */
+  .scrolly-graphic .chart-head { transition: opacity .5s, left .6s; }
+  .scrolly-graphic .legend { transition: opacity .5s, padding .6s; }
+  .scrolly-graphic.is-pair .chart-head { left: calc(50% + 40px); }
+  .scrolly-graphic.is-pair .legend { padding-left: 50%; }
+}
+/* 清空畫面：先讓讀者看文字，圖稍後才出現 */
+.scrolly-graphic.is-blank #barcode, .scrolly-graphic.is-blank .legend,
+.scrolly-graphic.is-blank .chart-head, .scrolly-graphic.is-blank .chart-note { opacity: 0; }
+/* 文字那一步：文字停在畫面中間，捲走後下一步的圖才出現 */
+/* 文字先從下方升上來，到頂端後停住；圖在文字下方出現 */
+.step.step-intro { min-height: 230vh; align-items: flex-start; padding: 60vh 20px 0; }
+/* WMO 那段：文字和圖一起滑走後，留足空間讓圖完全離開畫面，下一段文字才出現 */
+.step.step-intro[data-step="1"] { padding-bottom: 125vh; min-height: 355vh; }
+.step.step-intro p { position: sticky; top: 64px; }
+/* 女童那一步：比較長，讓插畫有足夠捲動距離慢慢變化 */
+.step.step-illus { min-height: 520vh; }
+.scrolly-graphic.is-illus #barcode, .scrolly-graphic.is-illus .legend,
+.scrolly-graphic.is-illus .chart-head, .scrolly-graphic.is-illus .chart-note { opacity: 0; }
+.illus-wrap {
+  position: absolute; left: 0; right: 0; top: calc(64px + var(--illus-h, 0px));
+  max-width: 1040px; margin: 0 auto; padding: 0 20px;
+  opacity: 0; transition: opacity .5s; pointer-events: none;
+}
+.is-illus .illus-wrap { opacity: 1; }
+.illus-wrap svg {
+  display: block; width: 100%; height: auto; max-height: calc(100svh - 150px - var(--illus-h, 0px));
+  /* 地圖邊緣淡出，不要方形底 */
+  -webkit-mask-image: radial-gradient(ellipse 70% 72% at 50% 50%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 72% at 50% 50%, #000 62%, transparent 100%);
+}
+.illus-wrap .illus-map { filter: saturate(.55) brightness(1.06); }
+.illus-wrap figcaption { margin-top: 6px; font: 400 13px/1.4 var(--sans); color: var(--muted); }
+.illus-wrap .rotor { transform-box: fill-box; transform-origin: center; animation: rotor .18s linear infinite alternate; }
+@keyframes rotor { to { transform: scaleX(.15); } }
+@media (prefers-reduced-motion: reduce) { .illus-wrap .rotor { animation: none; } }
+/* 只有文字的步驟：文字停在畫面中間，捲走後下一張圖才出現 */
+.step.step-text { min-height: 100vh; align-items: flex-start; padding: 14vh 20px 0; }   /* 和上一段靠近一點 */
+.global-wrap {
+  position: absolute; top: calc(var(--intro-top, 64px) + var(--intro-h, 0px)); left: 0; right: 0; max-width: 1040px; margin: 0 auto; padding: 0 20px;
+  opacity: 0; transition: opacity .5s; pointer-events: none;
+}
+.is-global .global-wrap { opacity: 1; }
+.chart-title { margin: 0; font: 700 18px/1.3 var(--sans); color: var(--text); }
+.chart-chatter { margin: 4px 0 0; font: 400 15px/1.4 var(--sans); color: var(--muted); }
+.global-wrap #global { display: block; width: 100%; height: calc(100vh - 170px - var(--intro-h, 0px)); height: calc(100svh - 170px - var(--intro-h, 0px)); min-height: 220px; margin-top: 8px; }
+.chart-source { margin: 6px 0 0; font: 400 13px/1.4 var(--sans); color: var(--muted); }
+@media (max-width: 640px) {
+  .chart-title { font-size: 17px; }
+  .chart-chatter { font-size: 14px; }
+  .chart-source { font-size: 12px; }
+  .global-wrap { padding: 0 16px; }
+  .global-wrap #global { height: calc(100vh - 190px - var(--intro-h, 0px)); height: calc(100svh - 190px - var(--intro-h, 0px)); min-height: 200px; margin-top: 8px; }
+}
+.steps { position: relative; z-index: 2; margin-top: -100vh; pointer-events: none; }
+.step {
+  min-height: 100vh; display: flex; align-items: flex-end; justify-content: center;
+  padding: 0 20px 4vh;
+}
+.step:first-child { min-height: 110vh; }
+.step:last-child { min-height: 120vh; }
+.step p {
+  pointer-events: auto;
+  max-width: 36em; margin: 0; padding: 16px 22px;
+  font-size: 20px; line-height: 1.6;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+}
+.step .record { color: var(--record); }
+.step .now { color: var(--now); }
+.step .heat { color: var(--heat); }
+
+/* ============ Article ============ */
+.body { padding: 12vh 20px 0; }
+.body > * { max-width: var(--measure); margin-left: auto; margin-right: auto; }
+.body p { margin: 0 auto 1.4em; }   /* 文字框在頁面置中，框內文字靠左（不兩端對齊） */
+/* 導語：置中，左邊是轉動的電風扇，風從扇吹向文字 */
+.lead-center {
+  position: relative;
+  min-height: 0; padding-block: 48px 40px;   /* 整段往上挪：不再佔 70% 畫面高度 */
+  display: grid; grid-template-columns: minmax(140px, 220px) minmax(0, 34em);
+  align-items: center; justify-content: center; gap: 32px;
+  padding: 0 20px; overflow: hidden;
+}
+.lead-art { position: relative; align-self: center; }
+.fan { position: relative; z-index: 1; }
+.fan img { display: block; width: 100%; height: auto; }
+.fan .fan-blades {
+  position: absolute; inset: 0;
+  transform-origin: 48.01% 37.96%;   /* 扇葉中心 */
+  animation: fan-spin .7s linear infinite;
+}
+@keyframes fan-spin { to { transform: rotate(360deg); } }
+/* 風：很多陣蠟筆小風，在文字下面一層，從風扇往右吹（由 lead-fan.js 生成） */
+.winds { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.gust {
+  position: absolute; left: 0; top: 0; width: var(--w, 90px); height: auto; opacity: 0;
+  animation: gust var(--dur, 3s) linear var(--delay, 0s) infinite;
+}
+@keyframes gust {
+  0%   { transform: translate(var(--x0), var(--y)); opacity: 0; }
+  12%  { opacity: .9; }
+  80%  { opacity: .75; }
+  100% { transform: translate(var(--x1), calc(var(--y) + var(--drift, 0px))); opacity: 0; }
+}
+.lead-text {
+  position: relative; z-index: 2;
+  margin: 0; font-size: clamp(19px, 2vw, 22px); line-height: 1.75; text-align: center;
+}
+.lead-text .record { color: var(--record); font-weight: 700; }
+.lead-text .ch { position: relative; } /* 保持行內，才不會破壞標點斷行 */
+@media (max-width: 640px) {
+  .lead-center { grid-template-columns: 1fr; gap: 12px; padding-top: 8vh; }
+  .lead-art { width: 140px; justify-self: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fan .fan-blades { animation: none; }
+  .winds { display: none; }
+}
+.lead-photo { max-width: 720px; margin: 40px auto 16vh; padding: 0 20px; }   /* 圖片縮小 */
+/* 圖片標題：規範第 7 節「圖表標題」18px / 1.3，粗體無襯線；手機 17px */
+.figure-title { margin: 0 0 10px; font: 700 18px/1.3 var(--sans); color: var(--text); }
+@media (max-width: 640px) { .figure-title { font-size: 17px; } }
+.lead-photo img { display: block; width: 100%; height: auto; }
+.lead-photo figcaption { margin-top: 12px; font: 400 13px/1.6 var(--sans); color: var(--muted); }
+.body p.centered-para { text-align: left; }   /* 框置中、文字靠左 */
+.lead-in::first-letter { font-weight: 900; }
+.section-label {
+  margin-top: 18vh; margin-bottom: 40px; padding-top: 16px; border-top: 1px solid var(--text);
+  font: 900 14px/1 var(--sans); letter-spacing: .2em; color: var(--text);
+}
+.body h2 {
+  margin-top: 0; margin-bottom: 36px;
+  font-size: 24px; line-height: 1.3; font-weight: 700; letter-spacing: -.01em;
+}
+.body h3 { margin: 56px auto 16px; font: 700 24px/1.3 var(--serif); }
+.pull {
+  margin: 56px auto; padding: 0;
+  font-size: clamp(24px, 3.4vw, 34px); line-height: 1.5; font-weight: 700;
+}
+.pull em { font-style: normal; color: var(--heat); }
+
+/* 待採訪替換 */
+.todo {
+  position: relative; margin: 32px auto 40px; padding: 26px 22px 6px;
+  border: 1px dashed var(--context); color: var(--text);
+}
+.todo::before {
+  content: "待採訪替換"; position: absolute; top: -9px; left: 16px; padding: 0 8px;
+  font: 700 11px/18px var(--sans); letter-spacing: .14em; color: var(--muted); background: var(--bg);
+}
+.todo p { font-size: 20px; }
+.source { font: 400 13px/1 var(--sans); color: var(--faint); }
+
+/* Formula table */
+.index-table { width: 100%; border-collapse: collapse; margin: 40px auto; font: 400 15px/1.6 var(--sans); }
+.index-table th {
+  text-align: left; padding: 0 12px 12px 0; border-bottom: 1px solid var(--text);
+  font-size: 13px; font-weight: 700; letter-spacing: .08em; color: var(--muted);
+}
+.index-table td { padding: 18px 12px 18px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.index-table td:first-child { width: 22%; font-weight: 700; }
+/* 表格加寬（圖表可比正文寬，最多 1040px），讓「測量與計算因子」一欄的文字排成一行 */
+@media (min-width: 900px) {
+  .body .index-table, .body .sq-legend, .body h3.table-head { max-width: 920px; }
+  .index-table td:nth-child(2) { white-space: nowrap; padding-right: 32px; }
+}
+.index-table tr.hkhi td:first-child { color: var(--heat); }
+.formula { display: block; margin-top: 8px; font: 700 15px/1.5 var(--sans); color: var(--text); white-space: nowrap; }   /* 公式：下標寫法，和正文同色 */
+
+.factors { list-style: none; padding: 0; }
+.factors li { padding: 10px 0; border-top: 1px solid var(--rule); }
+.factors strong { display: block; margin-bottom: 4px; font: 700 13px/1.4 var(--sans); letter-spacing: .1em; color: var(--muted); }
+
+.threshold {
+  display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center;
+  margin: 56px auto; padding: 28px 0; border-block: 1px solid var(--rule);
+}
+.threshold .big { font: 900 clamp(64px, 12vw, 120px)/.9 var(--sans); color: var(--heat); letter-spacing: -.04em; }
+.threshold p { margin: 0; font-size: 18px; }
+
+/* ============ Figures (embedded widgets) ============ */
+.figure {
+  max-width: 1040px !important; margin: 72px auto;
+}
+.figure .frame {
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+}
+.figure.estimator-figure .frame { border: 0; }
+.body .figure.estimator-figure { max-width: 860px !important; }   /* 互動估算窄一點 */
+.figure iframe { display: block; width: 100%; border: 0; background: var(--bg); }
+.figure.wide iframe { min-width: 0; }
+.figure figcaption {
+  max-width: var(--measure); margin: 12px auto 0;
+  font: 400 13px/1.6 var(--sans); color: var(--muted);
+}
+.figure figcaption b { color: var(--text); font-weight: 700; }
+.note { font: 400 14px/1.7 var(--sans); color: var(--muted); }
+
+/* ============ Footer ============ */
+.sources {
+  margin-top: 20vh !important; padding: 40px 0 80px; border-top: 1px solid var(--rule);
+  font: 400 14px/1.8 var(--sans); color: var(--muted);
+}
+.sources h2 { font: 700 12px/1 var(--sans) !important; letter-spacing: .2em; margin-bottom: 20px !important; }
+.sources ul { padding-left: 1.1em; }
+
+@media (max-width: 640px) {
+  body { font-size: 18px; }
+  .hero { min-height: 52vh; padding-top: 100px; padding-bottom: 42px; }
+  .hero h1 { font-size: 30px; line-height: 1.15; }
+  .step p, .todo p { font-size: 18px; }
+  .body h2, .body h3 { font-size: 21px; }
+  .topbar { padding: 0 16px; }
+  .live .label { display: none; }
+  .hero, .body { padding-left: 16px; padding-right: 16px; }
+  .scrolly-graphic .chart-head { position: static; margin: 0 16px; }
+  .chart-head .bar-title { font-size: 17px; }
+  .chart-head .bar-title.lg { font-size: 21px; }
+  .chart-note { position: static; max-width: none; margin: 8px 16px 0; text-align: left; color: var(--muted); }
+  .scrolly-graphic canvas { margin-top: 12px; height: calc(100svh - 360px); }
+  .step { padding: 0 16px 6vh; }
+  .threshold { grid-template-columns: 1fr; }
+}
+
+/* ============ HKHI 的構成：照片圓形 + 權重扇形 ============ */
+.pie-figure { max-width: 620px !important; margin: 56px auto 72px; }
+.pie-figure .chart-title, .pie-figure .chart-chatter { max-width: none; }
+.pie-rows { margin-top: 20px; }
+.pie-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) 234px; align-items: center; gap: 20px;
+  padding: 10px 0; border-top: 1px solid var(--rule);
+}
+.pie-text { text-align: left; }
+.pie-text h4 { margin: 0 0 2px; font: 700 17px/1.2 var(--sans); color: var(--text); }
+.pie-formula { margin: 0 0 6px !important; font: 500 14px/1.4 var(--sans); color: var(--text); }
+.pie-def { margin: 0 0 6px !important; font-size: 14px; line-height: 1.6; color: var(--text); }
+.pie-note { margin: 0 !important; font: 400 13px/1.5 var(--sans); color: var(--muted); }
+/* 照片圓形直徑 120px；扇形半徑是圓形的 1.25 倍，會突出圓外 */
+.pie-visual { position: relative; width: 234px; height: 150px; }
+.pie-photo {
+  position: absolute; left: 15px; top: 15px; width: 120px; height: 120px; border-radius: 50%;
+  background: center / cover no-repeat var(--surface); filter: saturate(.85);
+}
+.pie-wedge { position: absolute; inset: 0; z-index: 1; width: 234px; height: 150px; overflow: visible; }
+.pie-wedge .w { fill: var(--text); fill-opacity: .55; }   /* 半透明：看得到扇形，也看得到後面的照片 */
+.pie-row:first-child .pie-wedge .w { fill: var(--now); }   /* 標題說的是濕球：Story rust */
+/* 顏色和「指標構成對比」的方塊條一致：黑球 Harbour blue、乾球 Context grey */
+.pie-row[data-value="5"] .pie-wedge .w { fill: #2B6CB0; }
+.pie-row[data-value="15"] .pie-wedge .w { fill: #B5BAC1; }
+/* 乾球、黑球：照片調淡，扇形不透明，扇形更清楚 */
+.pie-row:not(:first-child) .pie-photo { opacity: .45; }
+.pie-row:not(:first-child) .pie-wedge .w { fill-opacity: 1; }
+/* 滑鼠移到圖上：照片移到扇形上面，完整、不透明地顯示（手機上點一下） */
+.pie-photo { transition: opacity .3s, transform .3s, filter .3s; }
+.pie-visual:hover .pie-photo {
+  z-index: 2; opacity: 1; filter: none; transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(22, 41, 63, .18);
+}
+.pie-wedge text { font-family: var(--sans); font-weight: 900; }
+@media (max-width: 640px) {
+  .pie-row { grid-template-columns: 1fr; gap: 8px; }
+}
+
+/* ============ 指標構成對比：10 格方塊條，一格 = 10% ============ */
+.squares { display: flex; gap: 3px; margin: 2px 0 10px; }
+.sq { display: inline-block; width: 18px; height: 18px; border-radius: 2px; flex: none; }
+.sq.wet { background: #C4502A; }     /* Story rust：濕球（本篇主角） */
+.sq.globe { background: #2B6CB0; }   /* Harbour blue：黑球 */
+.sq.dry { background: #B5BAC1; }     /* Context grey：乾球 */
+.sq.split { display: inline-flex; overflow: hidden; }
+.sq.split i { flex: 1; }
+.sq.split .globe { background: #2B6CB0; }
+.sq.split .dry { background: #B5BAC1; }
+.sq-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 0 auto 8px !important; font: 400 13px/1.4 var(--sans); color: var(--muted); }
+.sq-legend .sq { width: 12px; height: 12px; margin-right: -4px; }
+@media (max-width: 640px) { .sq { width: 13px; height: 13px; } .squares { gap: 2px; } }
+
+.formula sub { font-size: .72em; vertical-align: -.25em; line-height: 0; }
+
+/* 待採訪替換的佔位字：紅色，提醒發佈前要換掉 */
+.placeholder { color: #D7261E; font-weight: 700; }
+
+/* 整個夏天那張圖：滑到後段才在右下角出現的說明，字號同正文 */
+.chart-callout {
+  position: absolute; right: 64px; bottom: 132px; z-index: 3; max-width: 600px; margin: 0;   /* 加寬：兩行排完 */
+  padding: 12px 16px; background: rgba(255, 255, 255, .92); border: 1px solid var(--rule);
+  font: 400 20px/1.6 var(--serif); color: var(--text); text-align: left;
+  opacity: 0; transform: translateY(10px); transition: opacity .5s, transform .5s; pointer-events: none;
+}
+.chart-callout:empty { display: none; }
+.chart-callout.show { opacity: 1; transform: none; }
+.step.step-long { min-height: 180vh; }
+@media (max-width: 640px) { .chart-callout { font-size: 18px; left: 16px; right: 16px; max-width: none; bottom: 56px; } }
+
+/* 最開頭的實時地圖：緊接大標題，上方不要留太多空白 */
+.body.body-top { padding-top: 0; }
+.body.body-top .figure { margin-top: 0; }
+
+/* 頂部「此刻全港最高暑熱指數」：滑鼠移上去彈出實時地圖 */
+.live-wrap { position: relative; }
+.live-pop {
+  position: absolute; right: 0; top: calc(100% + 10px); z-index: 30;
+  width: min(760px, 92vw); padding: 8px; background: #FFFFFF;
+  border: 1px solid var(--rule); box-shadow: 0 14px 40px rgba(22, 41, 63, .18);
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity .2s, transform .2s, visibility .2s; pointer-events: none;
+}
+.live-pop::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }   /* 讓滑鼠移過空隙時不會收起 */
+.live-pop iframe { display: block; width: 100%; border: 0; }
+.live-wrap:hover .live-pop, .live-wrap.open .live-pop { opacity: 1; visibility: visible; transform: none; pointer-events: auto; }
+
+/* 第 3 步：百年來最高氣溫折線圖放在固定畫面裡 */
+.yearly-wrap {
+  position: absolute; top: 64px; left: 0; right: 0; max-width: 1040px; margin: 0 auto; padding: 0 20px;
+  opacity: 0; transition: opacity .5s; pointer-events: none;
+}
+.is-yearly .yearly-wrap { opacity: 1; pointer-events: auto; }
+.yearly-wrap iframe { display: block; width: 100%; height: calc(100vh - 230px); height: calc(100svh - 230px); border: 0; background: var(--bg); }
+.yearly-wrap figcaption { margin-top: 4px; font: 400 13px/1.4 var(--sans); color: var(--muted); }
+.scrolly-graphic.is-yearly #barcode, .scrolly-graphic.is-yearly .legend,
+.scrolly-graphic.is-yearly .chart-head, .scrolly-graphic.is-yearly .chart-note { opacity: 0; }
+.step.step-yearly { min-height: 300vh; }
+/* 說明放在下方正中間 */
+.chart-callout.center { left: 50%; right: auto; transform: translate(-50%, 10px); text-align: left; max-width: 640px; bottom: 56px; }
+.chart-callout.center.show { transform: translate(-50%, 0); }
+
+/* 下方正中間的說明：第二段（專家的話）稍後才在問題下方出現 */
+.chart-callout .c1 { display: block; }
+/* 「但氣溫紀錄能否完全回答」：在框內置中，用規範的 Story rust */
+.chart-callout.center .c1 { text-align: center; color: #C4502A; font-weight: 700; }
+.chart-callout .c2 {
+  display: block; max-height: 0; overflow: hidden; opacity: 0; margin-top: 0;
+  transition: max-height .6s, opacity .5s, margin-top .6s;
+}
+.chart-callout.show-more .c2 { max-height: 300px; opacity: 1; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--rule); }
+
+/* 頂部讀數下方的小字提示 */
+.live-hint { display: none; position: absolute; right: 0; top: calc(100% + 1px); white-space: nowrap; font: 400 11px/1.2 var(--sans); color: var(--muted); letter-spacing: .02em; }
+.live.ready + .live-hint { display: block; }
+.live-pop { top: calc(100% + 22px); }
+.live-pop::before { top: -24px; height: 24px; }
+
+/* 「測測你在不同情況下……」前的人物插圖（已按規範色板換色） */
+.body .people-strip { max-width: 640px; margin: 64px auto 8px; }   /* 插圖縮小 */
+.people-strip img { display: block; width: 100%; height: auto; }
+.people-strip figcaption { margin-top: 6px; font: 400 12px/1.4 var(--sans); color: var(--muted); text-align: right; }
+
+/* 互動估算和上面那段文字靠近一點 */
+.body .figure.estimator-figure { margin-top: 12px; }
+
+/* 滑動區裡的正文段落：和後面正文一樣的格式（無框、靠左、正文寬度） */
+.step.step-prose { min-height: 0; align-items: flex-start; padding: 30vh 20px 0; }   /* 普通靜態正文，跟着頁面捲動 */
+.step-prose .prose { pointer-events: auto; width: 100%; max-width: var(--measure); background: var(--bg); }
+.step-prose .prose h3 { margin: 0 0 16px; font: 600 24px/1.3 var(--serif); color: var(--text); }
+.step-prose .prose p { margin: 0 0 1.4em; padding: 0; border: 0; background: none; font: 400 20px/1.6 var(--serif); color: var(--text); text-align: left; }
+@media (max-width: 640px) { .step-prose .prose h3 { font-size: 21px; } .step-prose .prose p { font-size: 18px; } }
+
+/* 女童那段緊接上面的正文，不留大片空白 */
+.step.step-intro.step-illus { padding-top: 6vh; }
+
+/* 章節標題：編號 + 標題，用規範的「文內小標題」最大級（24px／手機 21px，Semibold 600）；
+   章節內的小標題降一級，用正文大小加粗（20px／手機 18px），兩級分得清楚 */
+.body h2.section-head {
+  margin-top: 18vh; margin-bottom: 32px; padding-top: 16px; border-top: 1px solid var(--text);
+  display: flex; align-items: baseline; gap: 14px;
+  font: 600 24px/1.3 var(--serif); letter-spacing: 0; color: var(--text);
+}
+.section-head .section-num { font: 700 14px/1 var(--sans); letter-spacing: .08em; color: var(--muted); }
+.body h3, .step-prose .prose h3 { font: 600 20px/1.4 var(--serif); }
+@media (max-width: 640px) {
+  .body h2.section-head { font-size: 21px; }
+  .body h3, .step-prose .prose h3 { font-size: 18px; }
+}
+
+/* 待組員決定是否保留的段落：紅字 */
+.review { color: #D7261E !important; }
+.review-note { font-weight: 700; }
+/* 章節標題：上方空白縮小；編號和標題同字號，用 Story rust */
+.body h2.section-head { margin-top: 64px; }
+.section-head .section-num { font: inherit; letter-spacing: 0; color: #C4502A; }
+.step-prose .prose h2.section-head { margin-top: 0; }
+
+/* 方塊條：每一格輕輕顫抖，像熱得發抖（各格節奏錯開） */
+@keyframes sq-shiver {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-0.8px, 0.6px) rotate(-2deg); }
+  40% { transform: translate(0.8px, -0.6px) rotate(2deg); }
+  60% { transform: translate(-0.6px, -0.8px) rotate(-1.5deg); }
+  80% { transform: translate(0.6px, 0.8px) rotate(1.5deg); }
+}
+.squares .sq { animation: sq-shiver .45s linear infinite; }
+.squares .sq:nth-child(2n) { animation-duration: .5s; animation-delay: -.12s; }
+.squares .sq:nth-child(3n) { animation-duration: .4s; animation-delay: -.25s; }
+.squares .sq:nth-child(5n) { animation-duration: .55s; animation-delay: -.33s; }
+@media (prefers-reduced-motion: reduce) { .squares .sq { animation: none; } }
+/* 01 正文和 02 標題之間的空白再縮小一半 */
+.scrolly + .body { padding-top: 0; }
+/* 01 標題在滑動區內：套用和 02–04 一樣的章節標題格式 */
+.step-prose .prose h2.section-head {
+  margin: 0 0 32px; padding-top: 16px; border-top: 1px solid var(--text);
+  display: flex; align-items: baseline; gap: 14px;
+  font: 600 24px/1.3 var(--serif); letter-spacing: 0; color: var(--text);
+}
+@media (max-width: 640px) { .step-prose .prose h2.section-head { font-size: 21px; } }
+/* 顫抖速度慢一倍 */
+.squares .sq { animation-duration: .9s; }
+.squares .sq:nth-child(2n) { animation-duration: 1s; animation-delay: -.24s; }
+.squares .sq:nth-child(3n) { animation-duration: .8s; animation-delay: -.5s; }
+.squares .sq:nth-child(5n) { animation-duration: 1.1s; animation-delay: -.66s; }
+
+/* ============ 解釋動畫：人體熱量收支 ============ */
+.heat-explainer { margin: 40px 0 48px; }
+.heat-explainer svg { display: block; width: 100%; height: auto; margin-top: 8px; }
+.hx-label { font: 700 22px/1 var(--sans); fill: #16293F; }
+.hx-sub { font: 400 19px/1 var(--sans); fill: #5B6573; }
+.hx-flow { fill: none; stroke-width: 10; stroke-linecap: round; stroke-dasharray: 14 10; animation: hx-flow 1.2s linear infinite; }
+.hx-in { stroke: #C4502A; }
+.hx-out { stroke: #2B6CB0; }
+@keyframes hx-flow { to { stroke-dashoffset: -24; } }
+.hx-core { transform-box: fill-box; transform-origin: center; animation: hx-pulse 1.6s ease-in-out infinite; }
+@keyframes hx-pulse { 50% { transform: scale(1.18); opacity: .6; } }
+.hx-item { opacity: 0; transform: translateY(8px); transition: opacity .6s, transform .6s; }
+.hx-item.on { opacity: 1; transform: none; }
+#hx-meter { transition: width .6s; }
+.hx-slider { display: flex; align-items: center; gap: 10px; margin-top: 10px; font: 400 15px/1.4 var(--sans); color: #16293F; }
+.hx-slider input { flex: 1; max-width: 320px; accent-color: #2B6CB0; }
+@media (prefers-reduced-motion: reduce) {
+  .hx-flow, .hx-core { animation: none; }
+  .hx-item { opacity: 1; transform: none; transition: none; }
+}
+
+/* 圓餅圖標題後的一句簡短定義：同一行、小字 */
+.pie-text h4 { white-space: nowrap; }
+.pie-short { margin-left: 8px; font: 400 12px/1 var(--sans); color: #5B6573; letter-spacing: 0; }
+
+.hx-en { font-weight: 400; font-size: 17px; fill: #5B6573; }
+/* 圖表標題、說明不要被正文樣式覆蓋 */
+.step-prose .prose .heat-explainer p.chart-title { margin: 0; font: 700 18px/1.3 var(--sans); }
+.step-prose .prose .heat-explainer p.chart-chatter { margin: 4px 0 0; font: 400 15px/1.4 var(--sans); color: #5B6573; }
+
+/* 解釋圖改版：人體剪影 + 弧線 + 圓形圖示 */
+.hx-k-in { color: #C4502A; } .hx-k-out { color: #2B6CB0; }
+.hx-line { stroke-dasharray: 400; stroke-dashoffset: 400; transition: stroke-dashoffset .9s ease; }
+.hx-item.on .hx-line { stroke-dashoffset: 0; }
+.hx-dot { transition: opacity .4s; }
+@media (prefers-reduced-motion: reduce) { .hx-line { stroke-dashoffset: 0; transition: none; } }
+
+/* 解釋圖第三版：跑者剪影、較小、持續動畫 */
+.step-prose .prose .heat-explainer { max-width: 520px; margin-left: auto; margin-right: auto; }
+.hx-label { font-size: 20px; }
+.hx-sub { font-size: 16px; }
+.hx-en { font-size: 14px; }
+.hx-tag { font: 700 13px/1 var(--sans); fill: #fff; }
+.hx-runner { animation: hx-bob .7s ease-in-out infinite alternate; }
+@keyframes hx-bob { to { transform: translateY(-5px); } }
+.hx-dots { opacity: 0; transition: opacity .6s .6s; }
+.hx-item.on .hx-dots { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .hx-runner { animation: none; } .hx-dots { display: none; } }
+
+/* 解釋圖第四版：人在中間，散熱因素在左、變熱因素在右 */
+.step-prose .prose .heat-explainer { max-width: 680px; }
+.heat-explainer .hx-label { font-size: 22px; }
+.heat-explainer .hx-sub { font-size: 18px; }
+.hx-en2 { font: 400 15px/1 var(--sans); fill: #5B6573; }
+
+/* 解釋圖再縮小 */
+.step-prose .prose .heat-explainer { max-width: 560px; }
+
+/* ============ 日曆熱圖：每日平均相對濕度 ============ */
+.rh-calendar { margin: 40px 0 48px; }
+.step-prose .prose .rh-calendar p.chart-title { margin: 0; font: 700 18px/1.3 var(--sans); }
+.step-prose .prose .rh-calendar p.chart-chatter { margin: 4px 0 10px; font: 400 15px/1.5 var(--sans); color: #5B6573; }
+.rh-calendar #rh-count { color: #16293F; font-size: 18px; }
+.rh-years { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.rh-years button { padding: 3px 8px; border: 1px solid #E4E7EB; background: #fff; font: 500 12px/1.4 var(--sans); color: #5B6573; cursor: pointer; }
+.rh-years button[aria-pressed="true"] { background: #16293F; border-color: #16293F; color: #fff; }
+.rh-wrap { position: relative; }
+.rh-wrap svg { display: block; width: 100%; height: auto; }
+.rh-wrap rect { transition: fill .35s; }
+.rh-axis { font: 400 11px/1 var(--sans); fill: #5B6573; }
+.rh-tip { position: absolute; transform: translate(-50%, -100%); padding: 4px 8px; background: #16293F; color: #fff; font: 500 12px/1.3 var(--sans); white-space: nowrap; pointer-events: none; }
+.rh-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 8px 0 0 !important; font: 400 13px/1.4 var(--sans) !important; color: #5B6573 !important; }
+.rh-legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; margin-right: 5px; vertical-align: -1px; background: var(--c); }
+@media (prefers-reduced-motion: reduce) { .rh-wrap rect { transition: none; } }
+
+.pie-short { color: #16293F !important; }   /* 三個簡短定義用黑色（Ink）*/
+
+/* 人物插圖的汗水動畫 */
+.people-strip { position: relative; }
+.people-strip img { position: relative; z-index: 1; }
+.sweat { position: absolute; inset: 0 0 24px; pointer-events: none; }
+.sweat .drop {
+  position: absolute; z-index: 0; width: var(--s); height: calc(var(--s) * 1.35);
+  background: var(--c); border-radius: 50% 50% 50% 50% / 62% 62% 40% 40%;
+  clip-path: polygon(50% 0, 100% 62%, 92% 85%, 72% 98%, 50% 100%, 28% 98%, 8% 85%, 0 62%);
+  opacity: 0; animation: sweat-fall 2.8s ease-in infinite;
+}
+.sweat .drop.dot { height: var(--s); clip-path: none; border-radius: 50%; }
+.sweat .drop.front { z-index: 2; }
+@keyframes sweat-fall {
+  0%   { opacity: 0; transform: translateY(-6px) scaleY(.8); }
+  15%  { opacity: .9; }
+  70%  { opacity: .8; transform: translateY(26px) scaleY(1.15); }
+  100% { opacity: 0; transform: translateY(44px) scaleY(1.3); }
+}
+@media (prefers-reduced-motion: reduce) { .sweat .drop { animation: none; opacity: .7; } }
+
+/* 夏季條碼圖標題往右挪，和圖的左邊對齊 */
+@media (min-width: 641px) { .scrolly-graphic.has-title .chart-head { left: 48px; } }
+/* 夏季條碼圖標題：按規範「圖表標題」18px（手機 17px），整組置中 */
+.chart-head .bar-title.lg { font-size: 18px; }
+@media (max-width: 640px) { .chart-head .bar-title.lg { font-size: 17px; } }
+.scrolly-graphic.has-title .chart-head { left: 0 !important; right: 0; text-align: center; }
+
+/* 手機：對比表格改成一行一張卡片，三欄上下排列，避免最後一欄被擠成一字一行 */
+@media (max-width: 640px) {
+  .index-table thead { display: none; }
+  .index-table, .index-table tbody, .index-table tr, .index-table td { display: block; width: 100%; }
+  .index-table tr { padding: 16px 0; border-bottom: 1px solid var(--rule); }
+  .index-table td, .index-table td:first-child { width: auto; padding: 0; border: 0; }
+  .index-table td:first-child { font-size: 17px; margin-bottom: 8px; }
+  .index-table td:nth-child(3) { margin-top: 10px; color: var(--muted); }
+  .index-table td:nth-child(3)::before { content: "局限性與適用場景："; font-weight: 700; color: var(--text); }
+  .formula { font-size: 14px; }
+}

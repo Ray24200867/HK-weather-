@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>比較三種熱指標</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;--ink:#16293F;--wet:#C4502A;--mid:#16293F;--light:#B5BAC1;
+    --muted:rgba(88,64,46,.60);--faint:#B5BAC1;
+    --grid:#E4E7EB;--accent:#C4502A;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Inter,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif}
+  body{min-width:1180px;padding:18px;-webkit-font-smoothing:antialiased}
+  body.detail-open{overflow:hidden}
+  main{width:min(1480px,calc(100vw - 36px));min-width:1108px;margin:0 auto}
+  .knowledge-section,.chart-section{border-top:1px solid var(--ink);padding-top:16px}
+  .knowledge-section{display:grid;grid-template-rows:auto auto;margin-bottom:44px}
+  .chart-section{height:calc(100vh - 36px);max-height:900px}
+  .knowledge-header,.chart-header{display:flex;align-items:flex-end;padding-bottom:12px;border-bottom:1px solid var(--grid)}
+  h1{margin:0;font-size:clamp(42px,3.5vw,56px);line-height:1;letter-spacing:-.04em;font-weight:800}
+  .knowledge-hint{margin:0 0 4px auto;font-size:15px;font-weight:700;letter-spacing:.02em;color:var(--muted)}
+  .knowledge-grid{min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start;padding:18px 0 22px}
+  .knowledge-card{position:relative;isolation:isolate;width:100%;aspect-ratio:1/1;overflow:hidden;padding:0;border:1px solid rgba(88,64,46,.2);border-radius:26px;background:#FFFFFF;color:inherit;cursor:pointer;transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .25s ease}
+  .knowledge-card-bg{position:absolute;z-index:-1;inset:0;background:var(--wash)}
+  .knowledge-card img{display:block;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply;transition:transform .55s cubic-bezier(.16,1,.3,1)}
+  .knowledge-card:hover{transform:translateY(-6px);border-color:var(--accent)}
+  .knowledge-card:hover img{transform:scale(1.025)}
+  .knowledge-card:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+  .knowledge-card.source-hidden{visibility:hidden}
+  .cards-entering .knowledge-card{animation:spread-cards .9s cubic-bezier(.16,1,.3,1) both}
+  .cards-entering .knowledge-card:nth-child(1){--stack-x:calc(100% + 24px);--stack-r:-2.2deg;z-index:1}
+  .cards-entering .knowledge-card:nth-child(2){--stack-x:0px;--stack-r:.8deg;z-index:3;animation-delay:.06s}
+  .cards-entering .knowledge-card:nth-child(3){--stack-x:calc(-100% - 24px);--stack-r:2.2deg;z-index:2;animation-delay:.12s}
+  @keyframes spread-cards{
+    0%{opacity:0;transform:translateX(var(--stack-x)) scale(.91) rotate(var(--stack-r))}
+    18%{opacity:1}
+    100%{opacity:1;transform:translateX(0) scale(1) rotate(0)}
+  }
+  .chart-section{display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+  .graphic{position:relative;min-height:0;display:grid;grid-template-columns:minmax(570px,1.02fr) minmax(500px,.98fr);align-items:center;gap:48px;padding:10px 0 8px}
+  .chart-wrap{position:relative;z-index:2;min-height:0;height:100%;display:grid;place-items:center}
+  svg{width:100%;height:auto;max-height:calc(100vh - 150px);overflow:visible}
+  svg text{font-family:Inter,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif}
+  .connectors{position:absolute;z-index:1;inset:10px 0 8px;width:100%;height:calc(100% - 18px);max-height:none;pointer-events:none;overflow:visible}
+  .connector{fill:none;stroke:#B5BAC1;stroke-width:1;vector-effect:non-scaling-stroke;transition:stroke .25s ease,stroke-width .25s ease}
+  .connector-dot{fill:var(--bg);stroke:#B5BAC1;stroke-width:1.2;vector-effect:non-scaling-stroke;transition:fill .25s ease,stroke .25s ease}
+  .connector.is-active{stroke:var(--wet);stroke-width:2}
+  .connector-dot.is-active{fill:var(--wet);stroke:var(--wet)}
+  .layers{position:relative;z-index:2;align-self:stretch;display:grid;grid-template-rows:1.15fr 1fr .72fr;gap:0}
+  .layer{position:relative;display:flex;flex-direction:column;justify-content:center;padding:12px 0 12px 74px;border-top:1px solid var(--grid)}
+  .layer:last-child{border-bottom:1px solid var(--grid)}
+  .layer-index{position:absolute;left:0;top:calc(50% - 28px);font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--faint)}
+  h2{margin:0 0 10px;font-size:26px;line-height:1.12;letter-spacing:-.025em;font-weight:750}
+  .component{display:grid;grid-template-columns:12px 1fr auto;align-items:center;gap:12px;width:100%;max-width:500px;min-height:44px;padding:6px 10px;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;font-size:15px;text-align:left;cursor:pointer;transition:background .2s ease,color .2s ease}
+  .component:hover,.component.is-active{background:rgba(67,89,59,.09)}
+  .component:focus-visible{outline:2px solid var(--wet);outline-offset:2px}
+  .swatch{width:12px;height:12px;border-radius:50%}
+  .wet{background:var(--wet)}.globe{background:var(--mid)}.dry{background:var(--light);border:1px solid #16293F}
+  .pct{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
+  .formula{margin:10px 0 0;font-size:15px;font-weight:700;letter-spacing:.005em}
+  .formula sub{font-size:.7em;vertical-align:-.22em}
+  .single{margin:0;font-size:17px;font-weight:650}
+  footer{display:flex;justify-content:space-between;gap:24px;padding:8px 0 1px;border-top:1px solid var(--grid);font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--faint)}
+  .ring{fill:none}
+  .ring.outer{stroke-width:38}.ring.middle{stroke-width:32}
+  .cuts{fill:none;stroke:var(--bg);stroke-dasharray:.18 .82;pointer-events:none}
+  .cuts.outer{stroke-width:40}.cuts.middle{stroke-width:34}
+  .sweep{fill:none;stroke:#fff;stroke-dasharray:100 100;stroke-dashoffset:0}
+  .motion .sweep{stroke-dashoffset:100;animation:ring-sweep 1.15s cubic-bezier(.16,1,.3,1) forwards}
+  .motion .sweep.middle{animation-delay:.14s}
+  @keyframes ring-sweep{to{stroke-dashoffset:0}}
+  .segment{cursor:pointer;pointer-events:stroke;transition:opacity .24s ease,stroke-width .28s cubic-bezier(.16,1,.3,1)}
+  .segment.is-muted{opacity:.18}
+  .segment.outer.is-active{stroke-width:50}
+  .segment.middle.is-active{stroke-width:44}
+  .segment:focus{outline:none}
+  #center-default,#center-focus,#focus-marker{transition:opacity .22s ease}
+  #center-focus,#focus-marker{opacity:0;pointer-events:none}
+  #center-default.is-hidden{opacity:0}
+  #center-focus.is-visible,#focus-marker.is-visible{opacity:1}
+  .marker-text{paint-order:stroke;stroke:var(--bg);stroke-width:5px;stroke-linejoin:round}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .knowledge-detail[hidden]{display:none}
+  .knowledge-detail{--detail-size:calc((min(1480px,calc(100vw - 36px)) - 48px)/3);position:fixed;z-index:20;inset:0;display:grid;place-items:center;padding:clamp(24px,5vw,64px)}
+  .detail-backdrop{position:absolute;inset:0;background:rgba(240,239,235,.78);backdrop-filter:blur(5px);animation:detail-fade .25s ease both}
+  .detail-stage{position:relative;z-index:1;display:flex;gap:24px;align-items:center}
+  .detail-cover,.detail-card{position:relative;isolation:isolate;width:var(--detail-size);aspect-ratio:1/1;overflow:hidden;border:1px solid rgba(88,64,46,.24);border-radius:26px;background:#FFFFFF}
+  .detail-cover-bg{position:absolute;z-index:-1;inset:0;background:var(--detail-wash,#E4ECDF)}
+  .detail-cover img{display:block;width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply}
+  .detail-card-bg{position:absolute;z-index:-1;inset:0;background:var(--detail-wash,#E4ECDF)}
+  .detail-copy{height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:clamp(32px,3vw,46px);text-align:left}
+  .detail-copy h2{margin:0 0 20px;color:var(--detail-accent,#C4502A);font-size:clamp(40px,3.35vw,50px);line-height:1.06;letter-spacing:-.045em}
+  .detail-copy p{margin:0;width:100%;font-size:clamp(17px,1.3vw,20px);line-height:1.62;font-weight:500;overflow-wrap:anywhere}
+  .detail-close{position:absolute;z-index:2;top:20px;right:20px;width:46px;height:46px;display:grid;place-items:center;border:1px solid rgba(88,64,46,.3);border-radius:50%;background:#FFFFFF;color:var(--ink);cursor:pointer}
+  .detail-close::before,.detail-close::after{content:"";position:absolute;width:20px;height:1.5px;background:currentColor}
+  .detail-close::before{transform:rotate(45deg)}.detail-close::after{transform:rotate(-45deg)}
+  .detail-close:hover{border-color:var(--detail-accent,#C4502A);color:var(--detail-accent,#C4502A)}
+  .detail-close:focus-visible{outline:3px solid var(--detail-accent,#C4502A);outline-offset:4px}
+  @keyframes detail-fade{from{opacity:0}to{opacity:1}}
+  @keyframes detail-info-in{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes detail-info-out{from{opacity:1}to{opacity:0}}
+  ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+  ::view-transition-group(knowledge-card),::view-transition-group(knowledge-backdrop),::view-transition-group(knowledge-image){animation-duration:.7s;animation-timing-function:cubic-bezier(.16,1,.3,1)}
+  ::view-transition-new(knowledge-info){animation:detail-info-in .38s cubic-bezier(.16,1,.3,1) .14s both}
+  ::view-transition-old(knowledge-info){animation:detail-info-out .18s ease both}
+  @media (max-width:900px){
+    .knowledge-detail{--detail-size:min(calc(100vw - 32px),420px);align-items:start;overflow:auto;padding:16px}
+    .detail-stage{flex-direction:column}
+    .detail-cover,.detail-card{border-radius:24px}
+    .detail-copy{padding:26px}
+    .detail-copy h2{margin-bottom:14px;font-size:32px}
+    .detail-copy p{font-size:16px;line-height:1.5}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .motion .sweep{animation:none;stroke-dashoffset:0}
+    .segment,.component,.connector,.connector-dot,#center-default,#center-focus,#focus-marker,.knowledge-card,.knowledge-card img{transition:none}
+    .cards-entering .knowledge-card,.detail-backdrop{animation:none}
+    ::view-transition-group(knowledge-card),::view-transition-group(knowledge-backdrop),::view-transition-group(knowledge-image),::view-transition-new(knowledge-info),::view-transition-old(knowledge-info){animation-duration:.01ms}
+  }
+</style>
+</head>
+<body>
+<main>
+  <section class="chart-section" aria-labelledby="chart-heading">
+  <header class="chart-header">
+    <h1 id="chart-heading">比較三種熱指標</h1>
+  </header>
+
+  <section class="graphic" aria-label="三種熱指標的同心圓比較">
+    <div class="chart-wrap">
+      <svg id="heat-chart" viewBox="0 0 720 640" role="img" aria-labelledby="chart-title chart-desc">
+        <title id="chart-title">比較三種熱指標</title>
+        <desc id="chart-desc">三層同心結構。乾球氣溫測量空氣溫度；濕球黑球溫度由百分之七十自然濕球溫度、百分之二十黑球溫度及百分之十乾球氣溫組成；香港暑熱指數由百分之八十自然濕球溫度、百分之五黑球溫度及百分之十五乾球氣溫組成。</desc>
+        <defs>
+          <mask id="outer-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="720" height="640">
+            <circle cx="342" cy="318" r="270" pathLength="100" class="sweep outer" stroke-width="58" transform="rotate(-90 342 318)"/>
+          </mask>
+          <mask id="middle-reveal" maskUnits="userSpaceOnUse" x="0" y="0" width="720" height="640">
+            <circle cx="342" cy="318" r="191" pathLength="100" class="sweep middle" stroke-width="54" transform="rotate(-90 342 318)"/>
+          </mask>
+        </defs>
+        <circle cx="342" cy="318" r="270" class="guide" fill="none" stroke="#E4E7EB" stroke-width="1" stroke-dasharray="2 5"/>
+        <circle cx="342" cy="318" r="191" class="guide" fill="none" stroke="#E4E7EB" stroke-width="1" stroke-dasharray="2 5"/>
+        <circle cx="342" cy="318" r="112" class="guide" fill="none" stroke="#E4E7EB" stroke-width="1" stroke-dasharray="2 5"/>
+
+        <!-- 香港暑熱指數：自然濕球 80%、黑球 5%、乾球 15% -->
+        <g transform="rotate(-90 342 318)" mask="url(#outer-reveal)">
+          <circle id="hkhi-wet" cx="342" cy="318" r="270" pathLength="100" class="ring outer segment" stroke="#C4502A" stroke-dasharray="80 20" data-layer="hkhi" data-indicator="香港暑熱指數" data-component="自然濕球溫度" data-value="80" data-start="0" data-radius="270" tabindex="0" role="button" aria-label="香港暑熱指數，自然濕球溫度，百分之八十"/>
+          <circle id="hkhi-globe" cx="342" cy="318" r="270" pathLength="100" class="ring outer segment" stroke="#16293F" stroke-dasharray="5 95" stroke-dashoffset="-80" data-layer="hkhi" data-indicator="香港暑熱指數" data-component="黑球溫度" data-value="5" data-start="80" data-radius="270" tabindex="0" role="button" aria-label="香港暑熱指數，黑球溫度，百分之五"/>
+          <circle id="hkhi-dry" cx="342" cy="318" r="270" pathLength="100" class="ring outer segment" stroke="#B5BAC1" stroke-dasharray="15 85" stroke-dashoffset="-85" data-layer="hkhi" data-indicator="香港暑熱指數" data-component="乾球氣溫" data-value="15" data-start="85" data-radius="270" tabindex="0" role="button" aria-label="香港暑熱指數，乾球氣溫，百分之十五"/>
+          <circle cx="342" cy="318" r="270" pathLength="100" class="cuts outer"/>
+        </g>
+
+        <!-- 濕球黑球溫度：自然濕球 70%、黑球 20%、乾球 10% -->
+        <g transform="rotate(-90 342 318)" mask="url(#middle-reveal)">
+          <circle id="wbgt-wet" cx="342" cy="318" r="191" pathLength="100" class="ring middle segment" stroke="#C4502A" stroke-dasharray="70 30" data-layer="wbgt" data-indicator="濕球黑球溫度" data-component="自然濕球溫度" data-value="70" data-start="0" data-radius="191" tabindex="0" role="button" aria-label="濕球黑球溫度，自然濕球溫度，百分之七十"/>
+          <circle id="wbgt-globe" cx="342" cy="318" r="191" pathLength="100" class="ring middle segment" stroke="#16293F" stroke-dasharray="20 80" stroke-dashoffset="-70" data-layer="wbgt" data-indicator="濕球黑球溫度" data-component="黑球溫度" data-value="20" data-start="70" data-radius="191" tabindex="0" role="button" aria-label="濕球黑球溫度，黑球溫度，百分之二十"/>
+          <circle id="wbgt-dry" cx="342" cy="318" r="191" pathLength="100" class="ring middle segment" stroke="#B5BAC1" stroke-dasharray="10 90" stroke-dashoffset="-90" data-layer="wbgt" data-indicator="濕球黑球溫度" data-component="乾球氣溫" data-value="10" data-start="90" data-radius="191" tabindex="0" role="button" aria-label="濕球黑球溫度，乾球氣溫，百分之十"/>
+          <circle cx="342" cy="318" r="191" pathLength="100" class="cuts middle"/>
+        </g>
+
+        <circle cx="342" cy="318" r="91" fill="#FFFFFF" stroke="#C4502A" stroke-width="1.8" class="core"/>
+        <circle cx="342" cy="318" r="80" fill="none" stroke="#E4E7EB" stroke-width="1" class="core"/>
+        <g id="center-default">
+          <text x="342" y="306" font-size="14" font-weight="800" text-anchor="middle" letter-spacing=".1em" fill="#C4502A">乾球氣溫</text>
+          <text x="342" y="341" font-size="25" font-weight="800" text-anchor="middle" fill="#C4502A">空氣溫度</text>
+        </g>
+        <g id="center-focus" aria-hidden="true">
+          <text id="focus-indicator" x="342" y="286" font-size="10" font-weight="700" text-anchor="middle" fill="#5B6573"></text>
+          <text id="focus-component" x="342" y="310" font-size="12" font-weight="800" text-anchor="middle" fill="#16293F"></text>
+          <text id="focus-value" x="342" y="351" font-size="34" font-weight="800" text-anchor="middle" fill="#C4502A"></text>
+        </g>
+        <g id="focus-marker" aria-hidden="true">
+          <circle id="marker-dot" r="25" fill="#FFFFFF" stroke="#C4502A" stroke-width="2"/>
+          <text id="marker-value" y="6" font-size="16" font-weight="800" text-anchor="middle" fill="#C4502A" class="marker-text"></text>
+        </g>
+      </svg>
+    </div>
+
+    <svg class="connectors" viewBox="0 0 1200 640" preserveAspectRatio="none" aria-hidden="true">
+      <polyline class="connector" data-layer="hkhi" points="470,180 610,180 680,116"/>
+      <circle class="connector-dot" data-layer="hkhi" cx="470" cy="180" r="4"/>
+      <polyline class="connector" data-layer="wbgt" points="434,320 620,320 680,322"/>
+      <circle class="connector-dot" data-layer="wbgt" cx="434" cy="320" r="4"/>
+      <polyline class="connector" data-layer="dry" points="331,397 610,397 680,536"/>
+      <circle class="connector-dot" data-layer="dry" cx="331" cy="397" r="4"/>
+    </svg>
+
+    <div class="layers">
+      <section class="layer" data-layer="hkhi">
+        <span class="layer-index">第三層</span>
+        <h2>香港暑熱指數（HKHI）</h2>
+        <button type="button" class="component" data-target="hkhi-wet"><span class="swatch wet"></span><span>自然濕球溫度</span><span class="pct">80%</span></button>
+        <button type="button" class="component" data-target="hkhi-globe"><span class="swatch globe"></span><span>黑球溫度</span><span class="pct">5%</span></button>
+        <button type="button" class="component" data-target="hkhi-dry"><span class="swatch dry"></span><span>乾球氣溫</span><span class="pct">15%</span></button>
+        <p class="formula">HKHI = 0.80 T<sub>nw</sub> + 0.05 T<sub>g</sub> + 0.15 T<sub>a</sub></p>
+      </section>
+
+      <section class="layer" data-layer="wbgt">
+        <span class="layer-index">第二層</span>
+        <h2>濕球黑球溫度（WBGT）</h2>
+        <button type="button" class="component" data-target="wbgt-wet"><span class="swatch wet"></span><span>自然濕球溫度</span><span class="pct">70%</span></button>
+        <button type="button" class="component" data-target="wbgt-globe"><span class="swatch globe"></span><span>黑球溫度</span><span class="pct">20%</span></button>
+        <button type="button" class="component" data-target="wbgt-dry"><span class="swatch dry"></span><span>乾球氣溫</span><span class="pct">10%</span></button>
+        <p class="formula">WBGT = 0.7 T<sub>nw</sub> + 0.2 T<sub>g</sub> + 0.1 T<sub>a</sub></p>
+      </section>
+
+      <section class="layer" data-layer="dry">
+        <span class="layer-index">第一層</span>
+        <h2>乾球氣溫</h2>
+        <p class="single">空氣溫度</p>
+      </section>
+    </div>
+  </section>
+
+  <footer>
+    <span>每一刻度＝一個百分點</span>
+    <span>各分段由12時方向開始，順時針排列</span>
+  </footer>
+  </section>
+</main>
+
+<div id="chart-live" class="sr-only" aria-live="polite"></div>
+
+<script>
+(() => {
+  document.documentElement.classList.add('motion');
+  const segments = [...document.querySelectorAll('.segment')];
+  const buttons = [...document.querySelectorAll('.component[data-target]')];
+  const connectors = [...document.querySelectorAll('.connector,.connector-dot')];
+  const centerDefault = document.getElementById('center-default');
+  const centerFocus = document.getElementById('center-focus');
+  const focusMarker = document.getElementById('focus-marker');
+  const markerDot = document.getElementById('marker-dot');
+  const markerValue = document.getElementById('marker-value');
+  const focusIndicator = document.getElementById('focus-indicator');
+  const focusComponent = document.getElementById('focus-component');
+  const focusValue = document.getElementById('focus-value');
+  const live = document.getElementById('chart-live');
+  let pinned = null;
+
+  const clearSelection = () => {
+    segments.forEach(segment => segment.classList.remove('is-active','is-muted'));
+    buttons.forEach(button => button.classList.remove('is-active'));
+    connectors.forEach(connector => connector.classList.remove('is-active'));
+    centerDefault.classList.remove('is-hidden');
+    centerFocus.classList.remove('is-visible');
+    focusMarker.classList.remove('is-visible');
+  };
+
+  const select = id => {
+    const segment = document.getElementById(id);
+    if (!segment) return;
+    const { layer, indicator, component, value, start, radius } = segment.dataset;
+    segments.forEach(item => item.classList.toggle('is-active', item === segment));
+    segments.forEach(item => item.classList.toggle('is-muted', item !== segment));
+    buttons.forEach(button => button.classList.toggle('is-active', button.dataset.target === id));
+    connectors.forEach(connector => connector.classList.toggle('is-active', connector.dataset.layer === layer));
+
+    centerDefault.classList.add('is-hidden');
+    centerFocus.classList.add('is-visible');
+    focusMarker.classList.add('is-visible');
+    focusIndicator.textContent = indicator;
+    focusComponent.textContent = component;
+    focusValue.textContent = `${value}%`;
+    markerValue.textContent = `${value}%`;
+    const angle = (Number(start) + Number(value) / 2) * 3.6 - 90;
+    const markerRadius = Number(radius) + 29;
+    const x = 342 + markerRadius * Math.cos(angle * Math.PI / 180);
+    const y = 318 + markerRadius * Math.sin(angle * Math.PI / 180);
+    focusMarker.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
+    const color = segment.getAttribute('stroke');
+    markerDot.setAttribute('stroke', color);
+    markerValue.setAttribute('fill', color);
+    live.textContent = `${indicator}，${component}，${value}%`;
+  };
+
+  const restore = () => pinned ? select(pinned) : clearSelection();
+  const togglePin = id => {
+    pinned = pinned === id ? null : id;
+    restore();
+  };
+
+  segments.forEach(segment => {
+    segment.addEventListener('pointerenter', () => select(segment.id));
+    segment.addEventListener('pointerleave', restore);
+    segment.addEventListener('focus', () => select(segment.id));
+    segment.addEventListener('blur', restore);
+    segment.addEventListener('click', () => togglePin(segment.id));
+    segment.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        togglePin(segment.id);
+      }
+    });
+  });
+
+  buttons.forEach(button => {
+    const id = button.dataset.target;
+    button.addEventListener('pointerenter', () => select(id));
+    button.addEventListener('pointerleave', restore);
+    button.addEventListener('focus', () => select(id));
+    button.addEventListener('blur', restore);
+    button.addEventListener('click', () => togglePin(id));
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      pinned = null;
+      clearSelection();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

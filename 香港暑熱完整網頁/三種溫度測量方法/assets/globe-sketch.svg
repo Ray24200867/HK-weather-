@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="黑球溫度測量裝置線稿">
+  <defs><filter id="pencil" x="-6%" y="-6%" width="112%" height="112%"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="2" seed="9" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="3.2"/></filter></defs>
+  <g filter="url(#pencil)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M79 34c25-1 45 18 46 43 2 25-18 46-42 47-26 2-47-18-48-43-2-26 17-46 44-47Z" fill="#16293F" stroke="#16293F" stroke-width="2.8"/>
+    <path d="M51 54c-9 13-11 28-5 43m12-49c-3 4-5 7-6 10m61 16c3 20-8 33-19 38" fill="none" stroke="#EEF2F6" stroke-width="2" opacity=".7"/>
+    <path d="m60 63 3-4m-8 15 2-4m14-16 2-3m32 48 4-4" stroke="#B5BAC1" stroke-width="2"/>
+    <path d="m76 123 2 12m11-12-1 12m-14 1c7 2 15 2 19 0m-12 2v17" fill="none" stroke="#16293F" stroke-width="2.5"/>
+    <path d="m30 35-7-8m104 12 9-8M22 80h-9m126 3 8 1" fill="none" stroke="#C4502A" stroke-width="2.3"/>
+  </g>
+  <path d="M16 121c16 10 31 14 45 14m50-5c13-5 22-12 29-23" fill="none" stroke="#B5BAC1" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+</svg>

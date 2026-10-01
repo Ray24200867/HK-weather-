@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>香港年度最高氣溫｜1926–2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF;--ink:#16293F;--muted:rgba(88,64,46,.60);--faint:rgba(88,64,46,.32);
+  --grid:#E4E7EB;--track:#EEF2F6;--green:#C4502A;--olive:#B5BAC1;
+  --sage:#B5BAC1;--amber:#1F3A5F;--halo:#FFFFFF
+}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Source Sans 3","Noto Sans TC",sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:1500px;margin:auto;padding:18px clamp(16px,4vw,56px) 14px}
+.card{border-radius:24px;padding:clamp(14px,2vw,24px);overflow:hidden}
+h1{max-width:1200px;margin:0;font-size:clamp(24px,3vw,38px);line-height:1.08;letter-spacing:-.04em;font-weight:800}
+.readout{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin:18px 0 12px;padding:12px 0;border-block:1px solid var(--grid)}
+.reading{display:flex;align-items:flex-end;gap:12px;min-width:0}
+.odometer{display:flex;height:clamp(48px,6vw,70px);padding-right:.06em;overflow:hidden;font-variant-numeric:tabular-nums;font-size:clamp(46px,6vw,68px);line-height:1;font-weight:800;letter-spacing:-.04em;color:var(--green)}
+.year-value{font-size:34px;line-height:1;font-weight:800;letter-spacing:-.05em;color:var(--ink);font-variant-numeric:tabular-nums}
+.digit{width:.64em;height:1em;overflow:hidden}
+.reel{display:flex;flex-direction:column;transition:transform 420ms cubic-bezier(.2,.8,.2,1)}
+.reel span{height:1em;flex:0 0 1em;text-align:center;letter-spacing:0}
+.literal{height:1em;line-height:1em}
+.unit{padding-bottom:8px;font-size:17px;font-weight:800;color:var(--green)}
+.meta{text-align:right;min-width:170px}
+.meta-label{margin-bottom:6px;font-size:11px;font-weight:700;letter-spacing:.13em;color:var(--faint)}
+#date{margin-top:5px;font-size:13px;color:var(--muted)}
+.chart-shell{display:grid;grid-template-columns:52px minmax(0,1fr);height:390px}
+.y-axis{position:relative;height:360px;margin-top:1px;border-right:1px solid var(--grid)}
+.y-tick{position:absolute;right:9px;transform:translateY(50%);font-size:12px;font-weight:600;color:var(--muted)}
+.scroller{position:relative;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;cursor:grab;touch-action:pan-x;scrollbar-color:var(--olive) var(--track);scrollbar-width:thin}
+.scroller:active{cursor:grabbing}
+.stage{position:relative;height:380px}
+svg{display:block;height:360px;overflow:visible}
+svg text{font-family:"Source Sans 3","Noto Sans TC",sans-serif}
+.series-line{stroke-dasharray:1;stroke-dashoffset:1}
+svg.revealed .series-line{animation:draw 1.2s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.hint{display:flex;justify-content:space-between;gap:14px;margin:6px 0 0 52px;font-size:11.5px;line-height:1.55;font-weight:600;letter-spacing:.05em;color:var(--faint)}
+.key{display:flex;gap:14px;flex-wrap:wrap}
+.key span::before{content:"";display:inline-block;width:8px;height:8px;margin-right:5px;border-radius:50%;vertical-align:-1px;background:var(--olive)}
+.key .record::before{background:var(--green)}
+.key .selected::before{background:var(--amber)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:640px){
+  main{padding:18px 8px}.card{padding:16px 10px}.readout{align-items:flex-start}.reading{gap:7px}.unit{font-size:13px}.meta{min-width:106px}.hint{margin-left:0;display:block}.key{margin-bottom:5px}
+}
+@media(prefers-reduced-motion:reduce){.reel{transition:none}.scroller{scroll-behavior:auto!important}.series-line{animation:none!important;stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<main>
+  <article class="card">
+    <h1>百年來香港最高氣溫紀錄：從33.6°C到36.9°C</h1>
+
+    <section class="readout" aria-live="polite" aria-label="目前選取年份與年度最高氣溫">
+      <div class="reading">
+        <div id="tempOdo" class="odometer" aria-hidden="true"></div>
+        <span class="unit">°C</span>
+      </div>
+      <div class="meta">
+        <div class="meta-label">目前年份</div>
+        <div id="yearValue" class="year-value">1926</div>
+        <div id="date"></div>
+      </div>
+      <span id="live" class="sr-only"></span>
+    </section>
+
+    <section class="chart-shell">
+      <div id="yAxis" class="y-axis" aria-hidden="true"></div>
+      <div id="scroller" class="scroller" tabindex="0" role="group" aria-label="可橫向滑動的香港年度最高氣溫折線圖">
+        <div id="stage" class="stage"><svg id="chart" role="img" aria-labelledby="chartTitle chartDesc"></svg></div>
+      </div>
+    </section>
+    <div class="hint">
+      <div class="key"><span>年度最高</span><span class="record">刷新歷史紀錄</span><span class="selected">目前選取</span></div>
+      <div>Y 軸 32–37°C · 1940–1946 無數據，折線留白</div>
+    </div>
+  </article>
+</main>
+<script>
+const DATA=[[1926,33.6,"1926/8/16"],[1927,33.9,"1927/8/19"],[1928,33.7,"1928/7/30"],[1929,33.4,"1929/7/8"],[1930,33.8,"1930/7/1"],[1931,34.4,"1931/8/25"],[1932,32.7,"1932/8/15"],[1933,33.9,"1933/7/29"],[1934,33.9,"1934/7/18"],[1935,33.7,"1935/8/24"],[1936,33.6,"1936/6/6"],[1937,33.9,"1937/8/2"],[1938,34.4,"1938/7/1"],[1939,34.4,"1939/7/13、1939/7/14"],[1947,34.9,"1947/8/29"],[1948,33.4,"1948/9/1、1948/9/2"],[1949,33.5,"1949/7/25"],[1950,33.8,"1950/7/22"],[1951,33.6,"1951/7/31"],[1952,33.3,"1952/6/1"],[1953,34.0,"1953/8/8"],[1954,34.9,"1954/8/28"],[1955,33.5,"1955/9/13"],[1956,34.3,"1956/8/1、1956/8/2"],[1957,34.2,"1957/8/14"],[1958,34.9,"1958/7/16"],[1959,33.4,"1959/7/14、1959/7/15"],[1960,35.4,"1960/8/22"],[1961,34.2,"1961/7/1"],[1962,35.5,"1962/8/31"],[1963,35.6,"1963/6/1"],[1964,33.9,"1964/8/7"],[1965,33.4,"1965/7/8、1965/8/22"],[1966,34.7,"1966/8/15"],[1967,34.4,"1967/5/25"],[1968,35.7,"1968/7/25"],[1969,34.7,"1969/9/9"],[1970,33.6,"1970/7/7"],[1971,33.7,"1971/6/16、1971/7/21、1971/8/31"],[1972,34.7,"1972/7/23"],[1973,33.1,"1973/6/20、1973/7/1"],[1974,34.3,"1974/8/20"],[1975,33.9,"1975/9/22"],[1976,35.2,"1976/5/26"],[1977,34.9,"1977/8/24"],[1978,34.2,"1978/7/22"],[1979,33.8,"1979/7/5"],[1980,35.0,"1980/7/10"],[1981,33.3,"1981/7/17、1981/8/21、1981/8/26"],[1982,34.8,"1982/7/29"],[1983,33.9,"1983/9/28"],[1984,34.4,"1984/8/29"],[1985,33.0,"1985/8/5、1985/8/7"],[1986,34.8,"1986/7/10"],[1987,34.2,"1987/7/13"],[1988,33.8,"1988/7/9"],[1989,34.3,"1989/8/17"],[1990,36.1,"1990/8/18"],[1991,34.5,"1991/7/19"],[1992,35.0,"1992/8/30"],[1993,33.5,"1993/7/10、1993/7/29"],[1994,34.1,"1994/7/11"],[1995,34.2,"1995/5/30"],[1996,34.3,"1996/7/26"],[1997,33.2,"1997/7/30、1997/8/18"],[1998,34.4,"1998/8/3"],[1999,35.1,"1999/8/21"],[2000,34.2,"2000/6/5"],[2001,34.0,"2001/8/23"],[2002,33.6,"2002/7/5"],[2003,33.7,"2003/8/3"],[2004,34.6,"2004/7/1"],[2005,35.4,"2005/7/19"],[2006,34.0,"2006/7/13"],[2007,35.3,"2007/8/3"],[2008,34.6,"2008/7/28"],[2009,34.9,"2009/8/3"],[2010,34.1,"2010/9/1"],[2011,35.0,"2011/8/7"],[2012,34.5,"2012/8/28"],[2013,34.9,"2013/8/12"],[2014,34.6,"2014/8/1"],[2015,36.3,"2015/8/8"],[2016,35.6,"2016/7/9"],[2017,36.6,"2017/8/22"],[2018,35.4,"2018/5/30"],[2019,35.1,"2019/8/9"],[2020,35.3,"2020/7/23"],[2021,36.1,"2021/5/23"],[2022,36.1,"2022/7/24"],[2023,36.1,"2023/7/27"],[2024,35.7,"2024/9/17"],[2025,35.6,"2025/6/10"],[2026,36.9,"2026/8/9"]];
+
+requestAnimationFrame(()=>{
+const NS='http://www.w3.org/2000/svg',YEAR0=1926,YEAR1=2026,LEFT=58,RIGHT=42,TOP=92,BOTTOM=318,YMIN=32,YMAX=37;
+const COLORS={paper:'#FFFFFF',ink:'#16293F',grid:'#E4E7EB',green:'#C4502A',olive:'#B5BAC1',sage:'#B5BAC1',amber:'#1F3A5F',halo:'#FFFFFF'};
+const svg=document.getElementById('chart'),stage=document.getElementById('stage'),scroller=document.getElementById('scroller');
+const viewport=Math.max(1,document.querySelector('.chart-shell').getBoundingClientRect().width-52),width=Math.max(viewport,1700),STEP=(width-LEFT-RIGHT)/(YEAR1-YEAR0);
+svg.setAttribute('viewBox',`0 0 ${width} 360`);svg.setAttribute('width',width);stage.style.width=width+'px';
+const add=(tag,attrs={},text='')=>{const n=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);if(text)n.textContent=text;svg.appendChild(n);return n};
+const x=y=>LEFT+(y-YEAR0)*STEP, y=v=>BOTTOM-(v-YMIN)/(YMAX-YMIN)*(BOTTOM-TOP);
+
+add('title',{id:'chartTitle'},'香港天文台年度最高氣溫，1926至2026年');
+add('desc',{id:'chartDesc'},'折線圖以32至37攝氏度的局部Y軸顯示年度最高氣溫；1940至1946年沒有數據。創紀錄年份均有標註。');
+for(let t=32;t<=37;t++){
+  add('line',{x1:0,y1:y(t),x2:width,y2:y(t),stroke:COLORS.grid,'stroke-width':1});
+  const lab=document.createElement('span');lab.className='y-tick';lab.style.bottom=(360-y(t))+'px';lab.textContent=t+'°';document.getElementById('yAxis').appendChild(lab);
+}
+for(let yr=1930;yr<=2020;yr+=10){
+  add('line',{x1:x(yr),y1:TOP,x2:x(yr),y2:BOTTOM,stroke:COLORS.grid,'stroke-width':.8,'stroke-dasharray':'2 6'});
+  add('text',{x:x(yr),y:348,fill:COLORS.ink,'fill-opacity':.65,'font-size':12,'font-weight':600,'text-anchor':'middle'},String(yr));
+}
+add('rect',{x:x(1940)-STEP/2,y:TOP,width:7*STEP,height:BOTTOM-TOP,fill:COLORS.ink,'fill-opacity':.045,rx:4});
+add('text',{x:x(1943),y:TOP+18,fill:COLORS.ink,'fill-opacity':.6,'font-size':11,'font-weight':700,'text-anchor':'middle','letter-spacing':'.06em'},'1940–1946 無數據');
+
+const segments=[];let seg=[];
+DATA.forEach((d,i)=>{if(i&&d[0]-DATA[i-1][0]>1){segments.push(seg);seg=[]}seg.push(d)});segments.push(seg);
+segments.forEach(s=>add('path',{d:s.map((d,i)=>`${i?'L':'M'}${x(d[0])} ${y(d[1])}`).join(' '),fill:'none',stroke:COLORS.green,'stroke-width':2.1,'stroke-linecap':'round','stroke-linejoin':'round',pathLength:1,class:'series-line'}));
+
+let running=-Infinity;const records=[];
+DATA.forEach((d,i)=>{
+  const isRecord=d[1]>running;if(isRecord){running=d[1];records.push(i)}
+  add('line',{x1:x(d[0]),y1:BOTTOM,x2:x(d[0]),y2:BOTTOM-9,stroke:COLORS.ink,'stroke-opacity':.26,'stroke-width':.7});
+  const dot=add('circle',{cx:x(d[0]),cy:y(d[1]),r:isRecord?5.5:3.5,fill:isRecord?COLORS.green:COLORS.olive,stroke:COLORS.green,'stroke-width':isRecord?1:.6,'data-index':i,tabindex:0,role:'button',style:'cursor:pointer','aria-label':`${d[0]}年，${d[1].toFixed(1)}攝氏度${isRecord?'，刷新歷史紀錄':''}`});
+  const title=document.createElementNS(NS,'title');title.textContent=`${d[0]} · ${d[1].toFixed(1)}°C · ${d[2]}`;dot.appendChild(title);
+  dot.addEventListener('focus',()=>select(i));dot.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(i,true)}});
+});
+
+records.forEach((idx,k)=>{
+  const d=DATA[idx],px=x(d[0]),py=y(d[1]),ly=18+(k%4)*20,edge=k===0?'start':k===records.length-1?'end':'middle',lx=k===0?px+3:k===records.length-1?px-3:px;
+  add('line',{x1:px,y1:py-7,x2:px,y2:ly+7,stroke:COLORS.green,'stroke-opacity':.48,'stroke-width':.9,'stroke-dasharray':'2 4'});
+  add('text',{x:lx,y:ly,fill:COLORS.green,'font-size':11.5,'font-weight':800,'text-anchor':edge,style:`paint-order:stroke;stroke:${COLORS.halo};stroke-width:5px`},`${d[0]} · ${d[1].toFixed(1)}°`);
+});
+
+const focusLine=add('line',{x1:x(DATA[0][0]),y1:TOP,x2:x(DATA[0][0]),y2:BOTTOM,stroke:COLORS.amber,'stroke-width':1.4,'stroke-dasharray':'3 4','pointer-events':'none'});
+const focusDot=add('circle',{cx:x(DATA[0][0]),cy:y(DATA[0][1]),r:7,fill:COLORS.amber,stroke:COLORS.paper,'stroke-width':3,'pointer-events':'none'});
+const focusLabel=add('rect',{width:106,height:24,rx:12,fill:COLORS.green,'pointer-events':'none'});
+const focusText=add('text',{fill:COLORS.paper,'font-size':11.5,'font-weight':800,'text-anchor':'middle','pointer-events':'none'},'1926 · 33.6°C');
+
+function makeOdometer(el,value){
+  const chars=String(value).split('');el.replaceChildren(...chars.map(ch=>{
+    if(!/\d/.test(ch)){const n=document.createElement('span');n.className='literal';n.textContent=ch;return n}
+    const box=document.createElement('span');box.className='digit';const reel=document.createElement('span');reel.className='reel';
+    for(let i=0;i<10;i++){const n=document.createElement('span');n.textContent=i;reel.appendChild(n)}box.appendChild(reel);return box
+  }));setOdometer(el,value)
+}
+function setOdometer(el,value){
+  [...String(value)].forEach((ch,i)=>{const reel=el.children[i]?.firstElementChild;if(reel&&/\d/.test(ch))reel.style.transform=`translateY(-${Number(ch)}em)`})
+}
+makeOdometer(document.getElementById('tempOdo'),'33.6');
+let selected=0,snapTimer,wheelTarget=0,wheelFrame=0,moving=false;
+function stopMotion(){
+  clearTimeout(snapTimer);if(wheelFrame){cancelAnimationFrame(wheelFrame);wheelFrame=0}
+  scroller.scrollTo({left:scroller.scrollLeft,behavior:'auto'});wheelTarget=scroller.scrollLeft;moving=false;
+}
+function glideWheel(){
+  const gap=wheelTarget-scroller.scrollLeft;
+  if(Math.abs(gap)<.5){scroller.scrollLeft=wheelTarget;wheelFrame=0;return}
+  scroller.scrollLeft+=gap*.18;wheelFrame=requestAnimationFrame(glideWheel);
+}
+function select(i,move=false){
+  selected=Math.max(0,Math.min(DATA.length-1,i));const d=DATA[selected],px=x(d[0]),py=y(d[1]);
+  setOdometer(document.getElementById('tempOdo'),d[1].toFixed(1));document.getElementById('yearValue').textContent=d[0];
+  document.getElementById('date').textContent=(d[2].includes('、')?'並列日期：':'紀錄日期：')+d[2];
+  document.getElementById('live').textContent=`${d[0]}年年度最高氣溫${d[1].toFixed(1)}攝氏度，日期${d[2]}`;
+  focusLine.setAttribute('x1',px);focusLine.setAttribute('x2',px);focusDot.setAttribute('cx',px);focusDot.setAttribute('cy',py);
+  const labelX=Math.max(57,Math.min(width-57,px)),labelY=py<TOP+42?py+28:py-18;
+  focusLabel.setAttribute('x',labelX-53);focusLabel.setAttribute('y',labelY-17);focusText.setAttribute('x',labelX);focusText.setAttribute('y',labelY);focusText.textContent=`${d[0]} · ${d[1].toFixed(1)}°C`;
+  if(move){
+    stopMotion();const max=Math.max(0,stage.clientWidth-scroller.clientWidth),target=(d[0]-YEAR0)/(YEAR1-YEAR0)*max;
+    if(Math.abs(target-scroller.scrollLeft)>.5){moving=true;scroller.scrollTo({left:target,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
+  }
+}
+function nearest(){
+  const max=Math.max(0,stage.clientWidth-scroller.clientWidth);if(!max)return selected;
+  const targetYear=YEAR0+scroller.scrollLeft/max*(YEAR1-YEAR0);let best=0,dist=Infinity;
+  DATA.forEach((d,i)=>{const dx=Math.abs(d[0]-targetYear);if(dx<dist){dist=dx;best=i}});return best
+}
+scroller.addEventListener('scroll',()=>{
+  clearTimeout(snapTimer);if(!moving)select(nearest());
+  snapTimer=setTimeout(()=>{if(moving){moving=false;return}select(nearest(),true)},160);
+},{passive:true});
+scroller.addEventListener('pointerdown',stopMotion,{passive:true});
+scroller.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();select(selected+(e.key==='ArrowRight'?1:-1),true)}});
+scroller.addEventListener('wheel',e=>{
+  const max=Math.max(0,stage.clientWidth-scroller.clientWidth);if(!max)return;
+  const raw=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;if(!raw)return;e.preventDefault();
+  if(moving)stopMotion();clearTimeout(snapTimer);
+  const unit=e.deltaMode===1?16:e.deltaMode===2?scroller.clientWidth:1;
+  if(!wheelFrame)wheelTarget=scroller.scrollLeft;
+  wheelTarget=Math.max(0,Math.min(max,wheelTarget+raw*unit*.32));
+  if(!wheelFrame)wheelFrame=requestAnimationFrame(glideWheel);
+},{passive:false});
+const reveal=()=>{svg.classList.remove('revealed');requestAnimationFrame(()=>svg.classList.add('revealed'))};
+new IntersectionObserver(entries=>{if(entries[0].isIntersecting){reveal()}},{threshold:.05}).observe(svg);
+function pointNear(e,radius=18){
+  const box=svg.getBoundingClientRect(),px=(e.clientX-box.left)*width/box.width,py=(e.clientY-box.top)*360/box.height;
+  let best=-1,bestDist=radius*radius;DATA.forEach((d,i)=>{const dx=x(d[0])-px,dy=y(d[1])-py,dist=dx*dx+dy*dy;if(dist<bestDist){best=i;bestDist=dist}});return best;
+}
+svg.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const i=pointNear(e);svg.style.cursor=i<0?'': 'pointer';if(i>=0&&i!==selected)select(i)});
+svg.addEventListener('click',e=>{const i=pointNear(e);if(i>=0)select(i,true);else reveal()});
+select(0,true);
+});
+</script>
+</body>
+</html>
