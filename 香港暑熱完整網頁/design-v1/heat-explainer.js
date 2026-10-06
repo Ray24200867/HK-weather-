@@ -1,6 +1,6 @@
 /* 解釋動畫：人體熱量收支
    滑到時依次出現：運動 → 氣溫 → 太陽輻射 → 濕度 → 風 → 熱壓力
-   濕度滑桿：濕度愈高，汗水蒸發散熱愈少（濕度藍圓變淡），熱壓力愈高
+   濕度滑桿：濕度愈高，汗水蒸發散熱愈少（濕度藍圓變深），熱壓力愈高
    所有數值只作示意 */
 (() => {
   const fig = document.querySelector("#heat-explainer")
@@ -20,7 +20,7 @@
     const evapLoss = 1.8 * (1 - (rh - 40) / 62)   // 濕度 40% 時蒸發最有效，接近飽和時幾乎停止
     const gain = 3, windLoss = 0.6
     const stress = Math.min(1, Math.max(0, (gain - evapLoss - windLoss) / 2.4))
-    humDot.style.opacity = (0.3 + 0.7 * evapLoss / 1.8).toFixed(2)   // 濕度愈高，蒸發散熱愈弱，藍圓愈淡
+    humDot.style.opacity = (0.3 + 0.7 * (rh - 40) / 55).toFixed(2)   // 濕度愈高，藍圓愈深
     meter.setAttribute("width", (400 * stress).toFixed(0))
     meterText.textContent = stress < 0.35 ? "較低：身體大致散得走熱量" : stress < 0.7 ? "中等：熱量開始積聚" : "高：散熱追不上產熱，熱量在體內積聚"
   }

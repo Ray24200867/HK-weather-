@@ -6,7 +6,6 @@
   if (!fig || !data) return
   const svg = fig.querySelector("svg")
   const tip = fig.querySelector(".rh-tip")
-  const count = fig.querySelector("#rh-count")
   const yearBtns = fig.querySelector(".rh-years")
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
   const NS = "http://www.w3.org/2000/svg"
@@ -73,15 +72,7 @@
       const exists = !(c.dataset.m === "2" && c.dataset.d === "29" && !leap)
       c.setAttribute("fill", exists ? colorOf(v) : "transparent")
     })
-    // 計數器由 0 數上去
-    if (!animate || reduced) { count.textContent = humid; return }
-    const start = performance.now(), dur = 1500
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / dur)
-      count.textContent = Math.round(humid * t)
-      if (t < 1) requestAnimationFrame(step)
-    }
-    requestAnimationFrame(step)
+    svg.setAttribute("aria-label", `日曆熱圖：${year}年每日平均相對濕度，每天一格，顏色愈深表示濕度愈高；${humid}天達80%或以上。`)
   }
 
   // 年份按鈕
@@ -93,7 +84,6 @@
     b.addEventListener("click", () => {
       year = Number(y)
       yearBtns.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)))
-      fig.querySelector("#rh-year").textContent = year
       paint(true)
     })
     yearBtns.appendChild(b)
@@ -105,7 +95,7 @@
     if (!c || !c.dataset.m) { tip.hidden = true; return }
     const v = valueOf(c)
     tip.textContent = `${year}年${c.dataset.m}月${c.dataset.d}日 · ${v == null ? "沒有數據" : v + "%"}`
-    const box = fig.getBoundingClientRect(), r = c.getBoundingClientRect()
+    const box = svg.parentElement.getBoundingClientRect(), r = c.getBoundingClientRect()
     tip.style.left = `${r.left - box.left + r.width / 2}px`
     tip.style.top = `${r.top - box.top - 8}px`
     tip.hidden = false

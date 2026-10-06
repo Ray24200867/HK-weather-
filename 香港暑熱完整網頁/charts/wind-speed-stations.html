@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026年夏季市區各氣象站每日平均風速</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  /* ===== 插入網頁時：複製下面 #wind-stations 開頭的樣式即可（body / .wrap 只供單獨預覽） ===== */
+  body { margin: 0; background: #fff; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0; }
+  #wind-stations { margin: 0; font-family: "Source Sans 3", "Noto Sans TC", Arial, sans-serif; color: #16293F; }
+  #wind-stations .chart-title { margin: 0; font: 700 18px/1.3 "Source Sans 3", "Noto Sans TC", Arial, sans-serif; text-align: left; }
+  #wind-stations .chart-chatter { margin: 4px 0 10px; font: 400 15px/1.5 "Source Sans 3", "Noto Sans TC", Arial, sans-serif; color: #5B6573; text-align: left; }
+  #wind-stations .chart-source { margin: 6px 0 0; font: 400 13px/1.4 "Source Sans 3", "Noto Sans TC", Arial, sans-serif; color: #5B6573; }
+  @media (max-width: 640px) {
+    #wind-stations .chart-title { font-size: 17px; }
+    #wind-stations .chart-chatter { font-size: 14px; }
+    #wind-stations .chart-source { font-size: 12px; }
+  }
+  #wind-stations .ws-wrap { position: relative; }
+  #wind-stations svg { display: block; width: 100%; height: auto; }
+  #wind-stations .ws-band { font: 400 13px/1 "Source Sans 3", "Noto Sans TC", Arial, sans-serif; fill: #5B6573; }
+  #wind-stations .ws-name { font: 400 14px/1 "Source Sans 3", "Noto Sans TC", Arial, sans-serif; fill: #16293F; }
+  #wind-stations .ws-tick { fill: #B5BAC1; opacity: 0; transition: opacity .3s; cursor: pointer; }
+  #wind-stations .ws-tick.ws-hot { fill: #C4502A; }
+  #wind-stations .ws-tick.in { opacity: .45; }
+  #wind-stations .ws-tick:hover { opacity: 1; }
+  #wind-stations .ws-tip { position: absolute; transform: translate(-50%, -100%); padding: 4px 8px; background: #16293F; color: #fff; font: 500 12px/1.3 "Source Sans 3", "Noto Sans TC", Arial, sans-serif; white-space: nowrap; pointer-events: none; }
+  #wind-stations .wy-legend { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 10px 0 0; font: 400 13px/1.4 "Source Sans 3", "Noto Sans TC", Arial, sans-serif; color: #5B6573; }
+  #wind-stations .wy-legend span::before { content: ""; display: inline-block; width: 3px; height: 13px; margin-right: 6px; vertical-align: -2px; background: #B5BAC1; }
+  #wind-stations .wy-legend span.hot::before { background: #C4502A; }
+  @media (prefers-reduced-motion: reduce) { #wind-stations .ws-tick { transition: none; } }
+
+  #wind-stations .ws-band, #wind-stations .ws-name,
+  #wind-stations .ws-tip, #wind-stations .wy-legend { font-size: 15px; }
+  @media (max-width: 640px) {
+    #wind-stations .ws-band, #wind-stations .ws-name,
+    #wind-stations .ws-tip, #wind-stations .wy-legend { font-size: 14px; }
+  }
+  #wind-stations .chart-title { line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<!-- ===== 圖表 HTML：從這裡開始複製 ===== -->
+<figure class="wind-stations" id="wind-stations">
+    <p class="chart-title">2026年夏季市區各氣象站每日平均風速</p>
+    <p class="chart-chatter">6 至 8 月，市區 7 個氣象站</p>
+    <div class="ws-wrap">
+      <svg role="img" aria-label="條碼圖：2026 年 6 至 8 月，市區 7 個氣象站每日平均風速，每條豎線代表一天。黃竹坑 89 天、將軍澳 91 天、沙田 81 天、屯門 84 天、京士柏 83 天、啟德 78 天、北角 65 天屬 2 級或以下。"></svg>
+      <div class="ws-tip" hidden></div>
+    </div>
+    <p class="wy-legend"><span class="hot ws-key">一天，風力 2 級或以下</span><span class="ws-key">一天，風力 3 級或以上</span></p>
+    <figcaption class="chart-source">來源：香港天文台 · 製圖：於夏涵</figcaption>
+  </figure>
+<!-- ===== 圖表 HTML：到這裡結束 ===== -->
+</div>
+<!-- ===== 圖表程式：放在上面 HTML 之後 ===== -->
+<script>
+/* 圖三：市區 7 個氣象站分開顯示，2026 年 6–8 月每日平均風速
+   每站一行，每一天一條細豎線（半透明，日子愈集中顏色愈深）；背景為天文台蒲福氏風級
+   數據：香港天文台各站每日平均風速 → data/hko-urban-stations-daily-wind-2026-summer.csv */
+(() => {
+  const fig = document.querySelector("#wind-stations")
+  if (!fig) return
+  const svg = fig.querySelector("svg")
+  const tip = fig.querySelector(".ws-tip")
+  const NS = "http://www.w3.org/2000/svg"
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+  // [站名, 6 月 1 日至 8 月 31 日每日平均風速]（按平均風速由低至高排列）
+  const STATIONS = [["黃竹坑",[3.8,4.1,3.7,4.5,5.0,2.3,2.8,3.2,4.6,5.4,5.8,4.0,2.5,6.5,3.7,3.2,4.4,4.3,5.9,4.8,3.7,5.3,6.2,6.4,5.5,2.0,3.4,2.9,3.1,3.9,7.5,12.3,12.3,6.6,8.2,7.2,3.2,4.8,4.9,2.5,4.9,5.1,4.8,5.2,4.0,2.3,2.1,3.0,2.9,2.6,3.1,4.6,4.7,3.8,5.8,9.0,4.2,4.6,11.0,8.1,6.5,2.8,3.5,3.1,2.8,2.5,4.2,3.2,4.0,5.3,5.8,4.8,4.8,4.7,2.7,2.4,4.0,4.0,11.2,18.3,6.8,2.6,4.3,4.4,5.5,4.1,4.2,3.3,4.7,3.5,2.8,2.1]],["將軍澳",[4.9,7.0,7.1,7.5,6.5,4.3,3.8,5.0,5.0,6.6,5.7,5.7,4.7,9.3,3.8,4.1,6.4,4.1,8.1,7.6,6.0,7.8,8.8,7.9,7.5,3.4,5.3,4.3,5.7,4.8,6.5,9.5,8.0,5.4,5.9,7.2,4.0,4.8,4.9,4.3,6.5,7.5,7.3,7.5,4.0,3.2,4.0,5.5,6.7,3.8,2.8,4.8,5.3,4.8,9.1,9.6,6.3,4.8,6.8,5.1,4.8,3.3,2.8,4.1,3.4,3.8,4.8,4.4,4.3,7.4,6.2,6.5,8.7,8.8,4.4,4.2,5.9,6.7,9.2,12.9,6.3,4.5,6.0,5.8,8.0,5.6,3.3,3.4,5.5,4.9,3.3,3.4]],["沙田",[5.7,11.7,9.0,9.7,9.2,4.0,3.9,7.7,5.5,6.8,6.5,4.5,6.6,16.2,5.7,7.0,8.0,5.2,12.7,10.4,10.1,13.1,14.2,13.3,11.5,4.2,7.0,2.7,4.0,5.7,5.8,9.8,8.3,8.8,10.0,12.8,4.2,5.5,5.1,5.5,8.0,12.0,6.2,7.7,4.8,4.6,3.9,7.0,9.0,5.5,5.8,5.5,5.9,4.5,6.1,17.9,8.5,5.3,7.1,4.7,4.9,4.1,3.6,4.3,4.0,3.6,6.4,7.2,3.4,5.5,4.8,7.3,13.3,13.5,5.9,5.7,7.2,5.3,7.8,15.8,7.0,4.9,6.7,8.0,11.6,6.3,3.8,3.8,7.2,6.9,3.9,3.9]],["屯門",[9.6,7.8,9.2,7.3,7.9,5.3,6.8,7.6,7.8,7.0,8.2,8.3,8.0,12.2,8.4,6.4,11.9,6.6,13.4,10.4,9.8,8.9,10.0,8.6,8.5,4.6,8.2,6.3,8.0,8.7,8.0,11.9,12.4,16.3,21.2,14.7,5.3,9.5,8.8,4.9,6.5,10.3,7.2,10.1,8.3,5.5,7.5,7.1,9.0,8.3,9.3,12.1,9.9,5.2,6.5,16.4,10.7,6.1,5.2,4.9,3.3,6.2,6.9,6.8,4.4,3.9,7.5,5.4,7.1,9.8,10.0,8.0,9.1,10.0,6.9,6.0,5.0,4.9,6.1,9.7,7.4,6.8,6.1,6.1,8.6,9.2,10.0,4.1,5.2,6.0,6.9,5.1]],["京士柏",[6.6,9.2,7.7,8.4,8.5,6.0,4.9,6.9,9.4,8.7,9.8,9.9,6.5,12.1,8.5,6.0,8.9,9.3,12.6,10.1,8.7,9.1,9.9,9.3,9.2,5.9,6.3,6.3,8.3,7.9,11.6,15.0,15.5,11.9,15.8,14.8,6.8,8.5,6.8,5.7,10.1,9.3,8.7,9.3,7.9,6.5,6.4,7.2,7.8,6.8,6.7,7.8,6.4,7.5,10.8,19.5,8.2,9.4,11.5,9.4,8.2,7.5,8.2,7.8,5.1,6.5,5.8,8.8,9.1,9.8,10.9,9.9,9.6,9.0,5.5,5.5,8.1,8.3,13.7,20.7,10.9,5.0,7.2,8.1,10.0,8.3,7.7,6.5,8.4,8.7,7.0,4.8]],["啟德",[8.4,6.4,6.1,7.5,10.6,8.5,7.1,6.3,9.2,8.6,9.6,10.9,5.3,16.0,10.0,4.8,7.5,8.5,11.3,8.8,6.1,8.7,9.2,7.5,8.3,6.2,5.8,7.6,9.9,9.0,11.8,19.9,18.6,15.2,16.5,14.5,7.5,10.2,8.7,5.1,9.0,7.6,10.4,8.9,8.2,7.2,5.7,6.1,6.3,6.5,8.3,9.2,8.1,6.3,13.0,23.3,8.6,9.0,16.9,11.3,9.5,7.8,8.8,7.8,7.5,8.7,8.3,7.5,9.7,13.0,12.2,9.3,8.4,9.4,4.4,5.0,7.4,8.1,14.8,22.6,12.3,5.0,8.5,8.8,10.5,8.3,7.0,5.0,9.3,7.8,7.0,4.7]],["北角",[9.0,8.2,6.7,9.5,13.3,8.7,6.2,5.7,12.5,10.3,13.9,14.0,6.0,19.2,13.3,5.2,4.8,5.2,5.1,6.1,7.2,12.7,11.9,12.3,12.7,5.5,5.2,6.2,11.0,10.3,15.7,23.1,18.5,7.6,6.4,6.9,5.7,8.5,6.3,5.7,13.3,11.3,10.4,9.5,5.9,5.3,4.9,4.0,6.8,3.0,5.8,6.0,5.8,7.2,12.5,26.9,6.8,11.2,13.5,11.2,9.7,7.1,7.5,9.7,6.3,8.7,8.1,9.2,15.8,14.5,18.3,13.8,12.9,10.4,4.8,5.9,11.3,9.7,19.7,34.5,15.3,4.1,9.7,12.8,14.5,8.1,4.8,4.5,13.3,11.4,6.2,2.3]]]
+  // 天文台蒲福氏風級（km/h）：1 級 1–5、2 級 6–11、3 級 12–19、4 級 20–28、5 級 29–38
+  const BANDS = [[0, 6, "1級"], [6, 12, "2級"], [12, 20, "3級"], [20, 29, "4級"], [29, 36, "5級"]]
+  const MAX = 36
+  const dateOf = (i) => { const d = new Date(2026, 5, 1 + i); return `${d.getMonth() + 1}月${d.getDate()}日` }
+
+  const el = (tag, attrs, parent = svg) => {
+    const n = document.createElementNS(NS, tag)
+    for (const k in attrs) n.setAttribute(k, attrs[k])
+    parent.appendChild(n)
+    return n
+  }
+  const text = (s, attrs, parent) => { const t = el("text", attrs, parent); t.textContent = s; return t }
+
+  let ticks = [], shownDay = 0
+  function build() {
+    const W = Math.round(svg.parentNode.clientWidth) || 680
+    const small = W < 480
+    const L = small ? 50 : 58, R = 4, TOP = 26, ROW = small ? 30 : 34, TICK = ROW - 10
+    const H = TOP + STATIONS.length * ROW + 2
+    const x = (v) => L + (v / MAX) * (W - L - R)
+    svg.innerHTML = ""
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`)
+
+    BANDS.forEach(([a, b, label], i) => {
+      el("rect", { x: x(a), y: TOP - 4, width: x(b) - x(a), height: H - TOP + 4, fill: i % 2 ? "#FFFFFF" : "#EEF2F6" })
+      text(label, { x: (x(a) + x(b)) / 2, y: 14, "text-anchor": "middle", class: "ws-band" })
+    })
+    ticks = []
+    STATIONS.forEach(([name, vals], r) => {
+      const y0 = TOP + r * ROW + (ROW - TICK) / 2
+      text(name, { x: L - 8, y: y0 + TICK / 2 + 5, "text-anchor": "end", class: "ws-name" })
+      el("line", { x1: L, y1: y0 + TICK, x2: W - R, y2: y0 + TICK, stroke: "#E4E7EB" })
+      vals.forEach((v, i) => {
+        const t = el("rect", {
+          x: x(v) - 1, y: y0, width: 2, height: TICK,
+          class: v < 12 ? "ws-tick ws-hot" : "ws-tick",
+        })
+        t.dataset.s = name; t.dataset.v = v; t.dataset.i = i
+        ticks.push(t)
+      })
+    })
+    ticks.forEach((t) => { if (+t.dataset.i < shownDay) t.classList.add("in") })
+  }
+
+  // 由 6 月 1 日開始，7 個站同一天的豎線一起出現
+  function play() {
+    const days = STATIONS[0][1].length
+    if (reduced) { shownDay = days; ticks.forEach((t) => t.classList.add("in")); return }
+    for (let i = 0; i < days; i++) setTimeout(() => {
+      shownDay = i + 1
+      ticks.forEach((t) => { if (+t.dataset.i === i) t.classList.add("in") })
+    }, i * 36)
+  }
+
+  svg.addEventListener("pointermove", (e) => {
+    const t = e.target.closest("rect.ws-tick")
+    if (!t) { tip.hidden = true; return }
+    tip.textContent = `${t.dataset.s} · ${dateOf(+t.dataset.i)} · ${t.dataset.v} km/h`
+    const box = svg.parentElement.getBoundingClientRect(), b = t.getBoundingClientRect()
+    tip.style.left = `${b.left - box.left + b.width / 2}px`
+    tip.style.top = `${b.top - box.top - 6}px`
+    tip.hidden = false
+  })
+  svg.addEventListener("pointerleave", () => { tip.hidden = true })
+
+  build()
+  let lastW = Math.round(svg.parentNode.clientWidth)
+  new ResizeObserver(() => {
+    const w = Math.round(svg.parentNode.clientWidth)
+    if (w !== lastW) { lastW = w; build() }
+  }).observe(fig)
+  new IntersectionObserver((entries, obs) => {
+    if (entries.some((e) => e.isIntersecting)) { play(); obs.disconnect() }
+  }, { threshold: 0.35 }).observe(fig)
+})()
+
+</script>
+</body>
+</html>

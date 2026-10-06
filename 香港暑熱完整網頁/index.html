@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>香港究竟有幾熱？氣溫之外，還有另一套衡量標準</title>
+<title>【數據】香港暑熱不只關乎溫度：濕度與風影響人體散熱</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap">
@@ -12,7 +12,7 @@
 <body>
 
 <header class="topbar">
-  <span class="brand">香港有幾熱</span>
+  <span class="brand">香港暑熱不只關乎溫度：濕度與風影響人體散熱</span>
   <div class="live-wrap">
     <a class="live" id="live" href="#">
       <span class="dot"></span><span class="label">此刻全港最高暑熱指數</span>
@@ -29,73 +29,73 @@
 <article>
 
 <section class="hero">
-  <h1>香港究竟有幾熱？氣溫之外，還有另一套衡量標準</h1>
-  <p class="byline">文：＿＿＿ · 數據：香港天文台</p>
+  <h1>【數據】香港暑熱不只關乎溫度：濕度與風影響人體散熱</h1>
+  <p class="dek">香港的暑熱風險並不能由氣溫單獨解釋。面對酷熱天氣，香港天文台使用的香港暑熱指數提供了乾球氣溫以外的參考。香港暑熱指數中，與濕度及蒸發條件密切相關的自然濕球溫度佔80%權重。隨着香港再創高溫紀錄，理解這些數字的用途與限制，是防暑的重要一步。</p>
+  <dl class="byline" aria-label="團隊分工">
+    <div><dt>文字</dt><dd>方嘉雨、吳佳栩、陳曉琳</dd></div>
+    <div><dt>數據</dt><dd>於夏涵、倪晉成</dd></div>
+    <div><dt>設計</dt><dd>田若雯、於夏涵</dd></div>
+    <div><dt>工程</dt><dd>田若雯、於夏涵</dd></div>
+    <div><dt>查核</dt><dd>查言潞、陳曉琳、鄺芍宜</dd></div>
+    <div><dt>責任編輯</dt><dd>王悅</dd></div>
+    <div><dt>刊出</dt><dd><time datetime="2026-10-06">2026/10/6</time></dd></div>
+  </dl>
 </section>
 
-<!-- ============ 導語（置中）+ 天文台地圖 ============ -->
-<section class="lead-center">
-  <div class="lead-art" aria-hidden="true">
-    <div class="fan">
-      <img class="fan-blades" src="images/fan-blades.png" width="477" height="540" alt="">
-      <img class="fan-front" src="images/fan-front.png" width="477" height="540" alt="">
+<!-- ============ 首屏氣溫圖：滾動時顯示導語 ============ -->
+<section class="opening-scene" aria-label="1884至2026年夏季每日最高氣溫">
+  <div class="opening-scene__stage">
+    <div class="lead-visuals" id="lead-visuals">
+      <figure class="figure end-barcode">
+        <p class="chart-title">1884–2026年夏季每日最高氣溫</p>
+        <p class="chart-chatter">每日最高氣溫 · 6 至 9 月 · 九龍尖沙咀 · 1884–2026</p>
+        <div class="end-barcode-scroll">
+          <canvas id="barcode-end" role="img" aria-label="1884至2026年香港天文台總部夏季每日最高氣溫圖，灰色表示各年氣溫，藍色表示該日歷史最高，紅色表示2026年。"></canvas>
+        </div>
+        <p class="legend">
+          <span style="--c:var(--context)">某一年的同一天</span>
+          <span style="--c:var(--series-2)">該日歷史最高</span>
+          <span style="--c:var(--now)">2026 年</span>
+        </p>
+        <div class="bar-tip" id="bar-tip-end" role="status" hidden></div>
+        <figcaption>2026 年夏天，天文台總部有 27 天最高氣溫達 33°C 或以上，其中 4 天刷新該日紀錄。來源：香港天文台 · 製圖：於夏涵</figcaption>
+      </figure>
+      <div class="lead-text">
+        <p>2026年8月9日，香港天文台總部錄得最高氣溫攝氏<span class="record">36.9</span>度。根據天文台資料，這是該站自1884年有記錄以來的最高氣溫。同日，勞工處的黃色工作暑熱警告生效，此為三級警告中的最低級別。</p>
+      </div>
     </div>
   </div>
-  <div class="winds" aria-hidden="true"></div>
-  <p class="lead-text">2026年8月，香港經歷了一場破紀錄的極端熱浪。8月9日，香港天文台總部錄得 <span class="record">36.9°C</span> ，打破了 2017 年颱風「天鴿」前夕創下的 36.6°C 紀錄，成為香港自 1884 年有官方氣象記錄以來最熱的一天。</p>
 </section>
 
-<figure class="lead-photo">
-  <p class="figure-title">8月9日17:00 各區最高氣溫（°C）</p>
-  <img src="images/hko-2026-08-09-max-temp.jpg" width="1280" height="956" alt="香港天文台分區天氣地圖：8月9日17:00各區最高氣溫，多區錄得36至39°C">
-  <figcaption>來源：香港天文台</figcaption>
-</figure>
+<div class="lead-followup">
+  <p>據無線新聞報道，此前一天即8月8日下午約3時30分，一名7歲女童在大嶼山遠足時出現頭暈、嘔吐等症狀，懷疑中暑，隨後由直升機送往醫院。當時，附近的昂坪氣象站錄得氣溫31.6°C。</p>
+  <a class="source-card" href="https://news.tvb.com/tc/1187914-%E4%B8%8B%E5%8D%88%E5%A4%9A%E8%99%95%E6%9C%89%E4%BA%BA%E8%A1%8C%E5%B1%B1%E4%B8%8D%E9%81%A9%E7%96%91%E4%B8%AD%E6%9A%91%E5%8C%85%E6%8B%AC7%E6%AD%B2%E5%A5%B3%E7%AB%A5" target="_blank" rel="noopener noreferrer" aria-label="閱讀無綫新聞報道：下午多處有人行山不適疑中暑，包括7歲女童">
+    <img src="images/rescue-helicopter.png" width="1252" height="690" alt="7歲女童由飛行服務隊直升機救出">
+    <span class="source-card-copy"><span class="source-card-kicker">無綫新聞 · 相關報道</span><strong>下午多處有人行山不適疑中暑，包括7歲女童</strong><span class="source-card-action">閱讀新聞 ↗</span></span>
+  </a>
+  <p>女童個案的具體成因，不能單憑氣溫判斷；而黃色警告所依據的，也不是氣溫，而是另一套指標——香港暑熱指數（HKHI）。</p>
+  <p><strong>因此，氣溫能否完整反映人體實際承受的熱壓力？</strong></p>
+  <h2 class="section-head"><span class="section-num">01</span>氣溫紀錄能否完全回答香港究竟有多熱</h2>
+</div>
 
-<!-- ============ 開場：條碼圖逐步推進 ============ -->
-<section class="scrolly">
-  <div class="scrolly-graphic">
-    <!-- 第 0 步：天文台地圖在左，條碼圖在右（只在桌面顯示） -->
-    <figure class="pair-photo">
-      <p class="figure-title">8月9日17:00 各區最高氣溫（°C）</p>
-      <img src="images/hko-2026-08-09-max-temp.jpg" width="1280" height="956" alt="香港天文台分區天氣地圖：8月9日17:00各區最高氣溫，多區錄得36至39°C">
-      <figcaption>來源：香港天文台</figcaption>
-    </figure>
-    <p class="chart-head" id="chart-head"></p>
-    <div class="bar-tip" id="bar-tip" role="status" hidden></div>
-    <p class="chart-note" id="chart-note"></p>
-    <p class="chart-callout" id="chart-callout"></p>
-    <canvas id="barcode" aria-label="香港夏季每日最高氣溫條碼圖"></canvas>
-    <!-- 百年來香港最高氣溫折線圖（第 3 步） -->
-    <figure class="yearly-wrap">
-      <iframe src="最高溫折線圖/index.html" title="香港年度最高氣溫" data-theme="maxline" id="yearly-frame"></iframe>
-      <figcaption>1940 至 1946 年缺乏數據。滑動或點擊資料點可查看各年紀錄。資料：香港天文台</figcaption>
-    </figure>
-    <!-- 全球每月平均氣溫（對應 WMO／哥白尼那一句） -->
-    <div class="global-wrap">
-      <p class="chart-title">2026年8月與2023年7月並列全球最熱月份</p>
-      <p class="chart-chatter">全球每月平均近地面氣溫，°C，1940–2026</p>
-      <canvas id="global" role="img" aria-label="折線圖：1940至2026年每年一條全球月均氣溫線，近年的線明顯較高；2026年8月（16.96°C）與2023年7月（16.95°C）並列有記錄以來最熱的月份。"></canvas>
-      <p class="chart-source">來源：哥白尼氣候變化服務局（C3S），ERA5 · 製圖：＿＿＿</p>
-    </div>
-    <p class="legend">
-      <span style="--c:var(--context)">某一年的同一天</span>
-      <span style="--c:var(--series-2)">該日歷史最高</span>
-      <span style="--c:var(--now)">2026 年</span>
-    </p>
+<!-- ============ 開場正文 ============ -->
+<section class="step-prose opening-body opening-intro">
+  <div class="prose">
+        <p>因此我們也做了街訪，多名曾在不同地區生活過的受訪者描述了自己的感受。</p>
+        <figure class="street-interview-video">
+          <div class="street-interview-video__frame">
+            <iframe src="https://www.youtube-nocookie.com/embed/XY8wg60pTbw" title="街訪影片：香港夏天的體感差異" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+          <figcaption>街訪影片 · <a href="https://youtu.be/XY8wg60pTbw?si=64tGx7yhE_OnC8aP" target="_blank" rel="noopener noreferrer">在 YouTube 觀看 ↗</a></figcaption>
+        </figure>
+        <p>大部分受訪者表示，即使氣溫相近，他們仍覺得香港更加悶熱難耐。談及原因，濕度和風被反覆提及。這種差異並不只是主觀感受。天氣預報中的氣溫測量的是空氣本身的溫度，卻不能單獨反映汗液能否順利蒸發、身體承受的太陽輻射，以及空氣流動如何影響散熱。</p>
   </div>
-  <div class="steps">
-    <div class="step step-long" data-step="6"></div>
-    <div class="step" data-step="0"></div>
-    <div class="step step-intro" data-step="1">
-      <p>而這只是全球極端天氣頻發的其中一個縮影，世界氣象組織（WMO）及歐盟哥白尼氣候變化服務局證實，2026年8月與2023年7月並列成為全球有記錄以來最熱的一個月。</p>
-    </div>
-    <div class="step step-yearly" data-step="3"></div>
-    <div class="step step-prose" data-step="8">
-      <div class="prose">
-        <h2 class="section-head"><span class="section-num">01</span>氣溫紀錄能否完全回答：香港究竟有多熱？</h2>
-        <p><span class="placeholder">（專家表示，待替換）</span>天氣預報中的氣溫，測量的是空氣本身的溫度。它不會單獨告訴我們汗水能不能順利蒸發、身體吸收了多少太陽輻射，或者周圍的風能不能幫助散熱。</p>
-        <p>而這些，恰恰是人體面對炎熱環境時的重要變量。</p>
-        <p>天氣炎熱時，人體透過出汗散熱，但汗水流出來，並不代表降溫已經完成，汗水從皮膚表面蒸發，才能透過這一過程帶走熱量。同時濕度影響著這個過程。在其他條件相近時，空氣較乾燥，汗水更容易蒸發；空氣越潮濕，蒸發就越慢，身體也越難借此散熱。</p>
+</section>
+
+<div class="chapter-panel">
+<section class="step-prose opening-body chapter-one">
+  <div class="prose">
+        <p>出現這種感受的原因在於，人體主要通過出汗和汗液蒸發來散熱。研究大氣化學與氣候模擬、化學與氣候相互作用及複合極端事件的王凡博士解釋，當環境溫度升高時，汗液從皮膚表面蒸發並帶走熱量，從而幫助人體散熱、調節體溫。</p>
         <!-- 解釋動畫：人體的熱量收支 -->
         <figure class="heat-explainer" id="heat-explainer">
           <p class="chart-title">熱量進得多、散得少，身體就會積熱</p>
@@ -163,30 +163,35 @@
           </g>
           </svg>
           <label class="hx-slider">濕度 <input type="range" id="hx-rh" min="40" max="95" step="5" value="85"> <b id="hx-rh-val">85%</b></label>
-          <figcaption class="chart-source">示意圖，圖示深淺與熱壓力長度為示意，非實際數值。資料參考：香港天文台、美國疾病控制與預防中心 · 製圖：＿＿＿</figcaption>
+          <figcaption class="chart-source">示意圖，圖示深淺與熱壓力長度為示意，非實際數值。資料參考：香港天文台、美國疾病控制與預防中心 · 製圖：於夏涵</figcaption>
         </figure>
-        <p>遠足時，身體還會隨著運動不斷產生熱量。如果散熱趕不上身體產熱和從周圍環境吸收熱量的速度，熱量便會在體內積聚，增加發生熱相關疾病的風險。<span class="source">(cdc.gov)</span></p>
-        <p>8月8日下午約3時30分，一名7歲女童在南大嶼郊遊徑遠足時出現嘔吐，隨後由直升機送往律敦治醫院救治。同一時刻，昂坪氣象站錄得氣溫31.6℃。</p>
-        <p>31.6℃ 之所以能引發嚴重中暑，核心在於氣溫計忽視了另一個致命的气象變量——相對濕度，以及由此導致的體溫調節機制衰竭。</p>
-        <p class="review">對於戶外活動者而言，氣象站測得的「乾球溫度」（Dry-bulb Temperature），僅僅代表遮陽百葉箱內純粹的空氣溫度，無法真實反映人體在暴露環境下的生理熱應力（Thermal Stress）。<span class="review-note">（考慮一下是否保留）</span></p>
-        <p>醫學與生理學研究指出，人體在進行遠足等戶外運動時，約 70% 的散熱需依賴汗液蒸發帶走潛熱。然而，汗液的蒸發速率並不取決於體溫，而是嚴格受制於周圍空氣的水蒸氣壓差。當相對濕度上升時，空氣吸收水分的飽和度降低，蒸發散熱效率呈指數級下降。</p>
-        <!-- 日曆熱圖：天文台總部每日平均相對濕度 -->
-        <figure class="rh-calendar" id="rh-calendar">
-          <p class="chart-title">香港一年約有一半日子，日均相對濕度達 80% 或以上</p>
-          <p class="chart-chatter">天文台總部每日平均相對濕度，%。<span id="rh-year">2024</span> 年有 <b id="rh-count">0</b> 天達 80% 或以上（1996–2025 年平均每年約 169 天）</p>
-          <div class="rh-years" role="group" aria-label="選擇年份"></div>
-          <div class="rh-wrap">
-            <svg role="img" aria-label="日曆熱圖：一年每天一格，顏色愈深代表當天平均相對濕度愈高。2024 年有 155 天日均濕度達 80% 或以上，主要集中在 2 月至 9 月。"></svg>
-            <div class="rh-tip" hidden></div>
-          </div>
-          <p class="rh-legend"><span style="--c:#DCE8F5">低於 70%</span><span style="--c:#8DB4DE">70–79%</span><span style="--c:#2B6CB0">80–89%</span><span style="--c:#173C66">90% 或以上</span></p>
-          <figcaption class="chart-source">來源：香港天文台（天文台總部每日平均相對濕度）· 製圖：＿＿＿</figcaption>
-        </figure>
-        <p>在香港典型的夏季高濕環境下，平均相對濕度約為 80%，約一半夏日的日均濕度達 80% 或以上。當空氣接近飽和，皮膚表面的汗液便無法揮發，形成「只流不乾」的物理屏障。此時，人體最核心的冷卻機制宣告癱瘓，內源性熱量開始在體內迅速積聚（Heat Accumulation）。</p>
-        <p>事發當日，昂坪氣象站雖錄得 31.6℃ 的氣溫，但配合高濕度、強太陽輻射（黑球溫度）與山谷低風速，綜合環境熱負荷早已跨過人體生理承受的危急紅線。</p>
-        <p>這也解釋了為何單純依靠「氣溫」無法評估真實的酷熱風險。要量化這種濕熱環境對人體的真實衝擊，必須引入更綜合的監測指標。</p>
-      </div>
+        <p>但在高濕度的環境中，空氣中已經含有較多水汽，承接水汽的能力下降，汗液蒸發的過程會因此受到抑制。</p>
+  <!-- 日曆熱圖：天文台總部每日平均相對濕度 -->
+  <figure class="figure rh-calendar" id="rh-calendar">
+    <p class="chart-title">香港一年約有一半日子，日均相對濕度達 80% 或以上</p>
+    <p class="chart-chatter">天文台總部每日平均相對濕度，%</p>
+    <div class="rh-years" role="group" aria-label="選擇年份"></div>
+    <div class="rh-wrap">
+      <svg role="img" aria-label="日曆熱圖：一年每天一格，顏色愈深代表當天平均相對濕度愈高。2024 年有 155 天日均濕度達 80% 或以上，主要集中在 2 月至 9 月。"></svg>
+      <div class="rh-tip" hidden></div>
     </div>
+    <p class="rh-legend"><span style="--c:#DCE8F5">低於 70%</span><span style="--c:#8DB4DE">70–79%</span><span style="--c:#2B6CB0">80–89%</span><span style="--c:#173C66">90% 或以上</span></p>
+    <figcaption class="chart-source">來源：香港天文台（天文台總部每日平均相對濕度）· 製圖：於夏涵</figcaption>
+  </figure>
+        <p>「相對濕度越高，大氣承接水汽的能力就越低，」王凡博士說。人體通過汗液蒸發散熱的效率隨之下降，身體更難將熱量散出，從而增加中暑的風險。</p>
+        <div class="wind-intro">
+          <figure class="wind-figure">
+            <iframe src="charts/wind-speed-compare.html" title="市區與離岸島嶼及山頂的夏季平均風速風向袋圖" data-theme="wind" data-autosize loading="lazy" height="440"></iframe>
+          </figure>
+          <p>除了濕度，風也會影響人體散熱。王凡博士解釋，空氣流動能夠促進汗液蒸發，幫助身體帶走熱量。但在人口和建築密集的香港，建築物會影響空氣流動，人體通過汗液蒸發散熱的效率也會受到影響。</p>
+        </div>
+        <div class="wind-charts">
+          <figure class="wind-figure">
+            <iframe src="charts/wind-speed-stations.html" title="2026年夏季市區各氣象站每日平均風速圖" data-theme="wind" data-autosize loading="lazy" height="400"></iframe>
+          </figure>
+        </div>
+        <p>這也解釋了為何單純依靠「氣溫」無法評估真實的酷熱風險。要量化這種濕熱環境對人體的真實衝擊，必須引入更綜合的監測指標。</p>
+
   </div>
 </section>
 
@@ -197,21 +202,21 @@
   <!-- ============ 02 指標 ============ -->
   <h2 class="section-head"><span class="section-num">02</span>香港暑熱指數（HKHI）</h2>
 
-  <p class="centered-para">為綜合反映高濕與高溫對人體的綜合熱應力，香港天文台參考濕球黑球溫度 (Wet Bulb Globe Temperature, WBGT)，結合本地氣象觀測與入院數據，開發出專門的香港暑熱指數（HKHI）。</p>
+  <p>為綜合反映高濕與高溫對人體的綜合熱應力，香港天文台參考濕球黑球溫度 (Wet Bulb Globe Temperature, WBGT)，結合本地氣象觀測與入院數據，開發出專門的香港暑熱指數（HKHI）。</p>
 
-  <h3>什麼是香港暑熱指數（HKHI）？</h3>
-  <p>與僅測量空氣溫度的乾球氣溫不同，香港暑熱指數（HKHI）將測量焦點轉向了決定人體生理散熱極限的物理因子</p>
-
+  <h3 class="hkhi-intro-heading">什麼是香港暑熱指數（HKHI）？</h3>
+  <p>與僅測量空氣溫度的乾球氣溫不同，香港暑熱指數（HKHI）將測量焦點轉向了決定人體生理散熱極限的物理因子。</p>
 
 
   <!-- HKHI 的構成：照片圓形 + 權重扇形（參考攝影圓餅圖的表達方式） -->
   <figure class="pie-figure">
     <p class="chart-title">香港暑熱指數（HKHI）是怎麼計算的</p>
     <p class="chart-chatter">香港暑熱指數（HKHI）三項讀數的權重，%</p>
-    <div class="pie-rows" role="img" aria-label="三個圓形照片，深色扇形表示各讀數在香港暑熱指數中的權重：自然濕球溫度 80%、黑球溫度 5%、乾球氣溫 15%。">
+    <div class="pie-rows" role="group" aria-label="三個圓形照片，深色扇形表示各讀數在香港暑熱指數中的權重：自然濕球溫度 80%、黑球溫度 5%、乾球氣溫 15%。">
       <div class="pie-row" data-value="80" data-start="171">
         <div class="pie-text">
-          <h4>自然濕球溫度<span class="pie-short">反映濕度和空氣流動等因素對蒸發條件的影響。</span></h4>
+          <h4>自然濕球溫度</h4>
+          <p class="pie-short">反映濕度和空氣流動等因素對蒸發條件的影響。</p>
           <p class="pie-formula">T<sub>nw</sub> × 0.80</p>
           <p class="pie-def">透過包裹濕布的感應器，模擬在當前空氣濕度與風速下，人體皮膚表面汗液蒸發的冷卻極限。由於高濕度會顯著降低蒸發效率，濕球溫度直接反映了人體能否透過排汗實現有效散熱。</p>
           <p class="pie-note">相片：Morn／Wikimedia Commons（CC0）</p>
@@ -223,7 +228,8 @@
       </div>
       <div class="pie-row" data-value="5">
         <div class="pie-text">
-          <h4>黑球溫度<span class="pie-short">反映太陽及周圍環境帶來的輻射熱。</span></h4>
+          <h4>黑球溫度</h4>
+          <p class="pie-short">反映太陽及周圍環境帶來的輻射熱。</p>
           <p class="pie-formula">T<sub>g</sub> × 0.05</p>
           <p class="pie-def">透過放在表面塗黑的中空銅球內的感應器，模擬人體吸收太陽直射以及高樓、地面反射的輻射熱，量化環境對人體的熱積累負荷。</p>
           <p class="pie-note">相片：Maleahlbr／Wikimedia Commons（CC0）</p>
@@ -235,7 +241,8 @@
       </div>
       <div class="pie-row" data-value="15">
         <div class="pie-text">
-          <h4>乾球氣溫<span class="pie-short">一般所說的空氣溫度。</span></h4>
+          <h4>乾球氣溫</h4>
+          <p class="pie-short">也就是一般所說的空氣溫度。</p>
           <p class="pie-formula">T<sub>a</sub> × 0.15</p>
           <p class="pie-def">常規氣象站測得的環境空氣溫度。</p>
           <p class="pie-note">相片：NOAA Climate.gov</p>
@@ -246,7 +253,7 @@
         </div>
       </div>
     </div>
-    <figcaption class="chart-source">來源：香港天文台（HKHI = 0.80 T<sub>nw</sub> + 0.05 T<sub>g</sub> + 0.15 T<sub>a</sub>）· 製圖：＿＿＿</figcaption>
+    <figcaption class="chart-source">來源：香港天文台（HKHI = 0.80 T<sub>nw</sub> + 0.05 T<sub>g</sub> + 0.15 T<sub>a</sub>）· 製圖：於夏涵</figcaption>
   </figure>
 
   <h3 class="table-head">不同測算方式指標構成對比</h3>
@@ -275,13 +282,8 @@
     </tbody>
   </table>
 
-  <p><span class="placeholder">XXX專家表示（待替換）</span>三個讀數在公式中的分量並不相同。 HKHI的自然濕球溫度係數為0.80，高於戶外有日照條件下WBGT公式中的0.70。這組權重來自對本地氣象觀測與入院數據的分析，而不是對人體散熱方式所佔比例的劃分。</p>
-  <p>HKHI 之所以比普通氣溫更準，是因為它直接抓住了人體中暑的兩大主因：空氣太濕導致汗水蒸發不了，以及日光直射帶來的輻射熱積累。</p>
-
-  <p>因此，當香港暑熱指數達到 30 或以上時，天文台就會發出工作暑熱警告。此時，即使實際氣溫只有 31°C 或 32°C，人體的熱應力風險也已經達到了危險級別。</p>
-
-
-  <p><span class="placeholder">（衛生專家XXX，待替換）</span>特別提醒，兒童、長者以及未經過熱適應訓練的戶外活動者，體溫調節能力顯著弱於常人。在「高濕低風」的山野環境中，即便體溫計顯示的氣溫僅有 31°C 左右，只要感覺皮膚持續濕熱且伴有頭暈或嘔吐感，即表明身體已跨過安全紅線，必須立即停止前進，尋找陰涼通風處補充電解質並尋求救援。</p>
+  <p>根據表格可知，不同熱指數衡量熱壓力的側重點並不相同，在不同天氣、地區和活動場景下，HKHI和WBGT各有其適用範圍。HKHI可以作為日常防暑的參考，但不能作為判斷個人戶外活動是否安全的唯一依據。</p>
+  <p>對普通市民而言，氣溫也不應成為出門前唯一參考的數字。在香港高濕的環境下，除了氣溫，也可以同時留意濕度及HKHI等綜合熱指數，瞭解人體可能面對的熱壓力。</p>
 
   <!-- ============ 03 風險 ============ -->
   <h2 class="section-head"><span class="section-num">03</span>測測你在不同情況下會面臨怎樣的熱風險？</h2>
@@ -289,7 +291,7 @@
   <figure class="people-strip">
     <div class="sweat" aria-hidden="true"></div>
     <img src="images/heat-people.png" width="1457" height="351" alt="插圖：一排在炎熱天氣下的人，有人在傘下乘涼、有人扶額頭暈、有人搧扇、有人喝水吹冷氣。">
-    <figcaption>插圖：＿＿＿（來源待補）</figcaption>
+    <figcaption>製圖：於夏涵</figcaption>
   </figure>
   <p>在下方輸入環境氣象條件與活動強度，即可實時估算香港暑熱指數（HKHI），並獲得對應的熱應力安全等級</p>
 
@@ -300,30 +302,73 @@
     <figcaption><b>重要聲明：</b>本工具僅作教育及參考用途，並非專業熱壓力評估工具，亦不取代任何官方指引。實際工作安排請務必以勞工處工作熱壓力警告及天文台暑熱壓力指數為準。</figcaption>
   </figure>
 
-  <!-- ============ 結語 ============ -->
-  <h2 class="section-head"><span class="section-num">04</span>香港究竟有多熱？</h2>
-  <p>回到文章開頭那個問題：同樣是30多度，為什麼有些地方讓人更難受？</p>
-  <p>原因在於香港的高溫經常伴隨高濕。濕度越高，汗液越難蒸發，人體最主要的散熱機制因此受限；再加上日照、風速和活動強度的共同作用，實際熱負荷遠比一個氣溫數字複雜。</p>
-  <p>溫度計量的是空氣，而我們真正感受到的，是身體能不能把熱散出去。這正是WBGT、HKHI這類綜合指數存在的原因——它們試圖回答氣溫本身回答不了的問題。</p>
 
-  <footer class="sources">
-    <h2>資料來源與方法</h2>
-    <ul>
-      <li>每日最高氣溫：香港天文台開放數據（CLMMAXT），天文台總部 1884–2026 年、昂坪 2003–2026 年。1940–1946 年缺數據；昂坪 2026 年 8 月 8 日數值標示為「數據不完整」。</li>
-      <li>香港天文台：<a href="https://www.hko.gov.hk/sc/wxinfo/pastwx/mws2026/mws202608.htm">二零二六年八月天氣回顧</a></li>
-      <li>世界氣象組織：<a href="https://wmo.int/media/news/earth-has-hottest-august-record">Earth has hottest August on record</a></li>
-      <li>DATA.GOV.HK：<a href="https://data.gov.hk/en-data/dataset/hk-hko-rss-hong-kong-heat-index">Hong Kong Heat Index</a>、<a href="https://data.gov.hk/en-data/dataset/hk-hko-rss-wet-bulb-globe-temperature">Wet Bulb Globe Temperature</a></li>
-      <li>開場條碼圖的形式參考 The Pudding〈<a href="https://pudding.cool/projects/heat-records/">Tracking Heat Records in 400 U.S. Cities</a>〉。</li>
-    </ul>
-  </footer>
+
+
 
 </div>
+</div>
+<section class="sources" id="data-notes" aria-labelledby="data-notes-title">
+  <h2 id="data-notes-title">資料來源與研究方法</h2>
+  <p class="sources-intro">以下說明圖表使用的資料、計算方法和限制。原始下載日期未見於項目紀錄的地方，均如實註明；「查閱日期」不等同下載日期。</p>
+
+  <h3>六個數據集</h3>
+  <ol class="source-datasets">
+    <li><strong>每日最高氣溫</strong>｜機構：香港天文台；數據集：<a href="https://data.gov.hk/tc-data/dataset/hk-hko-rss-daily-temperature-info-hko">每日最高、平均及最低氣溫（CLMMAXT）</a>，使用天文台總部及昂坪氣象站資料；發布日期：天文台總部資料頁標示 2019 年 6 月 27 日；下載日期：原始紀錄未保留，本地檔案於 2026 年 10 月 6 日匯入；用於「1884–2026 年夏季每日最高氣溫」及氣溫紀錄相關數字。</li>
+    <li><strong>全球每日平均氣溫</strong>｜機構：歐洲中期天氣預報中心／哥白尼氣候變化服務（ECMWF／C3S）；數據集：<a href="https://pulse.climate.copernicus.eu/">Climate Pulse ERA5 全球每日近地面氣溫</a>；發布日期：持續更新，本地原始檔標示最後更新於 2026 年 9 月 28 日；下載日期：原始紀錄未保留，本地檔案於 2026 年 10 月 6 日匯入；用於全球氣溫月度走勢圖。</li>
+    <li><strong>每日平均相對濕度</strong>｜機構：香港天文台；數據集：<a href="https://data.gov.hk/en-data/dataset/hk-hko-rss-daily-mean-relative-humidity">Daily Mean Relative Humidity</a>（天文台總部）；發布日期：資料頁標示 2022 年 6 月 27 日；下載日期：原始紀錄未保留，本地檔案於 2026 年 10 月 6 日匯入；用於「香港一年約有一半日子，日均相對濕度達 80% 或以上」日曆圖。</li>
+    <li><strong>每日平均風速</strong>｜機構：香港天文台；數據集：<a href="https://data.gov.hk/en-data/dataset/hk-hko-rss-daily-mean-wind-speed">Daily Mean Wind Speed</a>；發布日期：資料頁標示 2021 年 6 月 28 日；下載日期：原始紀錄未保留；用於市區與離岸島嶼及山頂風速比較圖、2026 年市區氣象站每日風速圖。</li>
+    <li><strong>香港暑熱指數</strong>｜機構：香港天文台；數據集：<a href="https://data.gov.hk/en-data/dataset/hk-hko-rss-hong-kong-heat-index">Hong Kong Heat Index</a>，頁面使用最新可取得的 10 分鐘平均值；發布日期：持續更新，資料頁未列單一固定日期；下載日期：不適用，開啟頁面時讀取，本文於 2026 年 10 月 6 日查閱；用於實時暑熱指數顯示。</li>
+    <li><strong>本港最新天氣報告</strong>｜機構：香港天文台；數據集：<a href="https://data.gov.hk/en-data/dataset/hk-hko-rss-current-weather-report">Current Weather Report</a>（<a href="https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&amp;lang=tc">實時 API</a>）；發布日期：資料頁標示 2019 年 6 月 27 日，報告持續更新；下載日期：不適用，開啟頁面時讀取，本文於 2026 年 10 月 6 日查閱；用於快速估算工具的初始氣溫參考值。</li>
+  </ol>
+
+  <h3>文字及圖片來源</h3>
+  <ul>
+    <li>文字資料：香港天文台<a href="https://www.hko.gov.hk/tc/wxinfo/pastwx/mws2026/mws202608.htm">《二零二六年八月天氣回顧》</a>；世界氣象組織（WMO）<a href="https://wmo.int/themes/extreme-heat">極端高溫資料</a>；美國疾病控制及預防中心（CDC／NIOSH）<a href="https://www.cdc.gov/niosh/heat-stress/about/">熱壓力資料</a>；DATA.GOV.HK 的<a href="https://data.gov.hk/en-data/dataset/hk-hko-rss-hong-kong-heat-index">香港暑熱指數</a>及<a href="https://data.gov.hk/en-data/dataset/hk-hko-rss-wet-bulb-globe-temperature">濕球黑球溫度</a>資料頁。女童遠足事件依據頁內所連結的無線新聞報道。</li>
+    <li>圖片出處：自然濕球照片為 Morn／<a href="https://commons.wikimedia.org/wiki/File:Analog_WBGT_meter.jpg">Wikimedia Commons</a>（CC0）；黑球照片為 Maleahlbr／<a href="https://commons.wikimedia.org/wiki/File:Heat_Index_WBGT_Meter.jpg">Wikimedia Commons</a>（CC0）；乾球儀器照片來自 <a href="https://www.climate.gov/maps-data/climate-data-primer/how-do-we-observe-todays-climate/air-atmospheric-climate-variables">NOAA Climate.gov</a>；救援圖片出處見圖片旁連結。其餘示意插圖經本團隊處理。夏季氣溫條碼圖的呈現方式參考 The Pudding〈<a href="https://pudding.cool/projects/heat-records/">Tracking Heat Records in 400 U.S. Cities</a>〉。</li>
+  </ul>
+
+  <h3>研究方法</h3>
+  <ol>
+    <li><strong>香港氣溫：</strong>篩選天文台總部與昂坪的每日最高氣溫，以 6 至 9 月資料繪製每一天的條碼；2026 年只計至 8 月 31 日，9 月不補值。按日期比對歷年同日讀數，顯示紀錄及酷熱日。</li>
+    <li><strong>全球氣溫：</strong>以 ERA5 每日全球平均氣溫為基礎，按年及月份分組，再對該月可用的每日數值取算術平均，得到月度氣溫；2026 年只顯示已有的完整月份。</li>
+    <li><strong>濕度：</strong>取 2016 至 2025 年天文台總部每日平均相對濕度，以日曆格呈現每日數值；另按年計算達 80% 或以上的日數。</li>
+    <li><strong>風速：</strong>取 2016 至 2025 年 6 至 8 月各站每日平均風速，按站點及組別整理。市區組為將軍澳、黃竹坑、沙田、屯門、京士柏、啟德、北角；離岸島嶼及山頂組為沙洲、長洲、青洲、大老山、橫瀾島、大帽山。比較圖呈現兩組平均值；另一張圖逐日顯示 2026 年市區站點風速。</li>
+    <li><strong>實時數據：</strong>頁面讀取天文台最新可取得的 10 分鐘平均香港暑熱指數，以及最新天氣報告；顯示的是資料發出的時間，並非讀者當下所在地的即時測量。</li>
+    <li><strong>快速估算：</strong>工具依輸入的氣溫和濕度估算濕球溫度，再以日照、風及活動條件作簡化調整，代入 HKHI 的 80% 自然濕球、5% 黑球及 15% 乾球權重。這是示意估算，並未實測三種溫度，不等同天文台公布的 HKHI 或官方警告。</li>
+  </ol>
+
+  <h3>限制</h3>
+  <ul>
+    <li>天文台總部的歷史資料於 1940 至 1946 年缺數據。靜態圖中的 2026 年資料只到 8 月 31 日；資料有缺項時以「數據不完整」標示，不把缺值當作零。</li>
+    <li>氣象站讀數只代表該站位置，不能直接推論全港每個街區。天文台風速在離地約 10 米處量度，街道上的風通常受建築物影響。</li>
+    <li>圖表對「夏季」使用兩個範圍：每日最高氣溫條碼圖為 6 至 9 月；全球氣溫和風速比較採 6 至 8 月。比較時須留意月份不同。</li>
+    <li>全球 ERA5 近期數據屬初步數值，之後可能修訂。實時 HKHI 與天氣報告受觀測、發布和網路更新時間影響，可能延遲。</li>
+  </ul>
+
+  <h3>訪問與覆核</h3>
+  <p>訪問資料：待補受訪者姓名、身分、訪問日期及訪問方式。</p>
+  <p>核心數字：陳曉琳、鄺芍宜、查言潞已按上述步驟重新計算，結果與頁面一致。</p>
+
+  <h3>AI 使用說明</h3>
+  <p>本項目主要使用 Claude 和 Codex 協助計算數據、撰寫圖表和網頁程式碼、處理插圖，以及草擬圖表標題、說明文字、替代文字和本資料說明。團隊對資料、文字和頁面內容作最終查核與編輯。</p>
+</section>
+<section class="closing-fan" aria-hidden="true">
+  <div class="lead-art">
+    <div class="fan">
+      <img class="fan-blades" src="images/fan-blades.png" width="477" height="540" alt="">
+      <img class="fan-front" src="images/fan-front.png" width="477" height="540" alt="">
+    </div>
+  </div>
+  <div class="winds"></div>
+</section>
 </article>
 
+<script src="design-v1/vendor/gsap.min.js"></script>
+<script src="design-v1/vendor/ScrollTrigger.min.js"></script>
 <script src="design-v1/heat-flags.js"></script>
-<script src="design-v1/global-monthly.js"></script>
-<script src="design-v1/global-chart.js"></script>
 <script src="design-v1/story.js"></script>
+<script src="design-v1/opening-scroll.js"></script>
 <script src="design-v1/pies.js"></script>
 <script src="design-v1/heat-explainer.js"></script>
 <script src="design-v1/rh-daily.js"></script>
