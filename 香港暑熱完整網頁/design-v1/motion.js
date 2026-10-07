@@ -45,7 +45,7 @@
     const play = () => {
       if (played) return
       played = true
-      const t0 = performance.now(), DRAW = 2600, MARK = 700
+      const t0 = performance.now(), DRAW = 600, MARK = 250
       const step = (now) => {
         const t = (now - t0) / DRAW
         state.upto = 1884 + (2026 - 1884) * ease(Math.min(1, t))
@@ -58,7 +58,7 @@
     }
     new IntersectionObserver((entries, obs) => {
       if (entries.some((e) => e.isIntersecting)) { play(); obs.disconnect() }
-    }, { threshold: 0.12 }).observe(canvas)
+    }, { threshold: 0.02 }).observe(canvas)
   }
 
   // ---------- 4. 「36.9」由 0 數上去 ----------
