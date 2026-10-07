@@ -117,7 +117,8 @@ function drawOn(canvas, state, hover, saveGeometry) {
     const x = xOf(d)
     if (x + barW < pad.l - 2 || x > W - pad.r || colAlpha(d) === 0) continue
     ctx.fillStyle = `rgba(181,186,193,${Math.min(0.55, perBar * 2.6) * state.alpha * colAlpha(d)})`
-    for (const v of station.days[d].values) ctx.fillRect(x, y(v) - barH / 2, barW, barH)
+    const dd = station.days[d], upto = state.upto ?? Infinity
+    dd.values.forEach((v, i) => { if (dd.years[i] <= upto) ctx.fillRect(x, y(v) - barH / 2, barW, barH) })
   }
   ctx.globalCompositeOperation = "source-over"
   ctx.globalAlpha = state.alpha
@@ -127,7 +128,7 @@ function drawOn(canvas, state, hover, saveGeometry) {
     const x = xOf(d)
     if (x + barW < pad.l - 2 || x > W - pad.r || colAlpha(d) === 0) continue
     const day = station.days[d]
-    ctx.globalAlpha = state.alpha * colAlpha(d)
+    ctx.globalAlpha = state.alpha * colAlpha(d) * (state.mark ?? 1)
     ctx.fillStyle = COLOR.record
     ctx.fillRect(x, y(day.max) - barH, barW, barH * 2)
     if (day.now != null && day.now !== day.max) {
@@ -197,6 +198,14 @@ function drawOn(canvas, state, hover, saveGeometry) {
       ctx.fillText(dayLabel(state.focus), xOf(state.focus) + barW / 2, pad.t)
     }
   }
+  // 動效：逐年畫出時，左上角顯示目前年份
+  if (state.upto != null && state.upto < 2026) {
+    ctx.globalAlpha = 1
+    ctx.font = `700 ${small ? 22 : 28}px ${SANS}`
+    ctx.textAlign = "left"; ctx.textBaseline = "top"
+    ctx.fillStyle = COLOR.text
+    ctx.fillText(String(Math.floor(state.upto)), pad.l + 4, pad.t + 2)
+  }
   ctx.globalAlpha = 1
 }
 
@@ -204,6 +213,8 @@ function drawOn(canvas, state, hover, saveGeometry) {
 const charts = [
   { canvas: document.querySelector("#barcode-end"), tip: document.querySelector("#bar-tip-end"), state: { station: "HKO", from: 0, to: DAY_COUNT - 1, focus: AUG9, pair: 0, alpha: 1, threshold: 1 }, geom: null, hover: null },
 ]
+// 給 motion.js 用：逐年畫出條碼圖
+window.BarcodeAnim = { get chart() { return charts[0] }, render: () => renderChart(charts[0]) }
 function renderChart(chart) {
   if (!data || !chart.canvas.width) return
   drawOn(chart.canvas, chart.state, chart.hover, (geometry) => { chart.geom = geometry })
