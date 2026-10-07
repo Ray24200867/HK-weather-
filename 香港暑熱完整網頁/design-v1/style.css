@@ -1205,3 +1205,7 @@ article .sources h3 {
 @media (max-width: 640px) {
   .opening-scene + .lead-followup { margin-top: 16px; }
 }
+
+/* 欄目名（Kicker）：標題上方，無襯線粗體，Navy；桌面 14px、手機 13px，字距 +0.08em */
+.hero .story-kicker { margin: 0 0 12px; font: 700 14px/1.2 var(--sans); letter-spacing: .08em; color: #1F3A5F; }
+@media (max-width: 640px) { .hero .story-kicker { font-size: 13px; } }
