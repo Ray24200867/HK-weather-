@@ -303,7 +303,12 @@ THEMES.mappop = THEMES.map + "html{zoom:.62}" +
   // 讀數面板在左、地圖在右（彈出框較窄，組件原本會把地圖放左邊）
   ".content-layout{grid-template-columns:minmax(260px,2fr) minmax(0,3fr)!important}" +
   ".reading-panel{grid-column:1!important;grid-row:1!important;margin:20px 0 20px 18px!important}" +
-  ".station-map{grid-column:2!important;grid-row:1!important}"
+  ".station-map{grid-column:2!important;grid-row:1!important}" +
+  // 手機：上下排列，地圖在上、佔滿寬度，讀數面板在下；整體不再縮得那麼小
+  "@media(max-width:600px){html{zoom:.85}" +
+  ".content-layout{grid-template-columns:1fr!important;height:auto!important}" +
+  ".station-map{grid-column:1!important;grid-row:1!important;height:auto!important;min-height:0!important}" +
+  ".reading-panel{grid-column:1!important;grid-row:2!important;margin:12px 0!important;height:auto!important}}"
 
 document.querySelectorAll("iframe[data-theme]").forEach((frame) => {
   const apply = () => {

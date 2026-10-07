@@ -1224,3 +1224,8 @@ article .sources h3 {
 h2.section-head, .step-prose .prose h2.section-head, .body h2.section-head { font-weight: 700 !important; }
 /* 內文欄寬不超過 640px：資料說明的文字亦按內文寬度 */
 article .sources > * { max-width: var(--measure); margin-left: auto; margin-right: auto; }
+
+/* 手機：實時地圖彈出框比屏幕長時，可在框內上下捲動 */
+@media (max-width: 640px) {
+  .live-pop { position: fixed; left: 12px; right: 12px; top: 64px; width: auto; max-height: calc(100vh - 80px); max-height: calc(100svh - 80px); overflow-y: auto; -webkit-overflow-scrolling: touch; }
+}
