@@ -77,7 +77,7 @@ function drawOn(canvas, state, hover, saveGeometry) {
   let cx = pad.l + plotW / 2
   if (state.focus != null) {
     ctx.font = `500 ${small ? 14 : 15}px ${SANS}`
-    const labelW = ctx.measureText(`最高紀錄 · 2026 年 · 36.9°C`).width
+    const labelW = ctx.measureText(`最高紀錄 · 2026年 · 36.9°C`).width
     const needed = pad.l + labelW + 16 + barW / 2
     cx += Math.max(0, needed - cx) * (1 - others)
   }
@@ -162,7 +162,7 @@ function drawOn(canvas, state, hover, saveGeometry) {
   ctx.font = `700 ${small ? 14 : 15}px ${SANS}`
   ctx.textAlign = "right"
   ctx.textBaseline = "bottom"
-  ctx.fillText("33°C 酷熱天氣參考", W - pad.r - 2, ty - 6)
+  ctx.fillText("33°C酷熱天氣參考", W - pad.r - 2, ty - 6)
   ctx.globalAlpha = state.alpha
 
   // 單日標註
@@ -174,11 +174,11 @@ function drawOn(canvas, state, hover, saveGeometry) {
     ctx.textAlign = "right"
     ctx.fillStyle = COLOR.text
     const recordText = day.maxYear === 2026
-      ? `最高紀錄 · 2026 年 · ${day.max.toFixed(1)}°C`
+      ? `最高紀錄 · 2026年 · ${day.max.toFixed(1)}°C`
       : `最高紀錄 · ${day.maxYear} 年 · ${day.max.toFixed(1)}°C`
     ctx.fillText(recordText, x - 14, y(day.max))
     ctx.fillStyle = COLOR.muted
-    ctx.fillText(`其餘 ${day.values.length - 1} 年的同一天`, x - 14, y(median(day.values)))
+    ctx.fillText(`其餘${day.values.length - 1}年的同一天`, x - 14, y(median(day.values)))
   }
 
   // x 軸
@@ -248,7 +248,7 @@ function showTip(chart, hit, px, py) {
     <strong>${hit.v.toFixed(1)}°C</strong>
     <span>在 ${day.values.length} 年的${m}月${dd}日中排第 ${rank} 高</span>
     <span>天文台標示：${incomplete ? "數據不完整" : "數據完整"}</span>
-    <small>來源：香港天文台（每日最高氣溫 CLMMAXT）</small>`
+    <small>資料來源：香港天文台（每日最高氣溫CLMMAXT）</small>`
   chart.tip.hidden = false
   const box = chart.canvas.getBoundingClientRect()
   const figureEl = chart.canvas.closest("figure")

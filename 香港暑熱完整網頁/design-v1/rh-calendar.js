@@ -19,45 +19,56 @@
   ]
   const colorOf = (v) => (v == null ? "#FFFFFF" : STEPS.find((s) => v < s.max).color)
 
-  const CELL = 17, GAP = 2, LEFT = 40, TOP = 22
   const MONTHS = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
-  const W = LEFT + 31 * (CELL + GAP), H = TOP + 12 * (CELL + GAP)
-  svg.setAttribute("viewBox", `0 0 ${W} ${H}`)
+  let cells = []
 
-  // 日期刻度
-  for (const d of [1, 10, 20, 31]) {
-    const t = document.createElementNS(NS, "text")
-    t.setAttribute("x", LEFT + (d - 1) * (CELL + GAP) + CELL / 2)
-    t.setAttribute("y", 14)
-    t.setAttribute("text-anchor", "middle")
-    t.setAttribute("class", "rh-axis")
-    t.textContent = `${d}日`
-    svg.appendChild(t)
-  }
-  const cells = []
-  MONTHS.forEach((name, m) => {
-    const t = document.createElementNS(NS, "text")
-    t.setAttribute("x", LEFT - 8)
-    t.setAttribute("y", TOP + m * (CELL + GAP) + CELL - 4)
-    t.setAttribute("text-anchor", "end")
-    t.setAttribute("class", "rh-axis")
-    t.textContent = name
-    svg.appendChild(t)
-    const days = new Date(2024, m + 1, 0).getDate()   // 用閏年建格，2 月有 29 格
-    for (let d = 1; d <= days; d++) {
-      const r = document.createElementNS(NS, "rect")
-      r.setAttribute("x", LEFT + (d - 1) * (CELL + GAP))
-      r.setAttribute("y", TOP + m * (CELL + GAP))
-      r.setAttribute("width", CELL)
-      r.setAttribute("height", CELL)
-      r.setAttribute("rx", 2)
-      r.setAttribute("fill", "#EEF2F6")
-      r.dataset.m = m + 1
-      r.dataset.d = d
-      svg.appendChild(r)
-      cells.push(r)
+  // 按實際寬度繪製（1 單位 = 1 像素），刻度文字在手機上也不會被縮小到 12px 以下
+  function build() {
+    const W = Math.round(svg.parentNode.clientWidth) || 629
+    const small = W < 480
+    const LEFT = small ? 38 : 42, TOP = 24, GAP = small ? 1 : 2
+    const CELL = (W - LEFT) / 31 - GAP             // 格寬
+    const ROW = Math.max(CELL, small ? 16 : CELL)  // 格高：手機上加高，讓月份文字不重疊
+    const H = TOP + 12 * (ROW + GAP)
+    svg.innerHTML = ""
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`)
+    cells = []
+
+    // 日期刻度
+    for (const d of [1, 10, 20, 31]) {
+      const t = document.createElementNS(NS, "text")
+      t.setAttribute("x", LEFT + (d - 1) * (CELL + GAP) + CELL / 2)
+      t.setAttribute("y", 15)
+      t.setAttribute("text-anchor", d === 31 ? "end" : "middle")
+      t.setAttribute("class", "rh-axis")
+      t.textContent = `${d}日`
+      svg.appendChild(t)
     }
-  })
+    MONTHS.forEach((name, m) => {
+      const t = document.createElementNS(NS, "text")
+      t.setAttribute("x", LEFT - 6)
+      t.setAttribute("y", TOP + m * (ROW + GAP) + ROW / 2 + 5)
+      t.setAttribute("text-anchor", "end")
+      t.setAttribute("class", "rh-axis")
+      t.textContent = name
+      svg.appendChild(t)
+      const days = new Date(2024, m + 1, 0).getDate()   // 用閏年建格，2 月有 29 格
+      for (let d = 1; d <= days; d++) {
+        const r = document.createElementNS(NS, "rect")
+        r.setAttribute("x", LEFT + (d - 1) * (CELL + GAP))
+        r.setAttribute("y", TOP + m * (ROW + GAP))
+        r.setAttribute("width", CELL)
+        r.setAttribute("height", ROW)
+        r.setAttribute("rx", small ? 1 : 2)
+        r.setAttribute("fill", "#EEF2F6")
+        r.dataset.m = m + 1
+        r.dataset.d = d
+        svg.appendChild(r)
+        cells.push(r)
+      }
+    })
+    if (shown) paint(false)
+  }
 
   let year = 2024, shown = false
   const valueOf = (cell) => data[year]?.[cell.dataset.m]?.[cell.dataset.d - 1] ?? null
@@ -101,6 +112,13 @@
     tip.hidden = false
   })
   svg.addEventListener("pointerleave", () => { tip.hidden = true })
+
+  build()
+  let lastW = Math.round(svg.parentNode.clientWidth)
+  new ResizeObserver(() => {
+    const w = Math.round(svg.parentNode.clientWidth)
+    if (w !== lastW) { lastW = w; build() }
+  }).observe(svg.parentNode)
 
   new IntersectionObserver((entries, obs) => {
     if (entries.some((e) => e.isIntersecting) && !shown) { shown = true; paint(true); obs.disconnect() }

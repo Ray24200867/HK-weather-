@@ -13,7 +13,7 @@
   --heat: #C4502A;
   --serif: "Source Serif 4", "Noto Serif TC", Georgia, serif;
   --sans: "Source Sans 3", "Noto Sans TC", Arial, sans-serif;
-  --measure: 680px;
+  --measure: 640px;
   color-scheme: light;
 }
 
@@ -1206,6 +1206,21 @@ article .sources h3 {
   .opening-scene + .lead-followup { margin-top: 16px; }
 }
 
-/* 欄目名（Kicker）：標題上方，無襯線粗體，Navy；桌面 14px、手機 13px，字距 +0.08em */
-.hero .story-kicker { margin: 0 0 12px; font: 700 14px/1.2 var(--sans); letter-spacing: .08em; color: #1F3A5F; }
-@media (max-width: 640px) { .hero .story-kicker { font-size: 13px; } }
+
+/* 規範第 5 節：圖表文字只用深色或灰色，不用數據系列的顏色 —— 圖例改為色塊 + 深色文字 */
+.hx-k-in, .hx-k-out { color: #16293F; }
+.hx-k-in::before, .hx-k-out::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 5px; vertical-align: 0; background: #C4502A; }
+.hx-k-out::before { background: #2B6CB0; }
+/* 人體示意圖：桌面放寬到正文寬度，圖內文字才能保持 12px 以上（字號由 heat-explainer.js 按顯示大小設定） */
+.step-prose .prose .heat-explainer, .heat-explainer { max-width: 680px; }
+.hx-list { margin: 8px 0 0; padding: 0; list-style: none; font: 400 14px/1.5 var(--sans); color: #16293F; }
+.hx-list li { margin: 2px 0; }
+.hx-list li::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 6px; background: #C4502A; }
+.hx-list li.out::before { background: #2B6CB0; }
+.hx-meter-note { margin: 6px 0 0 !important; font: 400 14px/1.5 var(--sans) !important; color: #16293F; }
+
+/* ===== 《實習新聞室中文寫作手冊》第八節 ===== */
+/* 小標：粗體 700（桌面 24px／1.5，手機 21px／1.5） */
+h2.section-head, .step-prose .prose h2.section-head, .body h2.section-head { font-weight: 700 !important; }
+/* 內文欄寬不超過 640px：資料說明的文字亦按內文寬度 */
+article .sources > * { max-width: var(--measure); margin-left: auto; margin-right: auto; }

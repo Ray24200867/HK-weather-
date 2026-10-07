@@ -14,7 +14,7 @@
     // 百分比放在扇形右邊的白底上，用深色文字（規範：數字用文字色，不用系列色）
     svg.innerHTML = `
       <path class="w"/>
-      <text class="sub" x="139" y="-6" font-size="16" fill="#5B6573">佔比</text>
+      <text class="sub" x="139" y="-8" font-size="21" fill="#5B6573">佔比</text>
       <text class="num" x="136" y="44" font-size="54" fill="#16293F"></text>`
     return {
       shapes: [svg.querySelector(".w")],
