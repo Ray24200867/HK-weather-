@@ -1229,3 +1229,14 @@ article .sources > * { max-width: var(--measure); margin-left: auto; margin-righ
 @media (max-width: 640px) {
   .live-pop { position: fixed; left: 12px; right: 12px; top: 64px; width: auto; max-height: calc(100vh - 80px); max-height: calc(100svh - 80px); overflow-y: auto; -webkit-overflow-scrolling: touch; }
 }
+
+/* ============ 頁尾：手繪風扇放在正中，點擊回到頁首 ============ */
+.page-end { display: flex; justify-content: center; margin-top: 56px; padding: 48px 16px 64px; border-top: 1px solid #E4E7EB; }
+.pe-top { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0; border: 0; background: none; cursor: pointer; }
+.pe-fan { display: block; width: 96px; transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+.pe-top:hover .pe-fan, .pe-top:focus-visible .pe-fan { transform: translateY(-4px); }
+.pe-top:hover .fan-blades, .pe-top:focus-visible .fan-blades { animation-duration: .35s; }   /* 移上去轉得更快 */
+.page-end:not(.is-on) .fan-blades { animation-play-state: paused; }
+.pe-top:focus-visible { outline: 2px solid #1F3A5F; outline-offset: 6px; }
+.pe-label { font: 400 13px/1.4 var(--sans); color: #5B6573; transform: translateX(-8px); }   /* 對齊風扇底座（底座在圖片中線偏左） */
+@media (max-width: 640px) { .pe-fan { width: 80px; } .pe-label { font-size: 12px; transform: translateX(-7px); } }
