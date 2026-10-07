@@ -1,7 +1,6 @@
 /* 動效：不改任何文字，只控制出現的時機和方式
    1. 頁頂閱讀進度條
    2. 開頭：標題升起、前言及署名依次出現
-   3. 開頭條碼圖：由 1884 年起逐年畫出，畫完後歷史紀錄（藍）和 2026 年（紅）才出現
    4. 導語中的「36.9」由 0 數上去
    5. 內文、圖表捲動進入畫面時輕輕升起；小標編號滑入；對比表方塊依次填上
    選擇「減少動態效果」的讀者看到的是完整靜態頁面 */
@@ -33,33 +32,6 @@
     h1.innerHTML = `<span class="m-line" aria-hidden="true"><span>${text}</span></span>`
   }
   requestAnimationFrame(() => requestAnimationFrame(() => hero?.classList.add("m-start")))
-
-  // ---------- 3. 開頭條碼圖逐年畫出 ----------
-  const canvas = document.querySelector("#barcode-end")
-  const anim = window.BarcodeAnim
-  if (canvas && anim) {
-    const state = anim.chart.state
-    state.upto = 1883; state.mark = 0
-    anim.render()
-    let played = false
-    const play = () => {
-      if (played) return
-      played = true
-      const t0 = performance.now(), DRAW = 600, MARK = 250
-      const step = (now) => {
-        const t = (now - t0) / DRAW
-        state.upto = 1884 + (2026 - 1884) * ease(Math.min(1, t))
-        state.mark = Math.max(0, Math.min(1, (now - t0 - DRAW) / MARK))
-        if (t >= 1) state.upto = null   // 畫完：顯示全部，左上角年份消失
-        anim.render()
-        if (state.mark < 1) requestAnimationFrame(step)
-      }
-      requestAnimationFrame(step)
-    }
-    new IntersectionObserver((entries, obs) => {
-      if (entries.some((e) => e.isIntersecting)) { play(); obs.disconnect() }
-    }, { threshold: 0.02 }).observe(canvas)
-  }
 
   // ---------- 4. 「36.9」由 0 數上去 ----------
   const record = document.querySelector(".lead-text .record")
